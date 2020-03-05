@@ -141,13 +141,59 @@ normtest_batery = function(data, vector, alpha){
   }
   out_det = Vectorize(FUN=out_det, vectorize.args = 'val') # Vectorizar función
 
-#  ##########################################################################################-    
+###########################################################################-
 # Resumen de valores dentro del intervalo definido
-#  ##########################################################################################-  
+###########################################################################-  
   data %>% 
     .[.[,'TAD']==0,
       c(16,17,18,31,19,20,21,23,24,27)] %>% 
   mutate_all(funs(out_det(vec=., val=.)))
+  
+##########################################################################-
+# Determinación de coeficientes de correlación de Pearson -----------------
+##########################################################################-
+# Cálculo de coeficiente de correlación r2
+##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+##  Función modificada con Indices
+##  1 Seleccionar los datos por medio de índices
+##  2 Se calcula la correlación entre dos vectores seleccionados desde el
+##  data.frame, por sus nombres x y y.
+##  3 Retorna esta correlación
+##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+corr <- function(data, indices, x, y) {
+  df <- data[indices,]
+  Z = cor(df[,x], df[,y])
+  return(Z)
+}
+
+Confint_Boot <- function(data, x, y) {
+    B <- boot::boot(
+        data = data,
+        statistic = corr,
+        R = 1000,
+        x = x,
+        y = y)
+    C <- boot::boot.ci(B, type = "basic")
+    return(list(B, C))
+  }
+
+  
+# Confint_Boot(data, "AGEA", "HCM")
+# Confint_Boot(data, "AGEA", "SCM2")
+# Confint_Boot(data, "AGEA", "CLCRMLMIN")
+# Confint_Boot(data, "AGEA", "ALBGDL")
+# Confint_Boot(data, "WTKG", "SCM2")
+# Confint_Boot(data, "WTKG", "HCM")
+# Confint_Boot(data, "WTKG", "IMCKGM2")
+# Confint_Boot(data, "WTKG", "ALBGDL")
+# 
+# Confint_Boot(data, "ALBGDL", "SCM2")
+# Confint_Boot(data, "ALBGDL", "HCM")
+# Confint_Boot(data, "ALBGDL", "SCRMGDL")
+# 
+# Confint_Boot(data, "HCM", "SCM2")
+
+
 #  ##########################################################################################-   
 #  ##########################################################################################-    
 # Se crea una función que realiza el test de Kendall entre un par de variables al set de datos  
@@ -190,21 +236,20 @@ normtest_batery = function(data, vector, alpha){
       geom_smooth(method = 'lm', formula = y~x, se = F, lty='solid', color='blue')+
       geom_point(shape=1,size=1)
   }
-  plot2 <- function(df, xcol, ycol){
+  plot2 <- function(df, xcol, ycol, h = 0) {
     xcol_qu = rlang::enquo(xcol); ycol_qu = rlang::enquo(ycol)
     dplyr::filter(df, EVID==1&TAD==0) %>% 
-      ggplot(aes(x = !!xcol_qu, y = !!ycol_qu)) +
-      theme_void() +
-      theme(plot.title = element_text(size=14, hjust = 0.5), 
-            panel.grid = element_blank(), 
-            axis.line = element_blank(),
-            axis.title = element_blank(),
-            axis.ticks = element_blank(),
-            plot.background = element_rect(colour = 'black'),
-            plot.margin = margin(0,0,0,0,unit='cm'),
-            axis.text = element_blank()) +
-      geom_boxplot(shape=1, size=0.4)}
+      ggplot(aes(x = !!xcol_qu, y = !!ycol_qu, col = !!xcol_qu)) +
+      theme_bw() +
+      theme(legend.position = "none",
+            panel.grid = element_blank()) +
+      geom_boxplot(shape=1, size=0.4) +
+      geom_point() +
+      scale_color_hue(h.start = h)
+      }
 
+  plot2(data,SEXF,WTKG, 20)
+  
 ################################################################################################-
 # Gráficos de relaciones de covariables significativas
 ################################################################################################-
@@ -212,23 +257,23 @@ normtest_batery = function(data, vector, alpha){
   dir_res = c("./RESULTADOS/kendal_")
   
   pdf(paste0(dir_res,"SEXF_1.pdf"), width=3.5, height=3.0);{
-  plot2(data,SEXF,WTKG) + theme_bw() + geom_point()}; dev.off()
+  plot2(data,SEXF,WTKG,100)}; dev.off()
   pdf(paste0(dir_res,"SEXF_2.pdf"), width=3.5, height=3.0);{
-    plot2(data,SEXF,HCM) + theme_bw() + geom_point()}; dev.off()
+    plot2(data,SEXF,HCM,100)}; dev.off()
   pdf(paste0(dir_res,"SEXF_3.pdf"), width=3.5, height=3.0);{
-    plot2(data,SEXF,SCRMGDL) + theme_bw() + geom_point()}; dev.off()
+    plot2(data,SEXF,SCRMGDL,100)}; dev.off()
   pdf(paste0(dir_res,"SEXF_4.pdf"), width=3.5, height=3.0);{
-    plot2(data,SEXF,ALBGDL) + theme_bw() + geom_point()}; dev.off()
+    plot2(data,SEXF,ALBGDL,100)}; dev.off()
   pdf(paste0(dir_res,"SEXF_5.pdf"), width=3.5, height=3.0);{
-    plot2(data,SEXF,SCM2) + theme_bw() + geom_point()}; dev.off()
+    plot2(data,SEXF,SCM2,100)}; dev.off()
   pdf(paste0(dir_res,"LLP_1.pdf"), width=3.5, height=3.0);{
-    plot2(data,LLP,ALBGDL) + theme_bw() + geom_point()}; dev.off()
+    plot2(data,LLP,ALBGDL,20)}; dev.off()
   pdf(paste0(dir_res,"LLP_2.pdf"), width=3.5, height=3.0);{
-    plot2(data,LLP,CLCRMLMIN) + theme_bw() + geom_point()}; dev.off()
+    plot2(data,LLP,CLCRMLMIN,20)}; dev.off()
   pdf(paste0(dir_res,"LLP_3.pdf"), width=3.5, height=3.0);{
-    plot2(data,LLP,SCM2) + theme_bw() + geom_point()}; dev.off()
+    plot2(data,LLP,SCM2,20)}; dev.off()
   pdf(paste0(dir_res,"LMP_1.pdf"), width=3.5, height=3.0);{
-    plot2(data,LMP,HCM) + theme_bw() + geom_point()}; dev.off()
+    plot2(data,LMP,HCM,20)}; dev.off()
 
 ###################################################################################################-
 ###################################################################################################-

@@ -68,6 +68,78 @@ y_1_visualGuides <- # Ayudas visuales
 y_1_obsVsSimulatedPred <- # Observaciones vs predicciones simuladas
   read_csv(file.path(gof_dir, 'y_1_obsVsSimulatedPred.txt'))
 
+diagnostic_PRED <- function(data, x, y) {
+  # Vector X
+  u = data[[x]]
+  # Vector Y
+  v = data[[y]]
+  # Número de datos
+  n = length(u)
+  # Matriz de diseño
+  A = matrix(data = c(rep(1, times = n), u),
+             nrow = n,
+             ncol = 2)
+  # Modelo LM
+  W = lm.fit(y = v, x = A)
+  # Varianza de error residual
+  MSE = sum(W$residuals ^ 2) / (n - W$rank)
+  # Suma cuadrados de X
+  Sxx = sum((u - mean(u)) ^ 2)
+  # Desviación estándar de predicciones
+  SEy = sqrt(MSE * ((1 / n) + ((u - mean(u)) ^ 2 / Sxx)))
+  # Error de predicción ponderado
+  WPE = W$residuals / SEy
+  # Error al cuadrado de predicción ponderado
+  WSPE = WPE ^ 2
+  # Sesgo
+  S = sum(WPE / n)
+  # Imprecisión
+  I = sum(WSPE) / (n - S ^ 2)
+  # Correlación
+  R2 = cor(x = u, y = v)^2
+  
+  # SD pendiente
+  Var_theta_0 = MSE * ((1 / n) + (mean(u) ^ 2 / Sxx))
+  # SD intercepto
+  Var_theta_1 = (MSE/Sxx)
+  # Error
+  Err = qt(p = 1-0.05/2, df = n-W$rank)
+  
+  # IC pendiente
+  LI_pend = W$coefficients[2] - (Err * Var_theta_1)
+  LS_pend = W$coefficients[2] + (Err * Var_theta_1)
+  
+  # IC intercepto
+  LI_inter = W$coefficients[1] - (Err * Var_theta_0)
+  LS_inter = W$coefficients[1] + (Err * Var_theta_0)
+  
+  # Efectos 
+  Inter = paste0(
+    "Inter = ",
+    round(W$coefficients[1], 4),
+    ", IC95%[",
+    round(LI_inter, 4),
+    "-",
+    round(LS_inter, 4),
+    "]"
+  )
+  Pend = paste0(
+    "Pendiente = ",
+    round(W$coefficients[2], 4),
+    ", IC95%[",
+    round(LI_pend, 4),
+    "-",
+    round(LS_pend, 4),
+    "]"
+  )
+  
+  return(list(Intercepto = Inter,
+              Pendiente = Pend,
+              Sesgo = round(S,4),
+              Imprecision = round(I,4),
+              R2 = R2))
+}
+
 ##########################################################################-
 # Bondad de ajuste OBS vs PRED
 G_PRED_OBS_PRED <-
@@ -86,6 +158,8 @@ G_PRED_OBS_PRED <-
                              ymax = popPred_piUpper), 
               inherit.aes = F, fill = 'blue1', alpha = 0.1) +
   coord_cartesian(xlim = c(0,90), ylim = c(0,90))
+
+diagnostic_PRED(y_1_obsVsPred, "popPred", "y_1")
 
 ##########################################################################-
 # Bondad de ajuste OBS vs IPRED
@@ -106,6 +180,7 @@ G_PRED_OBS_IPRED <-
               inherit.aes = F, fill = 'red1', alpha = 0.1) +
   coord_cartesian(xlim = c(0,90), ylim = c(0,90))
   
+diagnostic_PRED(y_1_obsVsPred, "indivPredMean", "y_1")
 ##########################################################################-
 # Bondad de ajuste OBS vs IPRED
 G_PRED_OBS_PPRED <- 
