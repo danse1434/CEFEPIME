@@ -1,11 +1,11 @@
 ##=========================================================================#
-## Nombre del Script: Obtencion de gráficos a partir de datos de figuras---
+## Nombre del Script: Obtencion de gr?ficos a partir de datos de figuras---
 ## generados por Monolix GUI. 
 ##  
-## Proposito del Script: crear y almacenar gráficos generados a partir de 
+## Proposito del Script: crear y almacenar gr?ficos generados a partir de 
 ## los datos generados por la suite de Monolix, se debe colocar en la misma 
 ## carpeta en la que se encuentra el proyecto. Este script lee en la carpeta 
-## ChartsData, que tiene como subdirectorios a cada gráfico generado por la 
+## ChartsData, que tiene como subdirectorios a cada gr?fico generado por la 
 ## suite de Monolix.    
 ##  
 ## Autor: Daniel S. Parra Gonzalez 
@@ -16,25 +16,25 @@
 ## Email: dsparrag@unal.edu.co 
 ##=========================================================================#
 ##########################################################################-
-# Introducción -----------------------------------------------------
+# Introducci?n -----------------------------------------------------
 ##########################################################################-
 # Carga de paquetes
 require(tidyverse)
 require(rlang)
 
 ##########################################################################-
-# Selección de directorio principal
-setwd(file.path('F:','Documentos','(Proyecto)_Estudio_PKPD','CEFEPIME',
+# Selecci?n de directorio principal
+setwd(file.path('C:','Users','Daniel','OneDrive','Documents','(Proyecto)_Estudio_PKPD','CEFEPIME',
                 '04. Residual', 'Modelo_8', 'RES_M1'))
 
 ##########################################################################-
 # Bondad de ajuste -------------------------------------------------
 ##########################################################################-
 # Ajuste de una variable para guardar la subcarpeta que contiene datos de 
-# gráfico de bondad de ajuste
+# gr?fico de bondad de ajuste
 gof_dir <- file.path('ChartsData','ObservationsVsPredictions')
 
-# Selección de tema
+# Selecci?n de tema
 theme_set(theme_classic() +
           theme(panel.border = element_rect(fill = NA, colour = 'black')))
 
@@ -128,7 +128,7 @@ G_PRED_OBS_PPRED <-
     coord_cartesian(xlim = c(0, 90), ylim = c(0, 90))
     
 ##########################################################################-
-# Transformación de logarítmos
+# Transformaci?n de logar?tmos
 abreaks <- c(1, seq(2,10,2), seq(20,100,20))
 
 G_PRED_OBS_IPREDLOG <-
@@ -141,7 +141,7 @@ G_PRED_OBS_PREDLOG <-
   scale_y_continuous(trans = 'pseudo_log', breaks = abreaks) +
   scale_x_continuous(trans = 'pseudo_log', breaks = abreaks)
 
-# Almacenamiento en pdf de los gráficos
+# Almacenamiento en pdf de los gr?ficos
 ggsave('FIGURAS/G_PRED_OBS_PRED.pdf', G_PRED_OBS_PRED, 
        device = 'pdf', width = 5/1.5, height = 4/1.5, units = 'in')  
 
@@ -161,7 +161,7 @@ ggsave('FIGURAS/G_PRED_OBS_PPRED.pdf', G_PRED_OBS_PPRED,
 # Residuales --------------------------------------------------------------
 ##########################################################################-
 # Ajuste de una variable para guardar la subcarpeta que contiene datos de 
-# gráfico de residuales
+# gr?fico de residuales
 res_dir <- file.path('ChartsData','ScatterPlotOfTheResiduals')
 # Todos los Residuales
 y_1_residuals <-
@@ -183,19 +183,19 @@ y_1_time_percentiles_pwRes <-
   read_csv(file.path(res_dir, 'y_1_time_percentiles_pwRes.txt'))
 y_1_time_percentiles_npde <-
   read_csv(file.path(res_dir, 'y_1_time_percentiles_npde.txt'))
-# Especificicación de contenedores (bins) en los datos
+# Especificicaci?n de contenedores (bins) en los datos
 y_1_individualBins <-
   read_csv(file.path(res_dir, 'y_1_individualBins.txt'))
 y_1_populationBins <-
   read_csv(file.path(res_dir, 'y_1_populationBins.txt'))
 y_1_timeBins <-
   read_csv(file.path(res_dir, 'y_1_timeBins.txt'))
-# Especificación de línea de tendencia
+# Especificaci?n de l?nea de tendencia
 y_1_spline <-
   read_csv(file.path(res_dir, 'y_1_spline.txt'))
 
 ##########################################################################-
-  # Gráficos de residuales vs Tiempo --------------------------------------
+  # Gr?ficos de residuales vs Tiempo --------------------------------------
 ##########################################################################-
 RES_TSFD <- function(x, y, xspline, yspline, perc_data, xlab, ylab) {
   x <- rlang::ensym(x)
@@ -267,21 +267,21 @@ ggsave(filename = './FIGURAS/G_RES_T_NPDE.pdf', plot = G_RES_T_NPDE,
        device = 'pdf', width = 5/1.5, height = 4/1.5, units = 'in') 
 
 ##########################################################################-
-# Gráfico de residuales vs TAD --------------------------------------------
+# Gr?fico de residuales vs TAD --------------------------------------------
 ##########################################################################-
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1 Apertura de archivo de datos con los datos originales, y que tiene 
-##  delimitador ";", este fue usado para realizar el modelamiento en sí mismo
-##  2 Crear un archivo *last_dose* que contiene la última hora de adminis-
-##  tración del antibiótico en el archivo *data* para cada individuo. 
+##  delimitador ";", este fue usado para realizar el modelamiento en s? mismo
+##  2 Crear un archivo *last_dose* que contiene la ?ltima hora de adminis-
+##  traci?n del antibi?tico en el archivo *data* para cada individuo. 
 ##    2a Agrupar por ID
-##    2b Filtrar los datos con EVID igual a 1 (sólo los eventos de 
-##    administración)
-##    2c Seleccionar los últimos en cada grupo (los datos ya están ordenados 
+##    2b Filtrar los datos con EVID igual a 1 (s?lo los eventos de 
+##    administraci?n)
+##    2c Seleccionar los ?ltimos en cada grupo (los datos ya est?n ordenados 
 ##    de menor a mayor)
-##    2d Seleccionar sólo las columnas ID y TIME
+##    2d Seleccionar s?lo las columnas ID y TIME
 ##  3 Modificar el archivo de residuales *y_1_residuals* al unir los datos 
-##  de últimnas observaciones calculadas.
+##  de ?ltimnas observaciones calculadas.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 data <- read_delim("Monolix_data.csv", delim = ';')
@@ -299,7 +299,7 @@ y_1_residuals <-
 
 RES_TAD <- function(x, y, xlab, ylab) {
   ##########################################################################-
-  # Volver las variables x y y en expresiones para evaluación tardía
+  # Volver las variables x y y en expresiones para evaluaci?n tard?a
   x <- rlang::ensym(x)
   y <- rlang::ensym(y)
   
@@ -307,8 +307,8 @@ RES_TAD <- function(x, y, xlab, ylab) {
   ##  Calculo de percentiles empiricos
   ##  1 Tomar la variable de datos a explorar.
   ##  2 Crear una variable que tome 6 grupos a partir de los datos ordenados 
-  ##  con la función dplyr::ntile().
-  ##  3 Agrupar por la variable recién creado.
+  ##  con la funci?n dplyr::ntile().
+  ##  3 Agrupar por la variable reci?n creado.
   ##  4 Resumir por la media de TAD, y los percentiles P5%, P50%, y P95% de 
   ##  los datos de residuales.
   ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -320,7 +320,7 @@ RES_TAD <- function(x, y, xlab, ylab) {
               LI = quantile(x = !!y, probs = 0.05), 
               LS = quantile(x = !!y, probs = 0.95))
   ##########################################################################-
-  # Crear el gráfico de residuales con las especificaciones mostradas
+  # Crear el gr?fico de residuales con las especificaciones mostradas
   y_1_residuals %>% 
   ggplot(mapping = aes(x = !!x, y = !!y)) +
     geom_hline(yintercept = 0) +
@@ -359,21 +359,21 @@ ggsave(filename = './FIGURAS/G_RES_TAD_NPDE.pdf', plot = G_RES_TAD_NPDE,
        device = 'pdf', width = 5/1.5, height = 4/1.5, units = 'in')
 
 ##########################################################################-
-# Gráficos de residuales vs Concentraciones -------------------------------
+# Gr?ficos de residuales vs Concentraciones -------------------------------
 ##########################################################################-
 # Residuales vs concentraciones
 
-#' Creación de gráfico de residuales
+#' Creaci?n de gr?fico de residuales
 #'
 #' @param x Variable X (en y_1_residuals) para puntos
 #' @param y Variable Y (en y_1_residuals) para puntos
 #' @param xspline Variable X (en y_1_spline) para spline
 #' @param yspline Variable Y (en y_1_spline) para spline
-#' @param perc_data Tabla con datos de percentiles empíricos
+#' @param perc_data Tabla con datos de percentiles emp?ricos
 #' @param xlab Etiqueta de eje X personalizada
 #' @param ylab Etiqueta de eje Y personalizada
 #'
-#' @return Gráfico de residuales vs predicciones
+#' @return Gr?fico de residuales vs predicciones
 #' @export
 #'
 #' @examples
@@ -423,7 +423,7 @@ G_RES_C_NPDE <-
           xlab = 'PRED', ylab = 'NPDE')
   
 
-# Almacenamiento en pdf de los gráficos
+# Almacenamiento en pdf de los gr?ficos
 ggsave('./FIGURAS/G_RES_C_PWRES.pdf', G_RES_C_PWRES, 
        device = 'pdf', width = 5/1.5, height = 4/1.5, units = 'in')
 
@@ -434,7 +434,7 @@ ggsave('./FIGURAS/G_RES_C_NPDE.pdf', G_RES_C_NPDE,
        device = 'pdf', width = 5/1.5, height = 4/1.5, units = 'in')  
 
 ##########################################################################-
-# Gráficos individuales-----------------------------------------------------
+# Gr?ficos individuales-----------------------------------------------------
 ##########################################################################-
 # Carga de ajustes individuales
 y_1_fits <- read_csv("ChartsData/IndividualFits/y_1_fits.txt")
@@ -461,7 +461,7 @@ ggsave(filename = 'FIGURAS/G_CP_TAD.pdf', plot = G_CP_TAD,
        device = 'pdf', width = 5, height = 6)
 
 ##########################################################################-
-# Cálculo manual de encogimiento eta y epsilon ----------------------------
+# C?lculo manual de encogimiento eta y epsilon ----------------------------
 ##########################################################################-
 eta <- 
   read_csv("ChartsData/CorrelationBetweenRandomEffects/eta.txt")
@@ -486,7 +486,7 @@ var_eta <- eta %>%
   summarise_at(., vars(matches("\\_mean")), .funs = list(var = ~ var(.))) %>%
   rename_all(.funs = list(~ str_replace(., "\\_mean\\_var", ''))) %>%
   rename_all(.funs = list(~ str_replace(., "eta\\_", ''))) %>%
-  rename_all(.funs = list(~ paste0(., '_pop')))  
+  rename_all(.funs = list(~ paste0(., '_pop'))) 
   
 # Resultados de Eta
 eta_res <- 1 - (var_eta / (pop_eta1^ 2))
@@ -498,7 +498,7 @@ epsilon_shrink <- 1-sd(y_1_residuals$iwRes_mean)
 
 
 ##########################################################################-
-# Gráfico de densidad distribución parámetros -----------------------------
+# Gr?fico de densidad distribuci?n par?metros -----------------------------
 ##########################################################################-
 # 
 data1 <-
