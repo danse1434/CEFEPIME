@@ -20,10 +20,12 @@ setwd(file.path('F:','Documentos','(Proyecto)_Estudio_PKPD','CEFEPIME',
 require(tidyverse)
 require(ggplot2)
 require(gridExtra)
+require(gganimate)
+require(patchwork)
 
-##########################################################################-
+#-------------------------------------------------------------------------------#
 # Introducción ------------------------------------------------------------
-##########################################################################-
+#-------------------------------------------------------------------------------#
 # Lectura de archivo de datos
 # El archivo de datos original, se llama "arguments.dat" y tiene una 
 # codificación desconocida, por lo cual se pasó a una hoja de cálculo, y se
@@ -35,9 +37,10 @@ data <- read_csv(".Internals/Argumentos_1.csv",
 
 # Se eliminan las primeras 12 filas del archivo
 
-##########################################################################-
+#-------------------------------------------------------------------------------#
 # Modificación de archivo de datos ----------------------------------------
-##########################################################################-
+#-------------------------------------------------------------------------------#
+
 # Eliminación de espacios blancos en nombres de la tabla
 dcol <- colnames(data) %>% 
   str_replace_all(" ", "") # Remoción espacios
@@ -48,7 +51,7 @@ for (i in 2:29) {
   colnames(data)[i] <- dcol[i-1]
 }
 
-##########################################################################-
+#-------------------------------------------------------------------------------#
 # Creación de objeto *data1*
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1 Detección de filas con letras en la columna X1
@@ -109,29 +112,30 @@ data3 <- data2 %>%
 
 ##########################################################################-
 # Color asignado de acuerdo a criterio incluido (1) o no (0)
-Criterio <- c("1" = 'red', "0" = NA) # Cuando no se incluye el par no se muestra
+Criterio <- c("1" = 'red', "0" = 'gray99') # Cuando no se incluye el par no se muestra
 
 # Gráfico 1 - Muestra las covariables incluidas en el modelo
 
-G1 <- data3 %>%
-  ggplot(aes(x = Iteracion, y = Par1)) + 
-  geom_tile(aes(fill = Criterio)) +
+G1 <- 
+  data3 %>%
+  mutate(Covariable = str_replace(Covariable, 'logt', ''),
+         Covariable = factor(Covariable),
+         Par = paste0(Parametro, '_', Covariable)) %>% 
+  ggplot(aes(x = Iteracion, y = Par)) + 
+  geom_tile(aes(fill = Criterio), col = 'black') +
   theme_classic() +
   xlab("Iteración") + ylab('Parámetro - Covariable') +
-  scale_y_continuous(breaks = seq(0, 60, 10), 
-                     minor_breaks = seq(1, 60, 1), 
-                     sec.axis = dup_axis(breaks = NULL, name = NULL)) +
   scale_x_continuous(position = 'top',
-                     breaks = round(seq(0, max(data3$Iteracion), length.out = 20)),
-                     sec.axis = dup_axis(breaks = NULL, name = NULL)) +
+                     breaks = round(seq(0, max(data3$Iteracion), length.out = 21))) +
   scale_fill_manual(values = Criterio) +
   theme(legend.position = "none", 
         axis.text.x = element_text(angle = 90),
-        panel.grid.major.x = element_line(colour = 'gray80', size = 0.01),
-        panel.grid.minor.y = element_line(colour = 'gray95', size = 0.01))
+        axis.text.y = element_text(size = 5, hjust = 0),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.y = element_blank(), 
+        panel.border = element_rect(fill = NA, colour = 'black')) 
 
 # ggsave(filename = "Heatmap.pdf", plot = G1, device = 'pdf', width = 8, height = 8)  
-  
 
 ##########################################################################-
 # Gráfico con trayectorias de convergencia --------------------------------
@@ -165,21 +169,25 @@ data4 <- data %>%
 h <- 9
 
 G2 <- data4 %>% 
-  ggplot(aes(x = Iteracion, y = Valor, colour = Parametro)) + 
-  geom_line() +
+  ggplot(aes(x = Iteracion, y = Valor)) + 
+  geom_line(aes(colour = Parametro)) +
   theme_bw() +
   xlab('Iteración') + ylab('Valor') +
   geom_vline(xintercept = h, col = 'black') +
   scale_colour_manual(values = c('blue', 'red'), name = 'Parametro') +
-  scale_x_continuous(breaks = round(seq(0, max(data4$Iteracion), length.out = 10)), 
-                     sec.axis = dup_axis(breaks = NULL, name = NULL)) + 
-  theme(legend.position = c(0.2, 0.8))
+  scale_x_continuous(breaks = round(seq(1, max(data4$Iteracion), length.out = 20))) + 
+  theme(legend.position = c(0.2, 0.8),
+        panel.border = element_rect(fill = NA, colour = 'black'))
 
 
 # Creación de archivo en forma de Arreglo de Grobs
 
-pdf(file = 'Trayectoria_Convergencia.pdf', width = 6, height = 8); {
-  gridExtra::grid.arrange(G1,G2)
+pdf(file = 'Trayectoria_Convergencia.pdf', width = 8, height = 8); {
+  (G1 / G2) + 
+    plot_layout(guides = 'collect') +
+    plot_annotation(title = 'Estimación de modelo de covariables', 
+                    subtitle = 'COSSAC: BICc con restricciones en las covariables') +
+    plot_layout(heights = c(2,1))
 }; dev.off()
 
 ##########################################################################-
@@ -217,8 +225,19 @@ G3 <- data5 %>%
 ggsave(filename = "Tray_Difer.pdf", plot = G3, device = 'pdf', 
        width = 5, height = 7)  
 
+##########################################################################-
+# Animación ---------------------------------------------------------------
+##########################################################################-
 
+G1.anim <- G1 +
+  # Se crea un segundo GEOM para guardar la traza
+  geom_tile(aes(group = seq_along(Iteracion), fill = Criterio)) +
+  transition_reveal(Iteracion)
 
+# anim_save('G1_anim.gif', animation = G1.anim)
 
+G2.anim <- G2 +
+  geom_point(aes(group = seq_along(Iteracion), col = Parametro)) +
+  transition_reveal(Iteracion)
 
-
+# anim_save('G2_anim.gif', animation = G2.anim)

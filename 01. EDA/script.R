@@ -3,6 +3,7 @@ require('lubridate')
 require('rlang')
 require('grid')
 require('PerformanceAnalytics')
+require(patchwork)
 
 setwd(dir = file.path('F:','Documentos','(Proyecto)_Estudio_PKPD','CEFEPIME','01. EDA'))
 theme_set(theme_bw())
@@ -17,14 +18,14 @@ data = read_csv(file = 'DATA/NONMEM_Cefepime.csv',
                                  ANTU = col_factor(),
                                  LLP = col_factor(),
                                  LMP = col_factor()))
-# data[,1:30][data[,1:30]=='.'] <- NA # Para reemplazar todos los datos por un valor específico
+# data[,1:30][data[,1:30]=='.'] <- NA # Para reemplazar todos los datos por un valor espec?fico
 
 eGFR = function(Scr,edad,sexo,raza){
   if (sexo == 1) {k = 0.7; b = 1; a = -0.329 # Mujeres
   } else {k = 0.9; b = 0; a = -0.411} # Hombres
   if (raza == 1){c = 1
   } else {c=0}
-  # Tasa de filtración glomerular
+  # Tasa de filtraci?n glomerular
   GFR = 141*(min(Scr/k,1))^(a)*(max(Scr/k,1))^-1.209*(0.993^edad)*(1.018^b)*(1.159^c)
   return(GFR)
 }
@@ -42,14 +43,14 @@ data = data %>%
   mutate(Dx = as.factor(Dx)) %>% 
   mutate(eGFR = eGFR(SCRMGDL, AGEA,SEXF,0))
 
-LOQ = 25/2/2/2/2 # Concentración que se puede cuantificar como mínino
+LOQ = 25/2/2/2/2 # Concentraci?n que se puede cuantificar como m?nino
 
 # Pruebas de normalidad ---------------------------------------------------
 normtest_batery = function(data, vector, alpha){
   df = matrix(nrow = length(unique(vector)), ncol = 7)
   for (j in vector) {
-    X = dplyr::pull(data,j) # Selecciona como un vector atómico a una columna 
-    i = match(j,vector) # Encuentra la posición en el vectror
+    X = dplyr::pull(data,j) # Selecciona como un vector at?mico a una columna 
+    i = match(j,vector) # Encuentra la posici?n en el vectror
     df[i,1] = colnames(data[,j])
     df[i,2] = ifelse(shapiro.test(X)$p.value < alpha, '+', '-') # Shapiro-Wilks
     df[i,3] = ifelse(nortest::ad.test(X)$p.value < alpha, '+', '-') #Anderson-Darling
@@ -71,17 +72,17 @@ normtest_batery = function(data, vector, alpha){
     as.data.frame() %>% View()
 
 #  ##########################################################################################-
-# Estadística descriptiva -------------------------------------------------
+# Estad?stica descriptiva -------------------------------------------------
 #  ##########################################################################################-  
-  # Se realiza un análisis desriptivo de las covariable de los pacientes y se obtiene de las 
-  # variables continuas media, desviación estándar, límite inferior (IC95%), límite superior 
-  # (IC95%), mínimo, máximo, Q1, mediana, Q3, y rango intercuartílico (IQR).
+  # Se realiza un an?lisis desriptivo de las covariable de los pacientes y se obtiene de las 
+  # variables continuas media, desviaci?n est?ndar, l?mite inferior (IC95%), l?mite superior 
+  # (IC95%), m?nimo, m?ximo, Q1, mediana, Q3, y rango intercuart?lico (IQR).
   
     descriptiva = function(data, vector){
     df = matrix(nrow = length(unique(vector)), ncol = 10)
     for (j in vector) {
-      X = dplyr::pull(data,j) # Selecciona como un vector atómico a una columna 
-      i = match(j,vector) # Encuentra la posición en el vectror
+      X = dplyr::pull(data,j) # Selecciona como un vector at?mico a una columna 
+      i = match(j,vector) # Encuentra la posici?n en el vectror
       df[i,1] = mean(X) %>% round(.,3)
       df[i,2] = sd(X) %>% round(.,3)
       df[i,3] = mean(X)-((sd(X)*qt(1-0.1/2, length(X)-1))/sqrt(length(X))) %>% round(.,3)
@@ -97,7 +98,7 @@ normtest_batery = function(data, vector, alpha){
     df = as.data.frame(df)
     
     for (j in vector) {
-      i = match(j,vector) # Encuentra la posición en el vectror
+      i = match(j,vector) # Encuentra la posici?n en el vectror
       row.names(df)[i] = colnames(data[,j])
     }
     return(df)
@@ -109,26 +110,29 @@ normtest_batery = function(data, vector, alpha){
     descriptiva(data=., vector = c(16:27,31,34)) %>% 
     # select(-c('SD','Q1','Mediana','Q3','IQR')) %>% 
     as.data.frame() %>% View()
-# Se realizaron análisis descriptivos de los datos.
+# Se realizaron an?lisis descriptivos de los datos.
 #  ##########################################################################################-  
 
 #  ##########################################################################################-  
 # Estudio de correlaciones entre variables del paciente -------------------
 #  ##########################################################################################-  
-# Se realizó un análisis de correlación entre variables de los pacientes por un método gráfico.
-  pdf(file = './RESULTADOS/Correlacion_Continua_1.pdf', width = 11.0,height = 8.50);{
-  chart.Correlation(data[data[,'TAD']==0,
-                         c(16,17,18,31,19,20,21,23,24,27)], 
-                    histogram=TRUE, pch=19)}; dev.off()
+# Se realiz? un an?lisis de correlaci?n entre variables de los pacientes por un m?todo gr?fico.
+pdf(file = './RESULTADOS/Correlacion_Continua_1.pdf', width = 11.0,height = 8.50);{
   
-  chart.Correlation(data[data[,'TAD']==0,
-                         c(20:21,22:23,24:25,26:27)], 
-                    histogram=TRUE, pch=19)
+  data %>% 
+    filter(TAD == 0) %>% 
+    select(AGEA, WTKG, HCM, SCM2, IMCKGM2, SCRMGDL, CLCRMLMIN, ALBGDL, DIND, RAN) %>% 
+    chart.Correlation(., histogram = TRUE, pch = 19)}; dev.off()
 
-# Se discute en el texto las implicaciones del análisis de correlación.
+
+filter(data, TAD==0) %>% 
+  select(SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN) %>% 
+  chart.Correlation(., histogram=TRUE, pch=19)
+
+# Se discute en el texto las implicaciones del an?lisis de correlaci?n.
 #####################################################################################################-  
 #####################################################################################################-
-# Se realiza una función que permite saber si un dato es anómalo por estar afuera de la distribución
+# Se realiza una funci?n que permite saber si un dato es an?malo por estar afuera de la distribuci?n
 # en un rango Q1-1.5*IQR a Q3+1.5*IQR (con valores 1.5 veces IQR).
 #####################################################################################################-
 
@@ -139,26 +143,26 @@ normtest_batery = function(data, vector, alpha){
       b = TRUE } else { b = FALSE }
     return(b)
   }
-  out_det = Vectorize(FUN=out_det, vectorize.args = 'val') # Vectorizar función
+  out_det = Vectorize(FUN=out_det, vectorize.args = 'val') # Vectorizar funci?n
 
 ###########################################################################-
 # Resumen de valores dentro del intervalo definido
 ###########################################################################-  
   data %>% 
-    .[.[,'TAD']==0,
-      c(16,17,18,31,19,20,21,23,24,27)] %>% 
-  mutate_all(funs(out_det(vec=., val=.)))
-  
+    filter(TAD == 0) %>% 
+    select(AGEA, WTKG, HCM, SCM2, IMCKGM2, SCRMGDL, CLCRMLMIN, ALBGDL, DIND, RAN) %>% 
+    mutate(across(everything(), ~ out_det(vec = .x, val = .x)))
+
 ##########################################################################-
-# Determinación de coeficientes de correlación de Pearson -----------------
+# Determinaci?n de coeficientes de correlaci?n de Pearson -----------------
 ##########################################################################-
-# Cálculo de coeficiente de correlación r2
+# C?lculo de coeficiente de correlaci?n r2
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-##  Función modificada con Indices
-##  1 Seleccionar los datos por medio de índices
-##  2 Se calcula la correlación entre dos vectores seleccionados desde el
+##  Funci?n modificada con Indices
+##  1 Seleccionar los datos por medio de ?ndices
+##  2 Se calcula la correlaci?n entre dos vectores seleccionados desde el
 ##  data.frame, por sus nombres x y y.
-##  3 Retorna esta correlación
+##  3 Retorna esta correlaci?n
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 corr <- function(data, indices, x, y) {
   df <- data[indices,]
@@ -196,11 +200,11 @@ Confint_Boot <- function(data, x, y) {
 
 #  ##########################################################################################-   
 #  ##########################################################################################-    
-# Se crea una función que realiza el test de Kendall entre un par de variables al set de datos  
+# Se crea una funci?n que realiza el test de Kendall entre un par de variables al set de datos  
   kendall = function(xcol, ycol){
     xcol_qu = rlang::enquo(xcol); ycol_qu = rlang::enquo(ycol)
       A= data %>% 
-        .[.[,'TAD']==0,] %>% 
+        filter(TAD == 0) %>% 
         select(.,!!xcol_qu,!!ycol_qu) %>% 
         mutate(!!xcol_qu := as.numeric(!!xcol_qu)) %>%
         mutate(!!ycol_qu := as.numeric(!!ycol_qu)) %>% 
@@ -251,7 +255,7 @@ Confint_Boot <- function(data, x, y) {
   plot2(data,SEXF,WTKG, 20)
   
 ################################################################################################-
-# Gráficos de relaciones de covariables significativas
+# Gr?ficos de relaciones de covariables significativas
 ################################################################################################-
   
   dir_res = c("./RESULTADOS/kendal_")
@@ -274,10 +278,26 @@ Confint_Boot <- function(data, x, y) {
     plot2(data,LLP,SCM2,20)}; dev.off()
   pdf(paste0(dir_res,"LMP_1.pdf"), width=3.5, height=3.0);{
     plot2(data,LMP,HCM,20)}; dev.off()
+  
+  
+gcompuestoA <- 
+  ((plot2(data,SEXF,WTKG,100) + plot2(data,SEXF,HCM,100)) /
+  (plot2(data,SEXF,SCRMGDL,100) + plot2(data,SEXF,ALBGDL,100))) +
+  plot_annotation(tag_levels = 'A')
 
+ggsave('RESULTADOS/Compuesto_Kendall_1.pdf', gcompuestoA, 'pdf', 
+       width = 7.0, height = 6.0, units = 'in')
+
+gcompuestoB <- 
+  ((plot2(data,LLP,ALBGDL,20) + plot2(data,LLP,CLCRMLMIN,20)) /
+  (plot2(data,LLP,SCM2,20) + plot2(data,LMP,HCM,20))) +
+  plot_annotation(tag_levels = 'A')
+
+ggsave('RESULTADOS/Compuesto_Kendall_2.pdf', gcompuestoB, 'pdf', 
+       width = 7.0, height = 6.0, units = 'in')
 ###################################################################################################-
 ###################################################################################################-
-# REVISIÓN DE DIFERENCIAS ENTRE GRUPOS POR VARIABLE DICOTÓMICA  
+# REVISI?N DE DIFERENCIAS ENTRE GRUPOS POR VARIABLE DICOT?MICA  
 ###################################################################################################-
 ###################################################################################################-
   
@@ -318,9 +338,9 @@ Confint_Boot <- function(data, x, y) {
   
   
   
-  # vplayout <- function(x, y) viewport(layout.pos.row = y, layout.pos.col = x)
-  # grid.newpage();{
-  # pushViewport(viewport(layout = grid.layout(16, 16)))
+  vplayout <- function(x, y) viewport(layout.pos.row = y, layout.pos.col = x)
+  grid.newpage();{
+  pushViewport(viewport(layout = grid.layout(16, 16)))}
   # 
   plotly = function(x,y,X,Y,z){
     X_qu = rlang::enquo(X); Y_qu = rlang::enquo(Y)
@@ -380,11 +400,11 @@ Confint_Boot <- function(data, x, y) {
   # plotly(14,7,RAN,SCRMGDL,1);  plotly(15,7,ANTU,SCRMGDL,2)
   # plotly(16,7,Dx,SCRMGDL,2) 
   # }
-  
+  dev.off()
   
 ###################################################################################################-
 ###################################################################################################-
-# PRIMERA REVISIÓN DE DATOS FARMACOCINÉTICOS
+# PRIMERA REVISI?N DE DATOS FARMACOCIN?TICOS
 ###################################################################################################-
 ###################################################################################################-
 
@@ -397,16 +417,16 @@ theme_set(theme_bw() +
                   legend.key.height = unit(0.30, 'cm')))
             
 ##########################################################################-
-# Gráfico de concentración plasmática en escala normal 
+# Gr?fico de concentraci?n plasm?tica en escala normal 
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1. Data
 ##  2. Convertir la variable *ID* en un factor discreto
 ##  3. Abrir el ambien GGplot
-##  4. Adicionar puntos, y adicionar líneas
+##  4. Adicionar puntos, y adicionar l?neas
 ##  5. Configurar etiqueta eje X
 ##  6. Configurar etiqueta eje Y
 ##  7. Configurar etiquetas para mostrar 5 filas
-##  8. Adicionar línea en LLOQ
+##  8. Adicionar l?nea en LLOQ
 ##  9. Configurar colores en escala discreta como colores Viridis
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -416,7 +436,7 @@ gperfil1 <- data %>%
   ggplot(., aes(x = TAD, y = DV, group = ID, col = ID)) + 
   geom_point() + geom_line() + 
   xlab('TAD: tiempo tras dosis (hr)') +
-  ylab('Concentración plasmática (mg/L)') + 
+  ylab('ConcentraciÃ³n plasmÃ¡tica (mg/L)') + 
   guides(col = guide_legend(nrow=5)) + 
   geom_hline(yintercept = LOQ, lty = 'dashed') +
   scale_color_viridis_d()
@@ -427,47 +447,46 @@ ggsave(filename = './RESULTADOS/TAD_DV.pdf', plot = gperfil1,
        device = 'pdf', width = 6, height = 4, units = 'in')
 
 ##########################################################################-
-# Gráficos de perfiles plasmáticos
+# Gr?ficos de perfiles plasm?ticos
 
 data %>% 
   filter(EVID == 0) %>% 
   mutate(DATEHOUR = date(DATEHOUR)) %>% 
-  ggplot(., aes(x=DATEHOUR, y=DV, group=ID, col=ID)) + 
-  geom_point() + 
-  geom_line()  +
-  xlab('Fecha') +
-  ylab('Concentración plasmática (mg/L)') + 
+  ggplot(aes(x=DATEHOUR, y=DV, group=ID, col=ID)) + 
+  geom_point() + geom_line()  +
+  xlab('Fecha') + ylab('ConcentraciÃ³n plasmÃ¡tica (mg/L)') + 
   scale_x_date(date_breaks = '1 month',
                date_minor_breaks = '1 weeks',
                date_labels = "%b-%y") +
   guides(col = guide_legend(nrow=5)) +
+  coord_cartesian(ylim = c(0, 100)) +
   theme(panel.grid.minor.x = element_line(colour='gray96'))
 
 data %>% 
   filter(EVID ==0) %>% 
-  mutate(LOQ = if_else(condition = (DV <= 3.15), 
-                       true = TRUE, 
-                       false = FALSE)) %>% 
+  mutate(LOQ = if_else(DV <= 3.15, TRUE, FALSE)) %>% 
   count(LOQ)
 
 ##########################################################################-
-# Gráfico de concentración plasmática en escala logarítmica
+# Gr?fico de concentraci?n plasm?tica en escala logar?tmica
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1. Data
 ##  2. Convertir la variable *ID* en un factor discreto
 ##  3. Abrir el ambien GGplot
-##  4. Adicionar puntos, y adicionar líneas
+##  4. Adicionar puntos, y adicionar l?neas
 ##  5. Configurar etiqueta eje X
 ##  6. Configurar etiqueta eje Y
 ##  7. Configurar etiquetas para mostrar 5 filas
-##  8. Adicionar línea en LLOQ
-##  9. Convertir la escala de Y en logarítmo
+##  8. Adicionar l?nea en LLOQ
+##  9. Convertir la escala de Y en logar?tmo
 ##  10. Configurar colores en escala discreta como colores Viridis
 ##  11. Adicionar puntos de quiebre en la escala
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-gperfil2 <- 
-  data %>% 
+breaks <- 10^(-1:2)
+minor_breaks <- rep(1:9, 4) * (10 ^ rep(-1:2, each = 9))
+
+gperfil2 <- data %>% 
   mutate(ID = factor(ID)) %>% 
   filter(EVID == 0) %>% 
   ggplot(., aes(x = TAD, y = DV, group = ID, col = ID)) + 
@@ -476,7 +495,7 @@ gperfil2 <-
   ylab(expression(log(C[p]))) + 
   guides(col = guide_legend(nrow=5)) + 
   geom_hline(yintercept = LOQ, lty = 'dashed') +
-  scale_y_continuous(trans = 'log10') +
+  scale_y_log10(breaks = breaks, minor_breaks = minor_breaks) +
   scale_color_viridis_d() +
   annotation_logticks(sides = 'lr')
 
@@ -486,11 +505,9 @@ ggsave(filename = './RESULTADOS/log_TAD_DV.pdf', plot = gperfil2,
        device = 'pdf', width = 6, height = 4, units = 'in')
 
 
-###############################################################################################-
-###############################################################################################-
-#### REVISIÓN DE ESTACIONALIDAD DE LOS DATOS
-###############################################################################################-
-###############################################################################################-
+#-------------------------------------------------------------------------------#
+# REVISIÃ“N DE ESTACIONALIDAD DE LOS DATOS----------------------------------------
+#-------------------------------------------------------------------------------#
 
 data1 = data %>% 
   filter(EVID ==0) %>% 
@@ -501,16 +518,27 @@ data1 = data %>%
   select(ID,DV,TSFD,TAD)
 
 
-data %>% 
+gperfil3 <- data %>% 
   filter(EVID == 0) %>% 
-  ggplot(., aes(x=TSFD, y=DV, group=ID, col=ID)) + 
-  geom_point() + 
-  geom_line() +
+  mutate(ID = factor(ID)) %>% 
+  ggplot(aes(x=TSFD, y=DV, group=ID, col=ID)) + 
+  geom_point() + geom_line() +
   xlab('TSFD: tiempo tras la primera dosis (hr)') +
-  ylab('Concentración plasmática (mg/L)') + 
+  ylab('ConcentraciÃ³n plasmÃ¡tica (mg/L)') + 
   geom_smooth(method = 'loess', data = data1, aes(y=DV, x = TSFD),
               inherit.aes = F,
               linetype='dashed') +
-  # guides(col = guide_legend(nrow=5)) +
-  coord_cartesian(ylim = c(0,100))+
-  scale_color_viridis_c()
+  coord_cartesian(ylim = c(0,100)) +
+  scale_color_viridis_d() +
+  guides(col = guide_legend(nrow = 5))
+
+# Almacenamiento de grÃ¡fico compuesto
+
+gperfilComp1 <- (gperfil3 / gperfil1) + 
+  plot_annotation(tag_levels = 'A')
+
+
+ggsave('RESULTADOS/Compuesto_TSFD_TAD.pdf', gperfilComp1, 'pdf', 
+       width = 6, height = 4*2, units = 'in')
+
+

@@ -113,20 +113,22 @@ Criterio <- c("1" = 'red', "0" = NA) # Cuando no se incluye el par no se muestra
 
 # Gráfico 1 - Muestra las covariables incluidas en el modelo
 
-G1 <- data3 %>%
-  ggplot(aes(x = Iteracion, y = Par1)) + 
-  geom_tile(aes(fill = Criterio)) +
+G1 <-
+  data3 %>%
+  mutate(Covariable = str_replace(Covariable, 'logt', ''),
+         Covariable = factor(Covariable),
+         Par = paste0(Parametro, '_', Covariable)) %>% 
+  ggplot(aes(x = Iteracion, y = Par)) + 
+  geom_tile(aes(fill = Criterio), col = 'black') +
   theme_classic() +
   xlab("Iteración") + ylab('Parámetro - Covariable') +
-  scale_y_continuous(breaks = seq(0, 60, 10), 
-                     minor_breaks = seq(1, 60, 1), 
-                     sec.axis = dup_axis(breaks = NULL, name = NULL)) +
   scale_x_continuous(position = 'top',
-                     breaks = round(seq(0, max(data3$Iteracion), length.out = 20)),
+                     breaks = round(seq(1, max(data3$Iteracion), length.out = 21)),
                      sec.axis = dup_axis(breaks = NULL, name = NULL)) +
   scale_fill_manual(values = Criterio) +
   theme(legend.position = "none", 
         axis.text.x = element_text(angle = 90),
+        axis.text.y = element_text(size = 5, hjust = 0),
         panel.grid.major.x = element_line(colour = 'gray80', size = 0.01),
         panel.grid.minor.y = element_line(colour = 'gray95', size = 0.01))
 
