@@ -191,10 +191,56 @@ G_tot_comp <-
 # Almacenamiento
 ggsave("Res_Converg_modelos.pdf", G_tot_comp, device = 'pdf', 
        width = 8, height = 6)
-  
+
  
 
 
+filtrar.data <- function(data, var_orden) {
+    var_orden_quo = rlang::ensym(var_orden)
+      
+    df1 <- data %>%
+    select(-Parametro, -Covariable, -Par1) %>% 
+    pivot_wider(names_from = Par, values_from = Criterio) %>% 
+    rowwise() %>% 
+    mutate(N = sum(c_across(matches("\\_")))) %>% 
+    ungroup() %>% 
+    arrange(!!var_orden_quo) %>%
+    select(Iteracion, LRT, BICc, N)
+  
+  df2 <- gt::gt(df1)
+  
+  return(list(df1, df2))
+}
+
+# df1 <- dfSCMBIC %>%
+#   select(-Parametro, -Covariable, -Par1) %>% 
+#   pivot_wider(names_from = Par, values_from = Criterio) %>% 
+#   select(-Iteracion, -LRT, -BICc) %>% 
+#   as.matrix() 
+# 
+# dim(df1)
+# 
+# df2 <- matrix(nrow = dim(df1)[1], ncol = dim(df1)[2])
+# df3 <- vector(length = dim(df1)[1])
+# 
+# for (i in 1:dim(df1)[1]) {
+#   for (j in 1:dim(df1)[2]) {
+#     df2[i,j] <- paste(colnames(df1)[j], df1[i,j])
+#   }
+# }
+# 
+# for (i in 1:dim(df1)[1]) {
+#   df3[i] <- paste(df2)
+# }
+# 
+# apply(., c(1,2), function(x) paste(colnames(x),x,sep='-'))
+
+
+filtrar.data(dfSCMBIC, 'LRT')
+filtrar.data(dfSCMBIC, 'BICc')
+
+filtrar.data(dfCOSSACBIC, 'LRT')[[1]]x
+filtrar.data(dfCOSSACBIC, 'BICc')[[1]]
 
 
 
@@ -204,16 +250,3 @@ ggsave("Res_Converg_modelos.pdf", G_tot_comp, device = 'pdf',
 
 
 
-
-
-
-# dat <- 
-  dfCOSSACBIC %>%
-  select(-Parametro, -Covariable, -Par1) %>% 
-  pivot_wider(names_from = Par, values_from = Criterio) %>% 
-  rowwise() %>% 
-  mutate(N = sum(c_across(matches("\\_")))) %>% 
-  ungroup() %>% 
-    arrange(BICc) %>%
-    select(Iteracion, LRT, BICc, N) %>%  view()
-        
