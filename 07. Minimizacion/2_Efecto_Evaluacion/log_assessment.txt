@@ -1,0 +1,163 @@
+PS C:\Users\Daniel> C:\Users\Daniel\OneDrive\Documents\(Proyecto)_Estudio_PKPD\CEFEPIME\07. Minimizacion\2_Efecto_Evaluacion\script_master.ps1
+Carpeta 1 iniciada
+00:00:13
+Carpeta 2 iniciada
+00:00:12
+Carpeta 3 iniciada
+00:00:13
+Carpeta 4 iniciada
+00:00:15
+Carpeta 5 iniciada
+00:00:14
+Carpeta 6 iniciada
+00:00:14
+Carpeta 7 iniciada
+00:00:15
+Carpeta 8 iniciada
+00:00:17
+Carpeta 9 iniciada
+00:00:18
+Carpeta 10 iniciada
+00:00:19
+Carpeta 11 iniciada
+00:00:17
+Carpeta 12 iniciada
+00:00:17
+Carpeta 13 iniciada
+00:00:16
+Carpeta 14 iniciada
+00:00:15
+Carpeta 15 iniciada
+00:00:17
+Carpeta 16 iniciada
+00:00:16
+Carpeta 17 iniciada
+00:00:16
+Carpeta 18 iniciada
+00:00:17
+Carpeta 19 iniciada
+00:00:16
+Carpeta 20 iniciada
+00:00:17
+Carpeta 21 iniciada
+00:00:15
+Carpeta 22 iniciada
+00:00:15
+Carpeta 23 iniciada
+00:00:15
+Carpeta 24 iniciada
+00:00:16
+Carpeta 25 iniciada
+00:00:15
+Carpeta 26 iniciada
+00:00:15
+Carpeta 27 iniciada
+00:00:14
+Carpeta 28 iniciada
+00:00:16
+Carpeta 29 iniciada
+00:00:15
+Carpeta 30 iniciada
+00:00:15
+Carpeta 31 iniciada
+00:00:15
+Carpeta 32 iniciada
+00:00:14
+Carpeta 33 iniciada
+00:00:15
+Carpeta 34 iniciada
+00:00:15
+Carpeta 35 iniciada
+00:00:15
+Carpeta 36 iniciada
+00:00:15
+Carpeta 37 iniciada
+00:00:15
+Carpeta 38 iniciada
+00:00:15
+Carpeta 39 iniciada
+00:00:15
+Carpeta 40 iniciada
+00:00:15
+Carpeta 41 iniciada
+00:00:16
+Carpeta 42 iniciada
+00:00:15
+Carpeta 43 iniciada
+00:00:15
+Carpeta 44 iniciada
+00:00:15
+Carpeta 45 iniciada
+00:00:14
+Carpeta 46 iniciada
+00:00:15
+Carpeta 47 iniciada
+00:00:15
+Carpeta 48 iniciada
+00:00:15
+Carpeta 49 iniciada
+00:00:15
+Carpeta 50 iniciada
+00:00:16
+Carpeta 51 iniciada
+00:00:15
+Carpeta 52 iniciada
+00:00:15
+Carpeta 53 iniciada
+00:00:15
+Carpeta 54 iniciada
+00:00:15
+Carpeta 55 iniciada
+00:00:15
+Carpeta 56 iniciada
+00:00:15
+Carpeta 57 iniciada
+00:00:15
+Carpeta 58 iniciada
+00:00:15
+Carpeta 59 iniciada
+00:00:14
+Carpeta 60 iniciada
+00:00:16
+Carpeta 61 iniciada
+00:00:15
+Carpeta 62 iniciada
+00:00:15
+Carpeta 63 iniciada
+00:00:15
+Carpeta 64 iniciada
+00:00:15
+Carpeta 65 iniciada
+00:00:14
+Carpeta 66 iniciada
+00:00:16
+Carpeta 67 iniciada
+00:00:15
+Carpeta 68 iniciada
+00:00:15
+Carpeta 69 iniciada
+00:00:15
+Carpeta 70 iniciada
+00:00:14
+Carpeta 71 iniciada
+00:00:17
+Carpeta 72 iniciada
+00:00:15
+Carpeta 73 iniciada
+00:00:15
+Carpeta 74 iniciada
+00:00:15
+Carpeta 75 iniciada
+00:00:15
+Carpeta 76 iniciada
+00:00:16
+Carpeta 77 iniciada
+00:00:15
+Carpeta 78 iniciada
+00:00:14
+Carpeta 79 iniciada
+00:00:15
+Carpeta 80 iniciada
+00:00:14
+Carpeta 81 iniciada
+00:00:16

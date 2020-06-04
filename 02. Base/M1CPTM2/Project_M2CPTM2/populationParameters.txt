@@ -1,0 +1,8 @@
+parameter,value
+V_pop,0.389
+Vm_pop,32.2
+Km_pop,2.06
+omega_V,8986.83279125291
+omega_Vm,202.312315686148
+omega_Km,239.768454134215
+a,35.1465276205538

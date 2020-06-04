@@ -1,0 +1,10 @@
+parameter,res_sa
+Cl_pop,17.6654
+V1_pop,7.4519e-6
+V2_pop,77.8604
+a,10.1842
+beta_Cl_tSCRMGDL,45.4843
+omega_Cl,20.9508
+omega_Q,63.9233
+omega_V1,292.691
+omega_V2,49.7345

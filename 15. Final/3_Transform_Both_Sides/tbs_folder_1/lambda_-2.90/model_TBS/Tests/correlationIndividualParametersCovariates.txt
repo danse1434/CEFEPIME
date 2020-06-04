@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Cl,tSCRMGDL,-5.9046,5.19667e-5,Pearson

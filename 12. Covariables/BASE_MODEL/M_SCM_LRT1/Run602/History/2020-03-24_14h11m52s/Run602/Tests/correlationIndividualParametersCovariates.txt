@@ -1,0 +1,12 @@
+parameter,covariate,statistics,p-value,test
+V1,ANTU,2.29937,0.153361,Fisher
+V1,logtCLCRMLMIN,-3.17118,0.00736517,Pearson
+V1,logtPROGDL,-1.27486,0.224672,Pearson
+Q,LMP,1.44763,0.250363,Fisher
+Q,logtAGEA,-0.081174,0.93654,Pearson
+Q,logtALBGDL,1.61685,0.129908,Pearson
+Q,logtPROGDL,-0.0197662,0.98453,Pearson
+V2,SEXF,4.07181,0.0647324,Fisher
+V2,logtHCM,-0.274211,0.788231,Pearson
+V2,logtPROGDL,-1.94332,0.0739499,Pearson
+V2,logtRAL,0.882292,0.393641,Pearson

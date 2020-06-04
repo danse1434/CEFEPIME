@@ -1,0 +1,9 @@
+eta,covariate,statistics,p-value,test
+eta_Cl,CLCRMLMIN,0.0302349,0.976339,Pearson
+eta_Cl,tCLCRMLMIN,0.0302349,0.976339,Pearson
+eta_V1,CLCRMLMIN,-1.22484,0.242366,Pearson
+eta_V1,tCLCRMLMIN,-1.22484,0.242366,Pearson
+eta_Q,CLCRMLMIN,-1.56734,0.141046,Pearson
+eta_Q,tCLCRMLMIN,-1.56734,0.141046,Pearson
+eta_V2,CLCRMLMIN,-0.643687,0.53097,Pearson
+eta_V2,tCLCRMLMIN,-0.643687,0.53097,Pearson

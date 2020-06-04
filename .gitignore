@@ -6,11 +6,9 @@
 *.eps
 *.tex
 *.xml
-
+*.svg
 **/98. Escrito detallado/*
 *.properties
-*.svg
-*.txt
 *.mlxtran
 *.pkx
 *.xlsx

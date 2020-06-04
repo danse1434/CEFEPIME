@@ -1,0 +1,6 @@
+parameter,covariate,statistics,p-value,test
+Cl,logtRAN,-0.810554,0.432211,Pearson
+V1,logtPROGDL,-2.86727,0.0132121,Pearson
+V1,logtSCRMGDL,0.012235,0.990424,Pearson
+Q,logtIMCKGM2,2.82705,0.0142709,Pearson
+V2,SEXF,22.5587,0.000379703,Fisher

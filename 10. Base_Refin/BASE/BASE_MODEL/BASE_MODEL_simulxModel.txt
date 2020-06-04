@@ -1,0 +1,32 @@
+[INDIVIDUAL]
+input = {Cl_pop, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2, omega_Cl}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, sd=omega_Cl}
+Q = {distribution=logNormal, typical=Q_pop, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+
+[LONGITUDINAL]
+input = {a, b}
+
+DESCRIPTION:
+The administration is via an infusion (requires INFUSION RATE or INFUSION DURATION column-type in the data set).
+The PK model has a central compartment (volume V1), a peripheral compartment 
+(volume V2, intercompartmental clearance Q), and a linear elimination (clearance Cl).
+
+input = {Cl, V1, Q, V2}
+
+EQUATION:
+V = V1 
+k = Cl/V1 
+k12 = Q/V1 
+k21 = Q/V2
+Cc = pkmodel(V, k, k12, k21)
+
+OUTPUT:
+output = Cc
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=combined2(a, b)}
+

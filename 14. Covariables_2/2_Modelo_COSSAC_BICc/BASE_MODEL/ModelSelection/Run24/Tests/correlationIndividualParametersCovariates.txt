@@ -1,0 +1,10 @@
+parameter,covariate,statistics,p-value,test
+Cl,LMP,1.86001,0.195773,Fisher
+Cl,logtIMCKGM2,1.67748,0.117314,Pearson
+Cl,logtWTKG,1.47377,0.164342,Pearson
+Cl,tSCRMGDL,-2.119,0.0539188,Pearson
+V1,logtPROGDL,-3.2213,0.00668766,Pearson
+V1,tSCRMGDL,0.476987,0.64129,Pearson
+Q,logtIMCKGM2,2.98833,0.0104713,Pearson
+Q,logtRAL,-2.34067,0.035844,Pearson
+V2,SEXF,24.6045,0.000260639,Fisher

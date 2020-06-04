@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Cl,LLP,0.221196,0.645923,Fisher

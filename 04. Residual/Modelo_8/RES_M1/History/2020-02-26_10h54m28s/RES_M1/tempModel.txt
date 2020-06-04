@@ -1,0 +1,14 @@
+
+[LONGITUDINAL]
+input = {Cl_pop, V1_pop, Q_pop, V2_pop}
+                    
+EQUATION:
+V = V1_pop
+k = Cl_pop/V1_pop
+k12 = Q_pop/V1_pop
+k21 = Q_pop/V2_pop
+
+Cc = pkmodel(V, k, k12, k21)
+                    
+OUTPUT:
+output = Cc

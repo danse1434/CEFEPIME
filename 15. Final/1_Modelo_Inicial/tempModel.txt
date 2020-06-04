@@ -1,0 +1,26 @@
+
+[COVARIATE]
+input = SCRMGDL
+
+EQUATION:
+tSCRMGDL = SCRMGDL/0.54
+
+[INDIVIDUAL]
+input = {Cl_pop, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2, omega_Cl,
+tSCRMGDL, beta_Cl_tSCRMGDL}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, covariate=tSCRMGDL, 
+      coefficient=beta_Cl_tSCRMGDL, sd=omega_Cl}
+Q = {distribution=logNormal, typical=Q_pop, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+
+[LONGITUDINAL]
+input = {a, b}
+
+file = 'lib:infusion_2cpt_ClV1QV2.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=combined2(a, b)}
+

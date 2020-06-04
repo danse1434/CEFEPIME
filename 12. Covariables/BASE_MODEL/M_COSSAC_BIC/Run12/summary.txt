@@ -1,0 +1,78 @@
+********************************************************************************
+*                          BASE_MODEL.mlxtran                                  *
+*                          March 31, 2020 at 21:24:52                          *
+*                          Monolix version : 5.1.0                             *
+********************************************************************************
+
+
+POPULATION PARAMETERS ESTIMATION _______________________________________________
+
+Fixed Effects ----------------------------
+Cl_pop                         :      13.5
+beta_Cl_logtIMCKGM2            :      1.12
+V1_pop                         :      21.4
+beta_V1_logtPROGDL             :     -2.05
+beta_V1_logtSCRMGDL            :     0.704
+Q_pop                          :      23.4
+beta_Q_logtIMCKGM2             :      4.59
+V2_pop                         :      9.15
+beta_V2_SEXF_1                 :      1.18
+
+Standard Deviation of the Random Effects -
+omega_Cl                       :     0.235
+omega_V1                       :     0.228
+omega_Q                        :     0.758
+omega_V2                       :     0.516
+
+Error Model Parameters -------------------
+a                              :      1.52
+b                              :    0.0365
+
+Elapsed time (seconds) :       18
+
+ _______________________________________________________________________________
+
+
+
+INDIVIDUAL PARAMETERS ESTIMATION _______________________________________________
+
+
+Individual Parameters Estimation by Conditional Mean ---------------------------
+           min        Q1    median        Q3       max
+Cl :      8.69      10.6      14.1      17.4      19.5
+V1 :      15.5      19.2      21.7      29.3      51.8
+Q  :      6.15      19.2      24.2        49      59.3
+V2 :      4.93         9      11.7      28.3      42.7
+
+Elapsed time (seconds) :       1
+
+ -------------------------------------------------------------------------------
+
+
+Individual Parameters Estimation by Conditional Mode ---------------------------
+           min        Q1    median        Q3       max
+Cl :       8.7      10.6      13.9      17.3      19.3
+V1 :      15.4      19.3      21.8      28.9      51.1
+Q  :      6.11      15.1      22.5      42.5        55
+V2 :      5.06      8.76      11.2      28.5      41.7
+
+Elapsed time (seconds) :   0.021
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+LOG-LIKELIHOOD ESTIMATION ______________________________________________________
+                                                           (lin)
+
+-2 x log-likelihood                             :         487.17
+Akaike Information Criteria               (AIC) :         515.17
+Corrected Bayesian Information Criteria  (BICc) :         534.04
+Bayesian Information Criteria             (BIC) :         525.08
+
+Elapsed time                          (seconds) :           0.01
+
+ _______________________________________________________________________________
+

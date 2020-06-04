@@ -1,0 +1,7 @@
+bins_values,split
+0.0344518,All
+12.6424,All
+22.1745,All
+37.0558,All
+52.1273,All
+72.4676,All

@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Cl,LMP,1.91351,0.18987,Fisher

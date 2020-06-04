@@ -1,0 +1,3 @@
+parameter,covariate,statistics,p-value,test
+V1,logtAGEA,1.93175,0.075483,Pearson
+V1,logtPROGDL,-4.97001,0.00025619,Pearson

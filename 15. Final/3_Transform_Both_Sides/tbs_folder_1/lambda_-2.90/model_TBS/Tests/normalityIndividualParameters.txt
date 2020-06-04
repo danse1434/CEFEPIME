@@ -1,0 +1,5 @@
+parameter,statistics,p-value,test
+Cl,0.130804,1.42987e-5,Kolmogorov-Smirnov
+V1,0.943455,0.438303,Shapiro-Wilk
+Q,0.928133,0.184298,Shapiro-Wilk
+V2,0.951922,0.988112,Shapiro-Wilk

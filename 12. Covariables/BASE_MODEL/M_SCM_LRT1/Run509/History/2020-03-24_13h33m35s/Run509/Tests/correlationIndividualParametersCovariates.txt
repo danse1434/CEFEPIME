@@ -1,0 +1,11 @@
+parameter,covariate,statistics,p-value,test
+Cl,SEXF,0.315833,0.583683,Fisher
+V1,ANTU,2.93661,0.110321,Fisher
+V1,logtCLCRMLMIN,-4.03442,0.00141725,Pearson
+V1,logtPROGDL,-1.06238,0.3074,Pearson
+Q,LMP,1.26386,0.281252,Fisher
+Q,logtAGEA,-0.0753319,0.941098,Pearson
+Q,logtALBGDL,1.5236,0.151559,Pearson
+Q,logtPROGDL,-0.0914261,0.928548,Pearson
+V2,SEXF,5.60886,0.0340436,Fisher
+V2,logtHCM,-0.453936,0.657361,Pearson

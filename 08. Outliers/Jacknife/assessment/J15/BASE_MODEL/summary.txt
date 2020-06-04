@@ -1,0 +1,47 @@
+********************************************************************************
+*                          Control.mlxtran                                     *
+*                          March 15, 2020 at 00:57:57                          *
+*                          Monolix version : 5.1.0                             *
+********************************************************************************
+
+
+POPULATION PARAMETERS ESTIMATION _______________________________________________
+
+Fixed Effects ----------------------------
+Cl_pop                         :      13.8
+V1_pop                         :      24.9
+Q_pop                          :      23.4
+V2_pop                         :      14.5
+
+Standard Deviation of the Random Effects -
+omega_Cl                       :     0.256
+omega_V1                       :     0.156
+omega_Q                        :      1.13
+omega_V2                       :     0.924
+
+Error Model Parameters -------------------
+a                              :      1.45
+b                              :    0.0495
+
+Elapsed time (seconds) :       18
+
+ _______________________________________________________________________________
+
+
+
+LOG-LIKELIHOOD ESTIMATION ______________________________________________________
+                                                            (is)
+
+-2 x log-likelihood                             :         470.98
+Akaike Information Criteria               (AIC) :         488.98
+Corrected Bayesian Information Criteria  (BICc) :         503.69
+Bayesian Information Criteria             (BIC) :         494.73
+
+Elapsed time                          (seconds) :           2.06
+
+
+[Importance Sampling] Standard error        : 0.117
+                      Sampling distribution : T-distribution with 5 degrees of freedom
+
+ _______________________________________________________________________________
+

@@ -1,0 +1,6 @@
+M_SCM_LRT1 - Algoritmo SCM; Criterio LRT
+M_SCM_LRT2 - Algoritmo SCM; Criterio LRT; Restricciones
+M_SCM_LRT2 - Algoritmo SCM; Criterio LRT; Restricciones; Nivel alpha 0.05/0.01
+M_SCM_BICc - Algoritmo SCM; Criterio BICc; Restricciones
+M_COSSAC_BIC - Algoritmo COSSAC; Criterio BICc; Restricciones
+M_COSSAC_LRT - Algoritmo COSSAC; Criterio LRT; Restricciones

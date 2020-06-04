@@ -1,0 +1,6 @@
+criteria,linearization,importanceSampling
+-2LL,52.763,52.740
+AIC,62.763,62.740
+BICc,71.679,71.655
+BIC,66.304,66.280
+stdError,,0.046

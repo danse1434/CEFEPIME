@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Cl,logtALBGDL,0.079728,0.937668,Pearson

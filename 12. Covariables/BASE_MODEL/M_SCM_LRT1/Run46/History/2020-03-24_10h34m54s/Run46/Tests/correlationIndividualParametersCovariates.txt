@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Q,logtWTKG,0.997967,0.336509,Pearson

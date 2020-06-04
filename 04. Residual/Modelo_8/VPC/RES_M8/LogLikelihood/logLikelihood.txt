@@ -1,0 +1,6 @@
+criteria
+-2LL
+AIC
+BICc
+BIC
+stdError

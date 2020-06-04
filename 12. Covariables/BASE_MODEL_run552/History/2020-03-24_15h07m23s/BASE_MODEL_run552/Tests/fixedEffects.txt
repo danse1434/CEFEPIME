@@ -1,0 +1,11 @@
+parameter,statistics(sa),p-value(sa)
+beta_V1_logtCLCRMLMIN,5.11951,3.06e-7
+beta_V1_logtPROGDL,2.09074,0.0366
+beta_V1_ANTU_1,2.40654,0.0161
+beta_Q_logtAGEA,2.5301e+6,<2.2e-16
+beta_Q_logtALBGDL,nan,nan
+beta_Q_logtPROGDL,nan,nan
+beta_Q_LMP_1,3.94839e+6,<2.2e-16
+beta_V2_logtHCM,9.37623e+6,<2.2e-16
+beta_V2_logtRAL,1.66798e+6,<2.2e-16
+beta_V2_SEXF_1,8.19881e+6,<2.2e-16

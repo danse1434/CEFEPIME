@@ -1,0 +1,73 @@
+********************************************************************************
+*                          MODELO_BASE_efecto.mlxtran                          *
+*                          March 05, 2020 at 11:51:00                          *
+*                          Monolix version : 5.1.0                             *
+********************************************************************************
+
+
+POPULATION PARAMETERS ESTIMATION _______________________________________________
+
+Fixed Effects ----------------------------     se_sa    rse(%)
+Cl_pop                         :      13.5     0.921      6.82
+V1_pop                         :      23.7      11.9        50
+Q_pop                          :      26.6      58.6       220
+V2_pop                         :      13.3      8.91      67.1
+
+Standard Deviation of the Random Effects -
+omega_Cl                       :      0.26    0.0498      19.2
+omega_V1                       :     0.252     0.533       211
+omega_Q                        :     0.998      0.77      77.2
+omega_V2                       :     0.896     0.253      28.2
+
+Error Model Parameters -------------------
+a                              :      1.54      0.29      18.8
+b                              :    0.0431    0.0289        67
+
+Elapsed time (seconds) :       11
+
+ _______________________________________________________________________________
+
+
+
+CORRELATION MATRIX OF THE ESTIMATES ____________________________________________
+
+
+Fisher by Stochastic Approximation ---------------------------------------------
+Correlation Matrix :
+  Cl_pop         1
+  V1_pop  0.070344         1
+   Q_pop -0.067807    -0.979         1
+  V2_pop -0.073026  -0.89157   0.87791         1
+omega_Cl 0.0092216   0.13615  -0.13606     -0.13         1
+omega_V1  0.066228    0.9705  -0.97094  -0.88788   0.13323         1
+ omega_Q  -0.06229  -0.91039   0.90512   0.87018  -0.12752  -0.92699         1
+omega_V2  0.019998    0.1627  -0.14167  -0.17118  0.019866  0.093866  -0.10778         1
+       a  0.015298   0.24471   -0.2525  -0.26684   0.04344   0.27992   -0.2952  -0.17655         1
+       b -0.045984  -0.76437   0.78229   0.69643  -0.12072  -0.79738   0.74636   0.07061  -0.57042         1
+                               min       max   max/min
+Eigen values           :      0.02       5.5    2.8e+2
+
+Elapsed time (seconds) :    0.61
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+LOG-LIKELIHOOD ESTIMATION ______________________________________________________
+                                                            (is)
+
+-2 x log-likelihood                             :         512.18
+Akaike Information Criteria               (AIC) :         532.18
+Corrected Bayesian Information Criteria  (BICc) :         550.02
+Bayesian Information Criteria             (BIC) :         539.26
+
+Elapsed time                          (seconds) :           2.03
+
+
+[Importance Sampling] Standard error        : 0.092
+                      Sampling distribution : T-distribution with 5 degrees of freedom
+
+ _______________________________________________________________________________
+

@@ -1,0 +1,3 @@
+parameter,covariate,statistics,p-value,test
+Cl,logtCLCRMLMIN,1.44181,0.17301,Pearson
+V2,SEXF,27.5402,0.000157441,Fisher

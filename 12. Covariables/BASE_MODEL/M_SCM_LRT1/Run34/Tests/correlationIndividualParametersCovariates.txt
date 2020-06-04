@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Q,LMP,0.0615807,0.807892,Fisher

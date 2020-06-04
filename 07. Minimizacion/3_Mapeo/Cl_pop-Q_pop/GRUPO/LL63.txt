@@ -1,0 +1,6 @@
+criteria,importanceSampling
+-2LL,2054.821
+AIC,2074.821
+BICc,2092.652
+BIC,2081.902
+stdError,22.362

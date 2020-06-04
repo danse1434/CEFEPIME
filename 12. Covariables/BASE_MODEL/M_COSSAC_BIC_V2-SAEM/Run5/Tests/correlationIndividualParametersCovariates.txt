@@ -1,0 +1,3 @@
+parameter,covariate,statistics,p-value,test
+Q,logtIMCKGM2,3.58748,0.0033102,Pearson
+V2,SEXF,21.8281,0.000436731,Fisher

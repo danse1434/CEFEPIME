@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+V1,logtRAL,0.542838,0.596426,Pearson

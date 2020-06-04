@@ -1,0 +1,3 @@
+parameter,covariate,statistics,p-value,test
+Cl,logtSCM2,1.03271,0.320568,Pearson
+Cl,tSCRMGDL,-2.1274,0.0531005,Pearson

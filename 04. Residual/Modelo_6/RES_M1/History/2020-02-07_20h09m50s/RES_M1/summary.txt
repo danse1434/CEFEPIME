@@ -1,0 +1,104 @@
+********************************************************************************
+*                        RES_M6.mlxtran                                        *
+*                        February 07, 2020 at 20:09:49                         *
+*                        Monolix version : 5.1.0                               *
+********************************************************************************
+
+
+POPULATION PARAMETERS ESTIMATION _______________________________________________
+
+Fixed Effects ----------------------------     se_sa    rse(%)
+Cl_pop                         :      13.5     0.914      6.77
+V1_pop                         :      21.8    1.6e-6   7.34e-6
+Q_pop                          :      36.3      19.1      52.5
+V2_pop                         :      16.5      3.54      21.4
+
+Standard Deviation of the Random Effects -
+omega_Cl                       :     0.258     0.049        19
+omega_V1                       :   3.57e-8   5.32e-8       149
+omega_Q                        :      1.67      0.52      31.1
+omega_V2                       :     0.718     0.176      24.6
+
+Error Model Parameters -------------------
+a                              :      1.55     0.248        16
+b                              :    0.0575    0.0137      23.9
+c                              :         1       nan       nan
+
+Elapsed time (seconds) :       94
+
+ _______________________________________________________________________________
+
+
+
+CORRELATION MATRIX OF THE ESTIMATES ____________________________________________
+
+
+Fisher by Stochastic Approximation ---------------------------------------------
+Correlation Matrix :
+  Cl_pop         1
+  V1_pop 0.0041345         1
+   Q_pop   0.01872   0.09181         1
+  V2_pop -0.017047  0.046224 -0.036229         1
+omega_Cl  0.011264 0.0099233 0.0081307-0.0050273         1
+omega_V1 0.0044357  -0.173330.00040563 -0.011292-0.0067125         1
+ omega_Q  0.019438   0.13705   0.32536 0.0072132  0.011825 -0.095606         1
+omega_V2-0.0021477  0.024056  0.034124 -0.044489 0.0022347   0.11551 -0.058138         1
+       a 0.0032006  0.097751    0.0113 -0.016948  0.014469  -0.22324-0.0036608  -0.10175         1
+       b 0.0013417   -0.2652 0.0056052 -0.040215 -0.042486   0.21641 -0.035605   0.10929  -0.42072         1
+       c       nan       nan       nan       nan       nan       nan       nan       nan       nan       nan       nan
+WARNING : Impossible to compute the eigen values of the correlation matrix.
+
+Elapsed time (seconds) :     3.4
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+INDIVIDUAL PARAMETERS ESTIMATION _______________________________________________
+
+
+Individual Parameters Estimation by Conditional Mean ---------------------------
+           min        Q1    median        Q3       max
+Cl :      8.64      10.7      14.1      17.4      19.2
+V1 :      21.8      21.8      21.8      21.8      21.8
+Q  :         1      30.1       103       215       357
+V2 :      5.62      10.8      15.3      33.7      50.7
+
+Elapsed time (seconds) :     2.1
+
+ -------------------------------------------------------------------------------
+
+
+Individual Parameters Estimation by Conditional Mode ---------------------------
+           min        Q1    median        Q3       max
+Cl :      8.64      10.7      13.9      17.2        19
+V1 :      21.8      21.8      21.8      21.8      21.8
+Q  :      1.01      17.1      39.3      67.2       187
+V2 :      5.76      10.5      15.8        31      49.7
+
+Elapsed time (seconds) :   0.054
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+LOG-LIKELIHOOD ESTIMATION ______________________________________________________
+                                                            (is)
+
+-2 x log-likelihood                             :         451.47
+Akaike Information Criteria               (AIC) :         473.47
+Corrected Bayesian Information Criteria  (BICc) :         493.80
+Bayesian Information Criteria             (BIC) :         481.26
+
+Elapsed time                          (seconds) :           5.09
+
+
+[Importance Sampling] Standard error        : 0.073
+                      Sampling distribution : T-distribution with 5 degrees of freedom
+
+ _______________________________________________________________________________
+

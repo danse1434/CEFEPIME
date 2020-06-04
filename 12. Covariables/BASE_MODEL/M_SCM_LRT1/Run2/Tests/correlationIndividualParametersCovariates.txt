@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Cl,ANTU,0.00245261,0.961255,Fisher

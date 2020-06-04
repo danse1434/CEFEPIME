@@ -1,0 +1,3 @@
+parameter,covariate,statistics,p-value,test
+Cl,logtCLCRMLMIN,1.416,0.180287,Pearson
+V1,logtPROGDL,-7.73969,3.20606e-6,Pearson

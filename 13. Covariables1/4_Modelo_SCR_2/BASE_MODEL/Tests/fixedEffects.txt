@@ -1,0 +1,2 @@
+parameter,statistics(sa),p-value(sa)
+beta_Cl_logtSCRMGDL,1.6332,0.102

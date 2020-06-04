@@ -1,0 +1,6 @@
+parameter,covariate,statistics,p-value,test
+Cl,logtRAL,-0.627596,0.541136,Pearson
+Q,logtAGEA,1.47022,0.165288,Pearson
+Q,logtALBGDL,2.82815,0.0142409,Pearson
+V2,SEXF,17.0594,0.00118404,Fisher
+V2,logtHCM,-1.51249,0.154335,Pearson

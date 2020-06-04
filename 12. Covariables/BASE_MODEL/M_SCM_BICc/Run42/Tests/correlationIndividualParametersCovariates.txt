@@ -1,0 +1,3 @@
+parameter,covariate,statistics,p-value,test
+Q,ANTU,0.740663,0.405042,Fisher
+Q,logtAGEA,251.889,<2.2e-16,Pearson

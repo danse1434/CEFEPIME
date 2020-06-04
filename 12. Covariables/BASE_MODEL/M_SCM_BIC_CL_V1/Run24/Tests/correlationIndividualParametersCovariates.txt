@@ -1,0 +1,3 @@
+parameter,covariate,statistics,p-value,test
+V1,LMP,0.149107,0.705635,Fisher
+V1,logtPROGDL,-7.74128,3.19894e-6,Pearson

@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Cl,logtRAL,-0.676403,0.510641,Pearson

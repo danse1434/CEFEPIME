@@ -1,0 +1,5 @@
+parameter,covariate,statistics,p-value,test
+Q,logtAGEA,12.6708,1.08543e-8,Pearson
+V2,ANTU,2.58953,0.131576,Fisher
+V2,SEXF,7.43776,0.017273,Fisher
+V2,logtHCM,-0.711376,0.48942,Pearson

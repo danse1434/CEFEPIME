@@ -1,0 +1,3 @@
+parameter,covariate,statistics,p-value,test
+V1,logtSCRMGDL,0.389751,0.703031,Pearson
+V2,SEXF,18.7415,0.000817936,Fisher

@@ -1,0 +1,17 @@
+eta,covariate,statistics,p-value,test
+eta_Cl,SCRMGDL,0.107073,0.916366,Pearson
+eta_Cl,WTKG,0.189417,0.852692,Pearson
+eta_Cl,logtWTKG,0.193932,0.849226,Pearson
+eta_Cl,tSCRMGDL,0.107073,0.916366,Pearson
+eta_V1,SCRMGDL,1.10945,0.287337,Pearson
+eta_V1,WTKG,0.263239,0.796493,Pearson
+eta_V1,logtWTKG,0.2414,0.813011,Pearson
+eta_V1,tSCRMGDL,1.10945,0.287337,Pearson
+eta_Q,SCRMGDL,0.515977,0.614534,Pearson
+eta_Q,WTKG,0.618981,0.546623,Pearson
+eta_Q,logtWTKG,0.653097,0.525077,Pearson
+eta_Q,tSCRMGDL,0.515977,0.614534,Pearson
+eta_V2,SCRMGDL,-0.519542,0.612115,Pearson
+eta_V2,WTKG,0.291578,0.77521,Pearson
+eta_V2,logtWTKG,0.184729,0.856292,Pearson
+eta_V2,tSCRMGDL,-0.519542,0.612115,Pearson

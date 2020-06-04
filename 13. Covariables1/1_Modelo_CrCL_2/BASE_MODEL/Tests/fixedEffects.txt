@@ -1,0 +1,2 @@
+parameter,statistics(sa),p-value(sa)
+beta_Cl_logtCLCRMLMIN,1.45244,0.146
