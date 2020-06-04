@@ -4,12 +4,13 @@
 .Ruserdata
 *.dat
 *.eps
+*.mlxtran
 *.tex
 *.xml
 *.svg
 **/98. Escrito detallado/*
 *.properties
-*.mlxtran
+
 *.pkx
 *.xlsx
 *.png
@@ -17,7 +18,7 @@
 *.for
 *.obj
 *.run
-*.log
+*.txt*.log
 *.syc
 00. Datos/Calibracion/Escrito/Informe_validacion.bbl
 00. Datos/Calibracion/Escrito/Informe_validacion.blg
