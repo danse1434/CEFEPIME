@@ -68,10 +68,7 @@ g2 <- ggplot(log_ls1, aes(x = lambda, y = stdError)) +
   geom_line(col='red1') + geom_point(col='red4') + 
   xlab(expression(lambda)) + ylab('Error Estándar')
 
-gt <- (g1 + g2) + 
-  plot_annotation(tag_levels = 'A')
-
-ggsave('figures/1_ML_grid.pdf', gt, 'pdf', width = 6, height = 3)
+ggsave('figures/1_ML_grid.pdf', g1 + g2, 'pdf', width = 6, height = 3)
 
 #-------------------------------------------------------------------------------#
 # Pruebas de normalidad ----------------------------------------------------------
