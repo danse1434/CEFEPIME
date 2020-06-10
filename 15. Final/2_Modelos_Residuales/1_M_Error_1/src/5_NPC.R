@@ -19,7 +19,7 @@ require(patchwork)
 # Introducción  -----------------------------------------------------------------
 #-------------------------------------------------------------------------------#
 # 
-project.file <- 'MODELO_FINAL/BASE_MODEL.mlxtran'
+project.file <- 'M_Error.mlxtran'
 
 # Remuestreo de pacientes iniciales
 
@@ -45,7 +45,7 @@ res2
 #   facet_wrap(.~id)
 
 # Leer archivo TAD con observaciones
-data_TAD <- read_csv("MODELO_FINAL/DATA/2_data_TAD.csv", na = '.')
+data_TAD <- read_csv("data/2_data_TAD.csv", na = '.')
 data_TAD_1 <- data_TAD %>% filter(EVID == 0)
 
 #-------------------------------------------------------------------------------#

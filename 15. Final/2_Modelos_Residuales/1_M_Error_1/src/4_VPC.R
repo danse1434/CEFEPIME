@@ -21,7 +21,7 @@ require(rlang)
 require(mlxR)
 
 #-------------------------------------------------------------------------------#
-auxdir <- file.path('MODELO_FINAL', 'BASE_MODEL')
+auxdir <- file.path('BASE_MODEL')
 
 #-------------------------------------------------------------------------------#
 # Apertura y modificación de archivo de datos con observaciones
@@ -37,7 +37,7 @@ auxdir <- file.path('MODELO_FINAL', 'BASE_MODEL')
 
 # Lectura de archivo de observaciones
 data_TAD <- read_delim(
-  file.path('MODELO_FINAL', 'DATA', '2_data_TAD.csv'),
+  "data/2_data_TAD.csv",
   ",", escape_double = FALSE, locale = locale(), 
   trim_ws = TRUE, na = ".")
 
@@ -47,7 +47,7 @@ data_OBS <- data_TAD %>%
   mutate(id = factor(id))
 
 data_TAD <- 
-  file.path('MODELO_FINAL', 'DATA', '2_data_TAD.csv') %>% 
+  "data/2_data_TAD.csv" %>% 
   mlxR::readDatamlx(datafile = ., 
                     header = c("id", "y", "mdv", "evid",	"amt", "rate", 
                                "addl", "ii", "ss", "time", 
@@ -74,7 +74,7 @@ data_TAD <-
 #  *simulx*. Elaborar una lista con 1000 tablas que contienen las simulaciones. 
 # Se demora 6 minutos aproxim.
 #................................................................................
-project.file <- 'MODELO_FINAL/BASE_MODEL.mlxtran'
+project.file <- 'M_Error.mlxtran'
 
 # Parámetros poblacionales
 param <-
