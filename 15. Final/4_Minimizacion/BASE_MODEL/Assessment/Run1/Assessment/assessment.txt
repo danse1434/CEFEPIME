@@ -1,0 +1,11 @@
+Parameters,Run_1
+Cl_pop,20.6229
+V1_pop,23.6372
+V2_pop,13.5243
+a,1.86106
+beta_Cl_tSCRMGDL,-0.414834
+omega_Cl,0.224545
+omega_Q,0.956203
+omega_V1,0.305031
+omega_V2,0.770065
+-2LL,507.848

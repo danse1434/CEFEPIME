@@ -1,0 +1,89 @@
+********************************************************************************
+*                          MODELO_FINAL.mlxtran                                *
+*                          June 15, 2020 at 12:54:00                           *
+*                          Monolix version : 5.1.1                             *
+********************************************************************************
+
+
+POPULATION PARAMETERS ESTIMATION _______________________________________________
+
+Fixed Effects ----------------------------     se_sa    rse(%)
+Cl_pop                         :      10.7       nan       nan
+beta_Cl_tSCRMGDL               :    -0.415       nan       nan
+V1_pop                         :      23.8      2.38        10
+Q_pop                          :      23.4                    
+V2_pop                         :      13.3      3.82      28.7
+
+Standard Deviation of the Random Effects -
+omega_Cl                       :     0.224     0.012      5.34
+omega_V1                       :     0.299    0.0886      29.6
+omega_Q                        :     0.946     0.341        36
+omega_V2                       :     0.795     0.242      30.4
+
+Error Model Parameters -------------------
+a                              :      1.86     0.211      11.4
+
+Elapsed time (seconds) :        0
+
+ _______________________________________________________________________________
+
+
+
+CORRELATION MATRIX OF THE ESTIMATES ____________________________________________
+
+
+Fisher by Stochastic Approximation ---------------------------------------------
+Correlation Matrix :
+          Cl_pop       nan
+beta_Cl_tSCRMGDL       nan       nan
+          V1_pop       nan       nan         1
+          V2_pop       nan       nan  -0.23936         1
+        omega_Cl       nan       nan  0.011694 -0.049911         1
+        omega_V1       nan       nan  0.078946 -0.057921-0.0008508         1
+         omega_Q       nan       nan  -0.27429   0.33477-0.0095763  -0.31114         1
+        omega_V2       nan       nan   0.18175  -0.31953  0.011192  -0.17257 -0.071558         1
+               a       nan       nan  0.035031  -0.04939 -0.093064 -0.081527 -0.037519  0.067143         1
+WARNING : Impossible to compute the eigen values of the correlation matrix.
+
+Elapsed time (seconds) :     1.8
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+INDIVIDUAL PARAMETERS ESTIMATION _______________________________________________
+
+
+Individual Parameters Estimation by Conditional Mode ---------------------------
+           min        Q1    median        Q3       max
+Cl :       8.6      10.4      13.5      16.5      18.2
+V1 :      14.7      19.9      21.9      28.5      46.2
+Q  :      5.05      17.5        32        41      78.8
+V2 :      5.71      9.82      12.3        19      45.9
+
+Elapsed time (seconds) :   0.023
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+LOG-LIKELIHOOD ESTIMATION ______________________________________________________
+                                                            (is)
+
+-2 x log-likelihood                             :        3428.08
+Akaike Information Criteria               (AIC) :        3446.08
+Corrected Bayesian Information Criteria  (BICc) :        3459.62
+Bayesian Information Criteria             (BIC) :        3452.46
+
+Elapsed time                          (seconds) :           1.58
+
+
+[Importance Sampling] Standard error        : 26.117
+                      Sampling distribution : T-distribution with 5 degrees of freedom
+
+ _______________________________________________________________________________
+

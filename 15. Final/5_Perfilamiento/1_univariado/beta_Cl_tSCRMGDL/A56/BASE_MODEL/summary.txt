@@ -1,0 +1,90 @@
+********************************************************************************
+*                          MODELO_FINAL.mlxtran                                *
+*                          June 15, 2020 at 12:50:58                           *
+*                          Monolix version : 5.1.1                             *
+********************************************************************************
+
+
+POPULATION PARAMETERS ESTIMATION _______________________________________________
+
+Fixed Effects ----------------------------     se_sa    rse(%)
+Cl_pop                         :      20.6      4.06      19.7
+beta_Cl_tSCRMGDL               :    -0.438     0.183      41.9
+V1_pop                         :      23.8      2.94      12.4
+Q_pop                          :      23.4                    
+V2_pop                         :      13.3      3.74      28.1
+
+Standard Deviation of the Random Effects -
+omega_Cl                       :     0.224    0.0434      19.4
+omega_V1                       :     0.299     0.127      42.6
+omega_Q                        :     0.946     0.404      42.8
+omega_V2                       :     0.795     0.226      28.4
+
+Error Model Parameters -------------------
+a                              :      1.86     0.196      10.5
+
+Elapsed time (seconds) :        0
+
+ _______________________________________________________________________________
+
+
+
+CORRELATION MATRIX OF THE ESTIMATES ____________________________________________
+
+
+Fisher by Stochastic Approximation ---------------------------------------------
+Correlation Matrix :
+          Cl_pop         1
+beta_Cl_tSCRMGDL  -0.95286         1
+          V1_pop-0.0012518  0.009185         1
+          V2_pop  -0.01185-0.0026751  -0.37717         1
+        omega_Cl  0.012118  -0.05608 -0.017865-0.0091934         1
+        omega_V1-0.0092625  0.014448   0.54685   -0.2957  -0.02681         1
+         omega_Q 0.0039461 -0.012275  -0.55022   0.44602  0.019021  -0.55164         1
+        omega_V2-0.0044865 0.0096509  0.096953  -0.15138 0.0072647  -0.10144 -0.079185         1
+               a0.00092041 0.0019436  0.077841  -0.11917  -0.02506  0.091893  -0.16585 -0.023823         1
+                               min       max   max/min
+Eigen values           :     0.046       2.4        53
+
+Elapsed time (seconds) :    0.49
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+INDIVIDUAL PARAMETERS ESTIMATION _______________________________________________
+
+
+Individual Parameters Estimation by Conditional Mode ---------------------------
+           min        Q1    median        Q3       max
+Cl :      8.68      10.6      14.5      17.1      18.9
+V1 :      14.7        20      21.5      28.4      45.9
+Q  :      8.23      21.4      35.3      39.7      74.3
+V2 :       5.2       8.2      11.3      17.9        44
+
+Elapsed time (seconds) :   0.031
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+LOG-LIKELIHOOD ESTIMATION ______________________________________________________
+                                                            (is)
+
+-2 x log-likelihood                             :         917.24
+Akaike Information Criteria               (AIC) :         935.24
+Corrected Bayesian Information Criteria  (BICc) :         948.78
+Bayesian Information Criteria             (BIC) :         941.62
+
+Elapsed time                          (seconds) :           1.60
+
+
+[Importance Sampling] Standard error        : 6.763
+                      Sampling distribution : T-distribution with 5 degrees of freedom
+
+ _______________________________________________________________________________
+

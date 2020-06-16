@@ -1,0 +1,29 @@
+********************************************************************************
+*                   M_Error_bootstrap_bootstrap_974.mlxtran                    *
+*                   June 09, 2020 at 19:02:31                                  *
+*                   Monolix version : 5.1.0                                    *
+********************************************************************************
+
+
+POPULATION PARAMETERS ESTIMATION _______________________________________________
+
+Fixed Effects ----------------------------
+Cl_pop                         :      17.6
+beta_Cl_tSCRMGDL               :    -0.268
+V1_pop                         :      23.8
+Q_pop                          :      23.4
+V2_pop                         :      9.71
+
+Standard Deviation of the Random Effects -
+omega_Cl                       :     0.232
+omega_V1                       :      0.22
+omega_Q                        :      0.76
+omega_V2                       :     0.737
+
+Error Model Parameters -------------------
+a                              :      2.04
+
+Elapsed time (seconds) :       13
+
+ _______________________________________________________________________________
+
