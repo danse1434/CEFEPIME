@@ -1,0 +1,12 @@
+parameter,value
+Cl_pop,6.33
+beta_Cl_log_tCLCR,1
+beta_Cl_log_tSC,1
+V1_pop,14.8
+Q_pop,6.87
+V2_pop,10.9
+omega_Cl,1.05
+omega_V1,3.8
+omega_Q,2.77
+omega_V2,4.6
+a,1.5
