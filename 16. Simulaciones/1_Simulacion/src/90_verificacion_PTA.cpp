@@ -13,12 +13,13 @@ using namespace Rcpp;
 //' @param MIC vector con valores de MIC a probar
 //' @param crit: criterio con el cual se declara que se ha alcanzado el objetivo 
 //' farmacoterapéutico
+//' @param treshold: umbral de indicador PK-PD, p.ej. 4 veces MIC
 //' 
 //' @export
 //' @return
 //' 
 // [[Rcpp::export()]]
-List pta_verificador(arma::mat PRED, arma::vec MIC, double crit){
+List pta_verificador(arma::mat PRED, arma::vec MIC, double crit, double treshold){
   // Tamaño del vector de MIC
   arma::uword n_mic = MIC.size();
   // Tamaño de la matriz de predicciones
@@ -51,16 +52,17 @@ List pta_verificador(arma::mat PRED, arma::vec MIC, double crit){
       for(arma::uword i = 0; i < n_pred_1; i++)
         {
         // Llena matriz con 1 si es mayor que MIC //
-        if(PRED.at(i,j) >= MIC.at(k)){
+        if(PRED.at(i,j) >= treshold * MIC.at(k)){
           M_ind.at(i,j) = 1;
         } 
         } //END
       // Prop. instancias con valor a cero por individuo
       /* La suma o acumulación no sirven bien si la columna es entera, 
          se crea una variable interna con la suma. */
-      M_tot = arma::accu( M_ind.col(j) );
+      M_tot = arma::sum(  M_ind.col(j) );
       
-      TmasMIC.at(j) = M_tot/n_pred_1;
+      TmasMIC.at(j) = ((float) M_tot)/((float) n_pred_1);
+      // TmasMIC.at(j) = ((float) M_tot);
       
       M_ind.zeros();
       
@@ -127,7 +129,6 @@ List UDF_exposure(DataFrame data){
   arma::mat A = as<arma::mat>(internal::convert_using_rfunction(data, "as.matrix")); 
   
   arma::uword A_rows = A.n_rows; // No. observaciones
-  arma::uword A_cols = A.n_cols; // No. individuos
   
   // Vector de tiempos
   arma::vec t_vec = A.col(0);
