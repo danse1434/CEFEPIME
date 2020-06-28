@@ -1,0 +1,12 @@
+parameter,value
+V_pop,0.263
+beta_V_log_tWT,1
+k_pop,0.094
+beta_k_CLCRMLMIN,0.006
+k12_pop,1.337
+k21_pop,1.046
+omega_V,1
+omega_k,1
+omega_k12,1
+omega_k21,1
+a,1.9

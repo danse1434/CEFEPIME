@@ -1,0 +1,5 @@
+eta,covariate,statistics,p-value,test
+eta_V,WTKG,-0.222478,0.827399,Pearson
+eta_V,log_WTKG,-0.267655,0.793165,Pearson
+eta_Cl,WTKG,0.978044,0.345903,Pearson
+eta_Cl,log_WTKG,0.919572,0.374545,Pearson

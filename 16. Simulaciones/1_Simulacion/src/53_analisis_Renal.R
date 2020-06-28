@@ -28,7 +28,7 @@ sourceCpp('src/91_percentiles_PTA.cpp')
 #-------------------------------------------------------------------------------#
 # Lectura de resultados de simulación 
 PTA_100fTmasMIC <- vector('list', 6L)
-PTA_50fTmas4MIC <- vector('list', 6L)
+PTA_60fTmasMIC <- vector('list', 6L)
 
 SCR_VEC <- c('07', '10', '13', '16', '19', '40')
 
@@ -36,8 +36,8 @@ for (i in 1:6) {
   PTA_100fTmasMIC[[i]] <-
     readRDS(paste0('results/L0', SCR_VEC[[i]], '/RES_PTA_100tmasMIC.rds'))
   
-  PTA_50fTmas4MIC[[i]] <-
-    readRDS(paste0('results/L0', SCR_VEC[[i]], '/RES_PTA.rds'))
+  PTA_60fTmasMIC[[i]] <-
+    readRDS(paste0('results/L0', SCR_VEC[[i]], '/RES_PTA_60tmasMIC.rds'))
 
 }
 
@@ -45,11 +45,11 @@ for (i in 1:6) {
 PTA_100fTmasMIC <- map_dfr(.x = PTA_100fTmasMIC, .f = ~.x) %>% 
   add_column(Indicador = '100%fT>MIC')
 
-PTA_50fTmas4MIC <- map_dfr(.x = PTA_50fTmas4MIC, .f = ~.x) %>% 
-  add_column(Indicador = '50%fT>4MIC')
+PTA_60fTmasMIC <- map_dfr(.x = PTA_60fTmasMIC, .f = ~.x) %>% 
+  add_column(Indicador = '60%fT>MIC')
 
 RESPTA_1 <-
-  bind_rows(PTA_100fTmasMIC, PTA_50fTmas4MIC)
+  bind_rows(PTA_100fTmasMIC, PTA_60fTmasMIC)
 
 # Etiquetas para los grupos de simulación
 labels <- read_csv('data/20_etiquetas_SIM.csv')
@@ -118,7 +118,7 @@ G_compar_renal_PTA <- RESPTA_2_pta %>%
         legend.title = element_blank()) 
 
 ggsave('58_comparativo_func_renal_PTA_CEP2gq8h.pdf', G_compar_renal_PTA, 'pdf', 
-       'figures', 1, 7, 5)
+       'figures', 1, 7, 4)
 
 #-------------------------------------------------------------------------------#
 # > Indicador PK-PD ------------------------------------------------
@@ -184,12 +184,22 @@ fun_param <- function(data, param, crit1 = 0.80, crit2 = 0.90) {
 #-------------------------------------------------------------------------------#
 # > Simul. 100%fT>MIC-----------------------------------------------------
 #-------------------------------------------------------------------------------#
-FIM_RESPTA_2 <- RESPTA_2_pta %>% 
-  select(ID, group, MIC, PTA, Indicador) %>% 
-  filter((MIC %in% MIC_vec) & (MIC > 0.01)) %>% 
-  pivot_wider(id_cols = c('Indicador', 'ID','group'), 
+FIM_RESPTA_2 <- RESPTA_2 %>% 
+  mutate(etiqueta = case_when(
+    group == '1' ~ '2g q8h tinf 30min',
+    group == '2' ~ '2g q8h tinf 2h',
+    group == '3' ~ '2g q8h tinf 4h',
+    group == '4' ~ '6g q24h tinf 24h',
+    TRUE ~ NA_character_
+  )) %>% 
+  unnest(PTA) %>% 
+  filter(MIC %in% MIC_vec,
+         MIC >= 0.0625 & MIC <= 32) %>% 
+  select(Indicador, etiqueta, ID, MIC, PTA) %>% 
+  pivot_wider(id_cols = c('Indicador', 'etiqueta', 'ID'), 
               names_from = MIC, 
               values_from = PTA) %>% 
+  group_by(Indicador, etiqueta, .drop = TRUE) %>% 
   gt() %>% 
   tab_options(
     column_labels.font.size = "smaller",
@@ -198,17 +208,17 @@ FIM_RESPTA_2 <- RESPTA_2_pta %>%
   ) %>% 
   tab_header(title = md('**Probabilidad de alcanzar el objetivo PK-PD (PTA)**'),
              subtitle = md('**Régimen**: Cefepime 2000mg q8h en bolo itermitente (tinf. 30 min)')) %>%
-  tab_spanner(label = md('**MIC (mg/L)**'), 4:20) %>%
+  tab_spanner(label = md('**MIC (mg/L)**'), 4:13) %>%
   cols_label(ID=md('S<sub>CR</sub> (mg/dL)')) %>% 
-  fmt_number(4:20, decimals = 3) %>%
-  fun_param(`0.015625`) %>% 
-  fun_param(`0.03125`) %>% fun_param(`0.0625`) %>%
+  fmt_number(4:13, decimals = 3) %>%
+  fun_param(`0.0625`) %>%
   fun_param(`0.125`) %>% fun_param(`0.25`) %>% 
   fun_param(`0.5`) %>%
   fun_param(`1`) %>% fun_param(`2`) %>% 
   fun_param(`4`) %>%
-  fun_param(`8`) %>% fun_param(`16`) %>%
-  cols_hide(vars('group')) %>% 
+  fun_param(`8`) %>% 
+  fun_param(`16`) %>%
+  fun_param(`32`) %>%
   text_transform(locations = cells_body(vars(ID)),
                  fn = function(x) str_replace(x, "SCR", "")) 
 

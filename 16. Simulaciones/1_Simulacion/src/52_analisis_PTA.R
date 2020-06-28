@@ -45,9 +45,7 @@ perc_vec = seq(0.1, 0.9, 0.1)
 # Vector con puntos
 MIC_vec = c(1 * (2 ^ (seq(-10, 10, 1))))
 
-#-------------------------------------------------------------------------------#
-# > fT > MIC -----------------------------------------------------
-#-------------------------------------------------------------------------------#
+# > fT > MIC ----
 # Adición de etiquetas de identificación de grupos de simulación
 #................................................................................
 # 1 Adicionar columna para la identificación de lotes 'L'
@@ -67,8 +65,7 @@ RESPTA_1 <- RESPTA_1 %>%
 
 
 #-------------------------------------------------------------------------------#
-# >> Percentiles Indice PK-PD por MIC  ------------------------------------------
-#-------------------------------------------------------------------------------#
+# >> Percentiles Indice PK-PD por MIC  ----
 # 1 Seleccionar columnas de interés
 # 2 Adicionar columna-lista con valores de percentil
 # 3 Determinar valores de percentil por MIC
@@ -80,9 +77,8 @@ REPSTA_2 <- RESPTA_1 %>%
   mutate(percs = pmap(.l = list(data = fTmasMIC, prob_vec = perc_vec),
                       .f = perc_fT))
 
-#-------------------------------------------------------------------------------#
+
 # >> Gráfico de datos fT > MIC ------------------------------------------------
-#-------------------------------------------------------------------------------#
 
 G1 <- REPSTA_2 %>% 
   select(-fTmasMIC, -perc_vec) %>% 
@@ -107,18 +103,17 @@ G1 <- REPSTA_2 %>%
   theme(legend.position = 'bottom', 
         legend.title = element_blank())  
 
-ggsave('52_análisis_100fTmasMIC_1.pdf', G1, 'pdf', 'figures', 1, 6, 7)
+ggsave('52_analisis_100fTmasMIC_1.pdf', G1, 'pdf', 'figures', 1, 6, 7)
 
-#-------------------------------------------------------------------------------#
-# > PTA      ------------------------------------------------------
-#-------------------------------------------------------------------------------#
+
+# > PTA ------------------------------------------------------
 
 RESPTA_1_pta <- RESPTA_1 %>% 
   select(L, group, PTA, dosis, frec, dur, estado, dd, etiqueta1, etiqueta2) %>% 
   unnest(PTA)
-#-------------------------------------------------------------------------------#
+
+
 # >> Gráfico de datos PTA ----------------------------------------------------
-#-------------------------------------------------------------------------------#
 G2 <- RESPTA_1_pta %>% 
   ggplot(aes(x = MIC, y = PTA, col = etiqueta2)) + 
   geom_line() + 
@@ -128,14 +123,109 @@ G2 <- RESPTA_1_pta %>%
                      labels = trans_format("log2", math_format(2^.x))) + 
   theme_bw() +
   xlab('MIC (mg/L)') + ylab('PTA') + 
-  geom_hline(yintercept = 0.9) +
+  geom_hline(yintercept = 0.9, lty = 'dashed') +
   facet_grid(dd ~ estado, scales = 'free_x',
              labeller = labeller(dd = label_both, .cols = toupper))+ 
   theme(legend.position = 'bottom', 
         legend.title = element_blank()) 
 
 # Almacenamiento
-ggsave('53_análisis_100fTmasMIC_PTA.pdf', G2, 'pdf', 'figures', 1, 6, 7)
+ggsave('53_analisis_100fTmasMIC_PTA.pdf', G2, 'pdf', 'figures', 1, 6, 7)
+
+#-------------------------------------------------------------------------------#
+# Simulación 60%fT>MIC-----------------------------------------------------
+#-------------------------------------------------------------------------------#
+# Lectura de resultados de simulación 
+RESPTA_60a <- vector('list', 6L)
+
+for (i in 1:6) {
+  RESPTA_60a[[i]] <-
+    readRDS(paste0('results/L00', i, '/RES_PTA_60tmasMIC.rds'))
+}
+
+# Crear tabla unificada
+RESPTA_60b <- map_dfr(.x = RESPTA_60a, .f = ~.x)
+
+# > fT > MIC ----
+# Adición de etiquetas de identificación de grupos de simulación
+#................................................................................
+# 1 Adicionar columna para la identificación de lotes 'L'
+# 2 Desagrupar data.frame
+# 3 Cambiar la columna 'group' a número
+# 4 Unir la tabla de etiquetas de identificación "labels"
+# 5 Eliminar el indicativo de INI o SS en etiqueta
+#................................................................................
+
+RESPTA_60b <- RESPTA_60b %>% 
+  add_column(L = rep(x=paste0('L00', seq(1:6)), each=4), .before = 'group') %>% 
+  ungroup() %>% 
+  mutate(group = as.double(group)) %>% 
+  left_join(labels, by = c('L', 'group')) %>% 
+  mutate(etiqueta1 = str_replace(etiqueta, '\\sINI|\\sSS', ''),
+         etiqueta2 = glue::glue('q{frec}h, tinf {dur}h') ) 
+
+#-------------------------------------------------------------------------------#
+# >> Percentiles Indice PK-PD por MIC  ----
+# 1 Seleccionar columnas de interés
+# 2 Adicionar columna-lista con valores de percentil
+# 3 Determinar valores de percentil por MIC
+#................................................................................
+
+RESPTA_60c <- RESPTA_60b %>%
+  select(L, group, fTmasMIC, dosis, frec, dur, estado, dd, etiqueta1, etiqueta2) %>%
+  add_column(perc_vec = list(perc_vec)) %>% 
+  mutate(percs = pmap(
+    .l = list(data = fTmasMIC, prob_vec = perc_vec),
+    .f = perc_fT
+  ))
+
+
+# >> Gráfico de datos fT > MIC ------------------------------------------------
+
+G_60_1 <- RESPTA_60c %>% 
+  select(-fTmasMIC, -perc_vec) %>% 
+  unnest(percs) %>% unnest(percs) %>% 
+  ggplot(aes(x = MIC, y = p.5, group = etiqueta2)) +
+  geom_line(aes(col = etiqueta2, lty = etiqueta2)) + 
+  geom_ribbon(aes(ymin = p.1, ymax = p.9, col = etiqueta2, 
+                  fill = etiqueta2), alpha = 0.2) +
+  theme_bw() + 
+  scale_x_continuous(trans = 'log2', 
+                     breaks = c(1,2,4,8,16,32,64)) + 
+  coord_cartesian(xlim = c(0.25, 64)) +
+  facet_grid(dd ~ estado, scales = 'free_x', 
+             labeller = labeller(dd = label_both, .cols = toupper)) + 
+  xlab('MIC (mg/L)') + ylab('fT > MIC') + 
+  theme(legend.position = 'bottom', 
+        legend.title = element_blank())  
+
+ggsave('65_analisis_60fTmasMIC_1.pdf', G_60_1, 'pdf', 'figures', 1, 6, 7)
+
+# > PTA ------------------------------------------------------
+
+RESPTA_60b_pta <- RESPTA_60b %>% 
+  select(L, group, PTA, dosis, frec, dur, estado, dd, etiqueta1, etiqueta2) %>% 
+  unnest(PTA)
+
+
+# >> Gráfico de datos PTA ----------------------------------------------------
+G_60_2 <- RESPTA_60b_pta %>% 
+  ggplot(aes(x = MIC, y = PTA, col = etiqueta2)) + 
+  geom_line() + 
+  geom_point(data = filter(RESPTA_60b_pta, MIC %in% MIC_vec)) +
+  scale_x_continuous(trans = log2_trans(), 
+                     breaks = trans_breaks("log2", function(x) 2^x),
+                     labels = trans_format("log2", math_format(2^.x))) + 
+  theme_bw() +
+  xlab('MIC (mg/L)') + ylab('PTA') + 
+  geom_hline(yintercept = 0.9, lty = 'dashed') +
+  facet_grid(dd ~ estado, scales = 'free_x',
+             labeller = labeller(dd = label_both, .cols = toupper))+ 
+  theme(legend.position = 'bottom', 
+        legend.title = element_blank()) 
+
+# Almacenamiento
+ggsave('66_analisis_60fTmasMIC_PTA.pdf', G_60_2, 'pdf', 'figures', 1, 6, 7)
 
 #-------------------------------------------------------------------------------#
 # Simulación 50%fT> 4MIC ---------------------------------------------------------
@@ -186,16 +276,14 @@ G5b <- REPSTA_5b %>%
 # Almacenamiento
 ggsave('54_análisis_50fTmas4MIC_1.pdf', G5b, 'pdf', 'figures', 1, 6, 7)
 
-#-------------------------------------------------------------------------------#
+
 # > PTA      ------------------------------------------------------
-#-------------------------------------------------------------------------------#
 RESPTA_5_pta <- RESPTA_5 %>% 
   select(L, group, PTA, dosis, frec, dur, estado, dd, etiqueta1, etiqueta2) %>% 
   unnest(PTA)
 
-#-------------------------------------------------------------------------------#
 # >> Gráfico de datos PTA ----------------------------------------------------
-#-------------------------------------------------------------------------------#
+
 G5c <- RESPTA_5_pta %>% 
   ggplot(aes(x = MIC, y = PTA, col = etiqueta2)) + 
   geom_line() + 
@@ -205,7 +293,7 @@ G5c <- RESPTA_5_pta %>%
                      labels = trans_format("log2", math_format(2^.x))) + 
   theme_bw() +
   xlab('MIC (mg/L)') + ylab('PTA') + 
-  geom_hline(yintercept = 0.9) +
+  geom_hline(yintercept = 0.9, lty = 'dashed') +
   facet_grid(dd ~ estado, scales = 'free_x',
              labeller = labeller(dd = label_both, .cols = toupper))+ 
   theme(legend.position = 'bottom', 
@@ -247,9 +335,9 @@ fun_param <- function(data, param, crit1 = 0.80, crit2 = 0.90) {
   return(z)
 }
 
-#-------------------------------------------------------------------------------#
+
 # > Simul. 100%fT>MIC-----------------------------------------------------
-#-------------------------------------------------------------------------------#
+
 FIM_RESPTA_1 <- filter(RESPTA_1_pta, 
        MIC %in% MIC_vec & MIC > 0.01) %>% 
   pivot_wider(id_cols = c('L', 'group','dd', 'dosis', 'etiqueta2', 'estado'), 
@@ -284,9 +372,44 @@ FIM_RESPTA_1 <- filter(RESPTA_1_pta,
   fun_param(`8`) %>% fun_param(`16`) %>%
   cols_hide(vars('L'))
 
-#-------------------------------------------------------------------------------#
+# > Simul. 60%fT>MIC-----------------------------------------------------
+
+FIM_RESPTA_60 <- filter(RESPTA_60b_pta, 
+                       MIC %in% MIC_vec & MIC > 0.01) %>% 
+  pivot_wider(id_cols = c('L', 'group','dd', 'dosis', 'etiqueta2', 'estado'), 
+              names_from = MIC, 
+              values_from = PTA) %>%
+  arrange(dd, dosis, etiqueta2, estado) %>% 
+  gt() %>% 
+  tab_header(title = md('**Probabilidad de alcanzar el objetivo PK-PD (PTA)**'),
+             subtitle = md('**Objetivo**: 60% <i>f</i>T <sub>>MIC</sub>; **Creatinina Sérica**: 0.54 mg/dL')) %>% 
+  tab_spanner(label = md('**MIC (mg/L)**'), 7:23) %>%
+  cols_merge(1:2) %>% 
+  cols_label(
+    dd        = 'DD (md)',
+    dosis     = 'Dosis (mg)',
+    etiqueta2 = 'Dosificación',
+    estado    = 'Estado'
+  ) %>% 
+  fmt_number(7:23, decimals = 3) %>% 
+  text_transform(locations = cells_body(vars(estado)),
+                 fn = toupper) %>% 
+  tab_options(
+    column_labels.font.size = "smaller",
+    table.font.size = "smaller",
+    data_row.padding = px(3)
+  ) %>% 
+  fun_param(`0.015625`) %>% 
+  fun_param(`0.03125`) %>% fun_param(`0.0625`) %>%
+  fun_param(`0.125`) %>% fun_param(`0.25`) %>% 
+  fun_param(`0.5`) %>%
+  fun_param(`1`) %>% fun_param(`2`) %>% 
+  fun_param(`4`) %>%
+  fun_param(`8`) %>% fun_param(`16`) %>%
+  cols_hide(vars('L'))
+
 # > Simul. 50%fT>4MIC-----------------------------------------------------
-#-------------------------------------------------------------------------------#
+
 FIM_RESPTA_2 <- filter(RESPTA_5_pta, 
        MIC %in% MIC_vec & MIC > 0.01) %>% 
   pivot_wider(id_cols = c('L', 'group','dd', 'dosis', 'etiqueta2', 'estado'), 
@@ -321,9 +444,11 @@ FIM_RESPTA_2 <- filter(RESPTA_5_pta,
   fun_param(`8`) %>% fun_param(`16`) %>%
   cols_hide(vars('L'))
 
-
 FIM_RESPTA_1 %>% 
-  gtsave(filename = '56_PTA_1.html', path = file.path(getwd(), 'figures'))
+  gtsave(filename = '56_Tabla_PTA_100%fTMIC.html', path = file.path(getwd(), 'figures'))
 
 FIM_RESPTA_2 %>% 
-  gtsave(filename = '57_PTA_2.html', path = file.path(getwd(), 'figures'))
+  gtsave(filename = '57_Tabla_PTA_50%fT4MIC.html', path = file.path(getwd(), 'figures'))
+
+FIM_RESPTA_60 %>% 
+  gtsave(filename = '67_Tabla_PTA_60%fTMIC.html', path = file.path(getwd(), 'figures'))

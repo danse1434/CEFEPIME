@@ -1,0 +1,2 @@
+parameter,covariate,statistics,p-value,test
+Cl,log_tCLCRLH,1.31436,0.211443,Pearson
