@@ -104,14 +104,14 @@ G_compar_renal_PTA <- RESPTA_2_pta %>%
   geom_line() +
   theme_bw() +
   geom_hline(yintercept = 0.9, lty = 'dashed') +
-  geom_point(data = filter(RESPTA_2_pta, MIC %in% MIC_vec)) +
+  geom_point(data = filter(RESPTA_2_pta, MIC %in% MIC_vec), aes(shape = ID)) +
   scale_x_continuous(
     trans = log2_trans(),
-    breaks = trans_breaks("log2", function(x)
-      2 ^ x),
-    labels = trans_format("log2", math_format(2 ^ .x))
-  ) +
-  coord_cartesian(xlim = c(2 ^ -10, 64)) +
+    breaks = MIC_vec,
+    labels = function(x) 
+      {format(x, drop0trailing = T, digits = 4, nsmall = 0, trim = T, 
+              scientific = F)}) +
+  coord_cartesian(xlim = c(2^-3, 2^6)) +
   facet_grid( ~ Indicador) +
   xlab('MIC (mg/L)') + ylab('PTA') +
   theme(legend.position = 'bottom',

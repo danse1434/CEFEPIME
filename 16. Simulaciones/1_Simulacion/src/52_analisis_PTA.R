@@ -117,17 +117,22 @@ RESPTA_1_pta <- RESPTA_1 %>%
 G2 <- RESPTA_1_pta %>% 
   ggplot(aes(x = MIC, y = PTA, col = etiqueta2)) + 
   geom_line() + 
-  geom_point(data = filter(RESPTA_1_pta, MIC %in% MIC_vec)) +
+  geom_point(data = filter(RESPTA_1_pta, MIC %in% MIC_vec), 
+             aes(shape = etiqueta2)) +
   scale_x_continuous(trans = log2_trans(), 
-                     breaks = trans_breaks("log2", function(x) 2^x),
-                     labels = trans_format("log2", math_format(2^.x))) + 
+                     breaks = MIC_vec,
+                     guide = guide_axis(n.dodge = 2),
+         labels = function(x) 
+           {format(x, drop0trailing = T, digits = 4, nsmall = 0, trim = T, 
+                             scientific = F)}) + 
   theme_bw() +
+  coord_cartesian(xlim = c(2^-3, 2^6)) +
   xlab('MIC (mg/L)') + ylab('PTA') + 
   geom_hline(yintercept = 0.9, lty = 'dashed') +
   facet_grid(dd ~ estado, scales = 'free_x',
              labeller = labeller(dd = label_both, .cols = toupper))+ 
   theme(legend.position = 'bottom', 
-        legend.title = element_blank()) 
+        legend.title = element_blank())
 
 # Almacenamiento
 ggsave('53_analisis_100fTmasMIC_PTA.pdf', G2, 'pdf', 'figures', 1, 6, 7)
@@ -212,17 +217,23 @@ RESPTA_60b_pta <- RESPTA_60b %>%
 G_60_2 <- RESPTA_60b_pta %>% 
   ggplot(aes(x = MIC, y = PTA, col = etiqueta2)) + 
   geom_line() + 
-  geom_point(data = filter(RESPTA_60b_pta, MIC %in% MIC_vec)) +
+  geom_point(data = filter(RESPTA_60b_pta, MIC %in% MIC_vec), 
+             aes(shape = etiqueta2)) +
   scale_x_continuous(trans = log2_trans(), 
-                     breaks = trans_breaks("log2", function(x) 2^x),
-                     labels = trans_format("log2", math_format(2^.x))) + 
+                     breaks = MIC_vec,
+               guide = guide_axis(n.dodge = 2),
+               labels = function(x) 
+         {format(x, drop0trailing = T, digits = 4, nsmall = 0, trim = T, 
+                             scientific = F)}) + 
   theme_bw() +
+  coord_cartesian(xlim = c(2^-3, 2^6)) +
   xlab('MIC (mg/L)') + ylab('PTA') + 
   geom_hline(yintercept = 0.9, lty = 'dashed') +
   facet_grid(dd ~ estado, scales = 'free_x',
              labeller = labeller(dd = label_both, .cols = toupper))+ 
   theme(legend.position = 'bottom', 
-        legend.title = element_blank()) 
+        legend.title = element_blank(), 
+        panel.grid.minor = element_blank()) 
 
 # Almacenamiento
 ggsave('66_analisis_60fTmasMIC_PTA.pdf', G_60_2, 'pdf', 'figures', 1, 6, 7)
