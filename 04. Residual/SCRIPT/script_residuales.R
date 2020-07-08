@@ -1,7 +1,7 @@
 ##------------------------------------------------------------------------#
-## Nombre del Script: Análisis de distribución de errores residuales ---
+## Nombre del Script: An?lisis de distribuci?n de errores residuales ---
 ##  
-## Proposito del Script: Análisis de sesgo con métodos de censura de datos
+## Proposito del Script: An?lisis de sesgo con m?todos de censura de datos
 ##  
 ## Autor: Daniel S. Parra Gonzalez 
 ## Fecha de creacion:  06-feb-2020
@@ -17,30 +17,30 @@ require(grid)
 require(gridExtra)
 require(readxl)
 ##########################################################################-
-# Selección de directorio de trabajo
+# Selecci?n de directorio de trabajo
 setwd(file.path('F:', 'Documentos', '(Proyecto)_Estudio_PKPD', 'CEFEPIME', 
                 '04. Residual'))
 
-# Selección de tema
+# Selecci?n de tema
 theme_set(theme_classic() +
             theme(panel.border = element_rect(fill = NA, colour = 'black')))
 
 ##########################################################################-
-# Gráfico de residuales vs TAD --------------------------------------------
+# Gr?fico de residuales vs TAD --------------------------------------------
 ##########################################################################-
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1 Apertura de archivo de datos con los datos originales, y que tiene 
-##  delimitador ";", este fue usado para realizar el modelamiento en sí mismo
-##  2 Crear un archivo *last_dose* que contiene la última hora de adminis-
-##  tración del antibiótico en el archivo *data* para cada individuo. 
+##  delimitador ";", este fue usado para realizar el modelamiento en s? mismo
+##  2 Crear un archivo *last_dose* que contiene la ?ltima hora de adminis-
+##  traci?n del antibi?tico en el archivo *data* para cada individuo. 
 ##    2a Agrupar por ID
-##    2b Filtrar los datos con EVID igual a 1 (sólo los eventos de 
-##    administración)
-##    2c Seleccionar los últimos en cada grupo (los datos ya están ordenados 
+##    2b Filtrar los datos con EVID igual a 1 (s?lo los eventos de 
+##    administraci?n)
+##    2c Seleccionar los ?ltimos en cada grupo (los datos ya est?n ordenados 
 ##    de menor a mayor)
-##    2d Seleccionar sólo las columnas ID y TIME
+##    2d Seleccionar s?lo las columnas ID y TIME
 ##  3 Modificar el archivo de residuales *y_1_residuals* al unir los datos 
-##  de últimnas observaciones calculadas.
+##  de ?ltimnas observaciones calculadas.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 data <- read_delim("Modelo_1/interv_censored.csv",
@@ -75,7 +75,7 @@ res_5 <- read_csv(file.path('Modelo_5', 'RES_M1', 'ChartsData',
 res_6 <- read_csv(file.path('Modelo_6', 'RES_M1', 'ChartsData', 
                             'ScatterPlotOfTheResiduals','y_1_residuals.txt'))
 
-res_7 <- read_csv(file.path('Modelo_7', 'RES_M7', 'ChartsData', 
+res_7 <- read_csv(file.path('Modelo_7', 'RES_M1', 'ChartsData', 
                             'ScatterPlotOfTheResiduals','y_1_residuals.txt'))
 
 
@@ -100,7 +100,7 @@ res_7 <- TAD_add(res_7)
 
 RES_C <- function(data, x, y, xlab, ylab) {
   ##########################################################################-
-  # Volver las variables x y y en expresiones para evaluación tardía
+  # Volver las variables x y y en expresiones para evaluaci?n tard?a
   x <- rlang::ensym(x)
   y <- rlang::ensym(y)
   
@@ -108,8 +108,8 @@ RES_C <- function(data, x, y, xlab, ylab) {
   ##  Calculo de percentiles empiricos
   ##  1 Tomar la variable de datos a explorar.
   ##  2 Crear una variable que tome 6 grupos a partir de los datos ordenados 
-  ##  con la función dplyr::ntile().
-  ##  3 Agrupar por la variable recién creado.
+  ##  con la funci?n dplyr::ntile().
+  ##  3 Agrupar por la variable reci?n creado.
   ##  4 Resumir por la media de TAD, y los percentiles P5%, P50%, y P95% de 
   ##  los datos de residuales.
   ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -121,7 +121,7 @@ RES_C <- function(data, x, y, xlab, ylab) {
               LI = quantile(x = !!y, probs = 0.05), 
               LS = quantile(x = !!y, probs = 0.95))
   ##########################################################################-
-  # Crear el gráfico de residuales con las especificaciones mostradas
+  # Crear el gr?fico de residuales con las especificaciones mostradas
   data %>% 
     ggplot(mapping = aes(x = !!x, y = !!y)) +
     geom_hline(yintercept = 0) +
@@ -194,7 +194,7 @@ gridExtra::grid.arrange(G_RES_C_NPDE[[1]], G_RES_C_NPDE[[2]], G_RES_C_NPDE[[3]],
 
 RES_PRE <- function(data, x, y, xlab, ylab) {
   ##########################################################################-
-  # Volver las variables x y y en expresiones para evaluación tardía
+  # Volver las variables x y y en expresiones para evaluaci?n tard?a
   x <- rlang::ensym(x)
   y <- rlang::ensym(y)
   
@@ -202,8 +202,8 @@ RES_PRE <- function(data, x, y, xlab, ylab) {
   ##  Calculo de percentiles empiricos
   ##  1 Tomar la variable de datos a explorar.
   ##  2 Crear una variable que tome 6 grupos a partir de los datos ordenados 
-  ##  con la función dplyr::ntile().
-  ##  3 Agrupar por la variable recién creado.
+  ##  con la funci?n dplyr::ntile().
+  ##  3 Agrupar por la variable reci?n creado.
   ##  4 Resumir por la media de TAD, y los percentiles P5%, P50%, y P95% de 
   ##  los datos de residuales.
   ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -215,7 +215,7 @@ RES_PRE <- function(data, x, y, xlab, ylab) {
               LI = quantile(x = !!y, probs = 0.05), 
               LS = quantile(x = !!y, probs = 0.95))
   ##########################################################################-
-  # Crear el gráfico de residuales con las especificaciones mostradas
+  # Crear el gr?fico de residuales con las especificaciones mostradas
   data %>% 
     ggplot(mapping = aes(x = !!x, y = !!y)) +
     geom_hline(yintercept = 0) +
@@ -288,21 +288,21 @@ pdf(file = './SCRIPT/NPDE_C.pdf', width = 6, height = 7);{
 ##########################################################################-
 # Pruebas de normalidad en los residuales ---------------------------------
 ##########################################################################-
-# A continuación, se realizan pruebas de normalidad univariadas para los 
+# A continuaci?n, se realizan pruebas de normalidad univariadas para los 
 # residuales en cada uno de los modelos.
 
 ##########################################################################-
-# Función que aplica una batería de pruebas de normalidad a los datos
+# Funci?n que aplica una bater?a de pruebas de normalidad a los datos
 ## *data* ingrese el objeto de datos a analizar.
-## *vector* ingrese la posición de las columnas donde se encuentran los 
-## residuales de interés.
+## *vector* ingrese la posici?n de las columnas donde se encuentran los 
+## residuales de inter?s.
 ## *alpha* ingrese el valor de probabilidad para los tests. 
 normtest_batery = function(data, vector, alpha){
   
   df = matrix(nrow = length(unique(vector)), ncol = 7)
   for (j in vector) {
-    X = dplyr::pull(data,j) # Selecciona como un vector atómico a una columna 
-    i = match(j,vector) # Encuentra la posición en el vectror
+    X = dplyr::pull(data,j) # Selecciona como un vector at?mico a una columna 
+    i = match(j,vector) # Encuentra la posici?n en el vectror
     df[i,1] = colnames(data[,j])
     df[i,2] = ifelse(shapiro.test(X)$p.value < alpha, '+', '-') # Shapiro-Wilks
     df[i,3] = ifelse(nortest::ad.test(X)$p.value < alpha, '+', '-') #Anderson-Darling
@@ -317,12 +317,12 @@ normtest_batery = function(data, vector, alpha){
 }
 
 ##########################################################################-
-# Aplicación de batería de pruebas de normalidad a la tabla
+# Aplicaci?n de bater?a de pruebas de normalidad a la tabla
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1 Crear un objeto de tipo lista para almacenar los resultados de pruebas 
 ##  de normalidad..
 ##  2 Para todos los elementos de la lista se asigna uno de los data frames 
-##  y se aplica la batería de pruebas de normalidad a los residuales que se 
+##  y se aplica la bater?a de pruebas de normalidad a los residuales que se 
 ##  encuentran en las posiciones 4 (pwRes), 7 (iwRes), y 13 (Npde) del 
 ##  dataframe.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -349,11 +349,11 @@ norm_resid_list[[6]]
 norm_resid_list[[7]]
 
 ##########################################################################-
-# Función para obtener gráfico de tipo QQ con línea y bandas, dado el modelo 
-# el parámetro deseado y color opcional.
+# Funci?n para obtener gr?fico de tipo QQ con l?nea y bandas, dado el modelo 
+# el par?metro deseado y color opcional.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-##  1 Convertir param en expresión
-##  2 Crear gráfico
+##  1 Convertir param en expresi?n
+##  2 Crear gr?fico
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 normal_dist_plot <- function(model, param, colour) {
@@ -369,14 +369,31 @@ normal_dist_plot <- function(model, param, colour) {
     qqplotr::stat_qq_band(distribution = 'norm',
                           fill = colour,
                           alpha = 0.1) +
-    geom_abline(slope = 1, intercept = 0) +
+    geom_abline(slope = 1, intercept = 0, lty = 'dashed') +
+    theme_bw() + 
     coord_cartesian(xlim = c(-3, 3), ylim = c(-3, 3)) + 
     annotate(geom = 'label', x = -1.5, y = 2, 
              label = paste0('Modelo: (',letters[model], ')')) +
-    xlab('Cuantiles teóricos') + ylab('Cuantiles de muestreo')
+    xlab('Cuantiles teÃ³ricos') + ylab('Cuantiles de muestreo')
   
   return(g1)
 }
+
+require(patchwork)
+
+plot_resid_comp <- 
+(normal_dist_plot(1, 'iwRes_mean', colour = 'red3') + 
+normal_dist_plot(2, 'iwRes_mean', colour = 'red3') + 
+normal_dist_plot(3, 'iwRes_mean', colour = 'red3') ) / 
+(normal_dist_plot(4, 'iwRes_mean', colour = 'red3') + 
+normal_dist_plot(5, 'iwRes_mean', colour = 'red3') + 
+normal_dist_plot(6, 'iwRes_mean', colour = 'red3') ) / 
+(normal_dist_plot(7, 'iwRes_mean', colour = 'red3')  +
+plot_spacer() + plot_spacer()) +
+plot_annotation(tag_levels = 'A')
+
+ggsave('IWRES_comp.pdf', plot_resid_comp, 'pdf', 
+       './SCRIPT/qqplot', 1, 8, 8, 'in')
 
 
 for (i in 1:7) {
@@ -415,20 +432,16 @@ nortest::pearson.test(res_7$iwRes_mean)$p.value
 # nortest::lillie.test(res_3$iwRes_mean)$p.value
 
 ##########################################################################-
-# Apertura de archivos con forma de la distribución -----------------------
+# Apertura de archivos con forma de la distribuci?n -----------------------
 ##########################################################################-
 resid_guides = list()
 
-for (i in 1:6) {
+for (i in 1:7) {
   resid_guides[[i]] <-
     read_csv(file.path(paste0('Modelo_', i), 'RES_M1', 
                        'ChartsData', 'DistributionOfTheResiduals', 
                        'theoreticalGuides.txt'))
 }
-
-resid_guides[[7]] <- read_csv(file.path('Modelo_7', 'RES_M7', 'ChartsData', 
-    'DistributionOfTheResiduals', 'theoreticalGuides.txt'))
-
 
 resid_guid1 <- 
   do.call(rbind.data.frame, resid_guides) %>% 
@@ -494,7 +507,7 @@ resid_cdf %>%
 
 
 ##########################################################################-
-# Adición de datos de residuales
+# Adici?n de datos de residuales
 resid_ls = list()
 
 for (i in 1:6) {
@@ -520,19 +533,19 @@ resid_df <- resid_ls %>%
 
 
 ##########################################################################-
-# Función para generar gráfico de distribución de residuales --------------
+# Funci?n para generar gr?fico de distribuci?n de residuales --------------
 ##########################################################################-
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-##  1 Conversión de param en una expresión no condicionada
-##  2 Creación de tabla con resid_df, que permita obtener media y desvest 
+##  1 Conversi?n de param en una expresi?n no condicionada
+##  2 Creaci?n de tabla con resid_df, que permita obtener media y desvest 
 ##  para cada modelo en el data.frame.
-##  3 Creación de lista Y con data.frames que tienen una abcisa con valores 
+##  3 Creaci?n de lista Y con data.frames que tienen una abcisa con valores 
 ##  de -5 a 5, identificador de modelo, medias y desvest diferentes para 
 ##  cada elemento de la lista.
-##  4 Creación de data frame Z que tiene todos los elementos de la lista Y, 
+##  4 Creaci?n de data frame Z que tiene todos los elementos de la lista Y, 
 ##  con valores de densidad de acuerdo a media y desvest.M.
-##  5 Creación de gráfico con facet, y colores para cada subgrupo, integra 
-##  la información creada por Z.
+##  5 Creaci?n de gr?fico con facet, y colores para cada subgrupo, integra 
+##  la informaci?n creada por Z.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 resid_dist_plot <- function(data, param) {
@@ -567,14 +580,15 @@ resid_dist_plot <- function(data, param) {
     geom_line(Z, mapping = aes(x = val, y = density, group = Model)) +
     facet_wrap(. ~ Model, ncol = 3) +
     coord_cartesian(xlim = c(-4, 4), ylim = c(0, 0.8)) +
-    scale_color_viridis_d() +
+    scale_fill_viridis_d(option = 'D') +
+    theme_bw() +
     theme(legend.position = 'none')
   
   return(g1)
 }
 
 ##########################################################################-
-# Almacenamiento de los gráficos en formato pdf
+# Almacenamiento de los gr?ficos en formato pdf
 
 resid_dist_plot(resid_df, param = pwRes) + 
   xlab('WRES') + ylab('Densidad')
@@ -593,7 +607,7 @@ ggsave('SCRIPT/Res_NPDE_Dist.pdf', device = 'pdf', width = 5, height = 4)
 
 
 ##########################################################################-
-# Gráfico de residuales ---------------------------------------------------
+# Gr?fico de residuales ---------------------------------------------------
 ##########################################################################-
 
 acp <- function(n, resid) {

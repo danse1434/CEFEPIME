@@ -1,7 +1,7 @@
 ##------------------------------------------------------------------------#
-## Nombre del Script: Análisis de sesgo con métodos de censura de datos ---
+## Nombre del Script: An?lisis de sesgo con m?todos de censura de datos ---
 ##  
-## Proposito del Script: Análisis de sesgo con métodos de censura de datos
+## Proposito del Script: An?lisis de sesgo con m?todos de censura de datos
 ##  
 ## Autor: Daniel S. Parra Gonzalez 
 ## Fecha de creacion:  06-feb-2020
@@ -16,7 +16,7 @@ require(grid)
 require(gridExtra)
 require(readxl)
 ##########################################################################-
-# Selección de directorio de trabajo
+# Selecci?n de directorio de trabajo
 setwd(file.path('F:', 'Documentos', '(Proyecto)_Estudio_PKPD', 'CEFEPIME', 
                 '03. Censura'))
 ##########################################################################-
@@ -29,13 +29,13 @@ Modelos_Censura <- read_excel("Modelos_Censura.xlsx",
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1 Seleccionar modelo.
 ##  2 Crear una variable dummy denominada *Ref*.
-##  3 Para las variables con el patrón 'M\\d\\_CENS' se recalculan errores 
+##  3 Para las variables con el patr?n 'M\\d\\_CENS' se recalculan errores 
 ##  relativo a la variable Ref.
 ##  4 Eliminar las variable Ref, y M1_CENS.
 ##  5 Renombrar `Project Name` como Parametro.
-##  6 Ordenar los valores de parámetros de acuerdo a un vector de ordenacion.
-##  7 Colapsar la tabla en forma de Método con valor de sesgo.
-##  8 Eliminar la expresión \\_CENS de las variables en la columna Metodo.
+##  6 Ordenar los valores de par?metros de acuerdo a un vector de ordenacion.
+##  7 Colapsar la tabla en forma de M?todo con valor de sesgo.
+##  8 Eliminar la expresi?n \\_CENS de las variables en la columna Metodo.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Modelo <-
@@ -52,7 +52,7 @@ Modelo <-
   mutate(Metodo = str_replace(Metodo, "\\_CENS", "")) 
 
 ##########################################################################-
-# Crear un gráfico con los sesgos en la estimación de modelos
+# Crear un gr?fico con los sesgos en la estimaci?n de modelos
 G1 <-
   Modelo %>% 
   ggplot(mapping = aes(x = Metodo, y = Sesgo, fill = Metodo)) + 
@@ -61,10 +61,14 @@ G1 <-
   geom_bar(stat = 'identity', colour = 'black') +
   facet_wrap(.~Parametro, ncol = 4) +
   geom_hline(yintercept = 0) +
-  theme(legend.position = 'none', panel.grid = element_blank())
+  geom_hline(yintercept = c(-0.15, +0.15), lty = 'dashed') +
+  geom_hline(yintercept = c(-0.20, +0.20), lty = 'dashed') +
+  scale_fill_viridis_d() +
+  xlab('MÃ©todo') +
+  theme(legend.position = 'none')
 
 ##########################################################################-
-# Almacenar gráfico en pdf
+# Almacenar gr?fico en pdf
 ggsave('./FIGURAS/efecto_censura_sesgo.pdf', G1, device = 'pdf', 
        width = 6, height = 5)
 
