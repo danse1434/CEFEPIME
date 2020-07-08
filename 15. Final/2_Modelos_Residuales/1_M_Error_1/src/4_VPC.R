@@ -21,7 +21,7 @@ require(rlang)
 require(mlxR)
 
 #-------------------------------------------------------------------------------#
-auxdir <- file.path('BASE_MODEL')
+auxdir <- file.path('1_M_Error_1', 'BASE_MODEL')
 
 #-------------------------------------------------------------------------------#
 # Apertura y modificación de archivo de datos con observaciones
@@ -74,7 +74,7 @@ data_TAD <-
 #  *simulx*. Elaborar una lista con 1000 tablas que contienen las simulaciones. 
 # Se demora 6 minutos aproxim.
 #................................................................................
-project.file <- 'M_Error.mlxtran'
+project.file <- file.path('1_M_Error_1', '1_M_Error_1.mlxtran')
 
 # Parámetros poblacionales
 param <-
@@ -178,12 +178,12 @@ data_OBS1 <- data_OBS %>%
 # Creación del gráfico VPC con percentiles --------------------------------
 #-------------------------------------------------------------------------------#
 # Función que adiciona lineas y puntos, diseñada para observaciones
-linedots <- function(data, x, y) {
+linedots <- function(data, x, y, col = 'red', shape = 1) {
   x = rlang::ensym(x)
   y = rlang::ensym(y)
   return(
-    list(geom_line(data = data, aes(x = !!x, y = !!y)),
-         geom_point(data = data, aes(x = !!x, y = !!y)))
+    list(geom_line(data = data, aes(x = !!x, y = !!y), colour = col),
+         geom_point(data = data, aes(x = !!x, y = !!y), colour = col, shape = shape, fill = col))
   )
 }
 
@@ -191,8 +191,7 @@ linedots <- function(data, x, y) {
 theme_set(theme_bw() +
             theme(panel.border = element_rect(fill = NULL, colour = 'black')))
 
-g_percs <- 
-  dfr_percs1 %>%
+g_percs <- dfr_percs1 %>%
   ggplot(aes(x = TIME)) +
   geom_ribbon(aes(ymin = ME_li, ymax = ME_ls), alpha = 0.5, fill = 'pink') +
   geom_ribbon(aes(ymin = LI_li, ymax = LI_ls), alpha = 0.5, fill = 'blue') +
@@ -227,7 +226,6 @@ param["omega_V1"] <- 0
 param["omega_Q"] <- 0
 param["omega_V2"] <- 0
 param["a"] <- 0
-param["b"] <- 0
 
 data_pred <- simulx(project = project.file,
                     parameter = param, 
@@ -439,3 +437,29 @@ rm(data_list)
 # Almacenar RDS
 saveRDS(g_percs, 'figures/RDS/VPC_percentil.rds')
 saveRDS(g_percs1, 'figures/RDS/pcVPC_percentil.rds')
+
+
+#-------------------------------------------------------------------------------#
+# Artículo -----------------------------------------------------
+#-------------------------------------------------------------------------------#
+g_percs2 <- dfr_percs1_pcVPC %>%
+  ggplot(aes(x = TIME)) +
+  geom_ribbon(aes(ymin = ME_li, ymax = ME_ls), alpha = 0.4, fill = 'gray60') +
+  geom_ribbon(aes(ymin = LI_li, ymax = LI_ls), alpha = 0.4, fill = 'gray40') +
+  geom_ribbon(aes(ymin = LS_li, ymax = LS_ls), alpha = 0.4, fill = 'gray40') +
+  geom_line(aes(y = ME_me), linetype = 'dashed') +
+  geom_line(aes(y = LI_me), linetype = 'dashed') +
+  geom_line(aes(y = LS_me), linetype = 'dashed') +
+  # geom_point(data = data_OBS, mapping = aes(x = time, y = y_1), shape = 1) +
+  linedots(data_OBS_PRED_sum, TIME, ME, shape = 22) +
+  linedots(data_OBS_PRED_sum, TIME, LI, shape = 22) +
+  linedots(data_OBS_PRED_sum, TIME, LS, shape = 22) +
+  coord_cartesian(ylim = c(0, 100)) +
+  xlab('Time after dose (hours)') + 
+  ylab('Prediction Corrected \n Cefepime plasma concentration (mg/L)')
+
+g_percs2
+
+# Almacenamiento del archivo PDF
+ggsave(filename = 'figures/pcVPC_article.pdf', g_percs2, 
+       device = 'pdf', width = 6, height = 5)
