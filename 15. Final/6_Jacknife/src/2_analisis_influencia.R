@@ -72,14 +72,18 @@ theme_set(theme_bw() +
 
 # Gráfico de cambio en cada parámetro en forma univariada 
 G1 <- data_df %>% 
-  ggplot(aes(x = Sujeto, y = std_value, fill = parameter)) +
+  ggplot(aes(x = Sujeto, y = std_value, 
+             fill = ifelse(abs(std_value) > 1.960, 'out', 'in'))) +
   geom_hline(yintercept = 0) +
   geom_bar(stat = "identity", col = 'black', size = 0.04) + 
+  geom_text(data = filter(data_df, abs(std_value) > 1.960),
+            aes(y = std_value * 1.2, label = paste0('ID ', Sujeto)), 
+            size = 2.4, hjust = 0.75) +
   geom_hline(yintercept = c(-1.960, 1.960), lty = 'dashed') +
   facet_wrap(~parameter, ncol = 4) + 
-  scale_fill_viridis_d() +
+  scale_fill_manual(values = c('green1', 'red')) +
   ylab("Valor Estandarizado") + xlab("Índice") +
-  coord_cartesian(ylim = c(-3.1,3.1)) +
+  coord_cartesian(ylim = c(-3.8,3.8)) +
   theme(legend.position = "none")
 G1
 ggsave("1_valores_estandarizados.pdf", G1, 'pdf', 'figures', 1, 5, 4)
