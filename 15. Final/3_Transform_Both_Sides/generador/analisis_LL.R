@@ -97,7 +97,10 @@ nor_ls1 <- nor_ls %>%
   map(~ mutate(.x, `p-value` = as.character(`p-value`))) %>% 
   map_dfr(~.x, .id = 'ID') %>%
   add_column(lambda = rep(lamb_vec, each = 3), .before = 'residuals') %>% 
-  mutate(`p-value`=as.numeric(str_replace_all(`p-value`, "\\<", '')))
+  mutate(
+    pval = as.numeric(str_replace_all(`p-value`, "\\<", '')),
+    color = factor(ifelse(pval >= 0.05, 'Normal', 'No Normal'))
+  )
 
 
 #-------------------------------------------------------------------------------#
@@ -115,7 +118,7 @@ nor_ls1 <- nor_ls %>%
 #' @examples
 #' graf.res(nor_ls1, PWRES_y_1, statistics, ylim = c(0,1))
 #' 
-graf.res <- function(data, resid, yvar, col='blue4', ylim, 
+graf.res <- function(data, resid, yvar, ylim, 
                      sub_label) {
   
   if (missing(sub_label)) {sub_label = 'TBS - Normalidad: '}
@@ -126,42 +129,100 @@ graf.res <- function(data, resid, yvar, col='blue4', ylim,
   switch (expr_text(resid_quo),
     "IWRES_y_1" = {sublab = 'IWRES'},
     "PWRES_y_1" = {sublab = 'PWRES'},
-    "NPDE_y_1"  = {sublab = 'NPDE'},
+    "NPDE_y_1"  = {sublab = 'NPDE'}
   )
   
   switch (expr_text(yvar_quo),
-    "`p-value`"  = {ylab = 'Valor p'},
-    "statistics" = {ylab = 'Estadístico t'}
+    "pval"  = {ylab = 'Valor p'},
+    "statistics" = {ylab = 'Estadístico W'}
   )
   
   data %>% 
-    filter(residuals == expr_text(resid_quo)) %>% 
-  ggplot(aes(lambda, !!yvar_quo)) +
-  geom_line(col=col) + geom_point(col=col) +
+  filter(residuals == expr_text(resid_quo)) %>% 
+  ggplot(aes(lambda, !!yvar_quo, col = color)) +
+  geom_point(shape = 20) +
+  scale_color_manual(values = c('red', 'black'), 
+                     breaks = c('No Normal', 'Normal')) +
   labs(subtitle = paste0(sub_label, sublab)) +
   xlab(expression(lambda)) + ylab(ylab) +
-  coord_cartesian(ylim = ylim)
+  coord_cartesian(ylim = ylim) + 
+  theme(legend.position = 'none')
 }
+
+
+
+aprox_pval <- function(f, yvar) {
+  yvar_quo = rlang::ensym(yvar)
+  
+  lambda = seq(-3, +3, 0.01)
+  pval   = f(lambda)
+  df     = data.frame(lambda,  pval)
+  colnames(df) <- c('lambda', yvar)
+  return(df)
+}
+
+nor_ls2a <- nor_ls1 %>%
+  group_by(residuals) %>% 
+  nest() %>% 
+  mutate(AF = map(data, ~approxfun(x = .x$lambda, .x$statistics))) %>% 
+  mutate(YM = map(AF, ~aprox_pval(.x, yvar = 'statistics') ) ) %>% 
+  unnest(YM) %>% 
+  mutate(color = factor(ifelse(statistics >= .972, 'Normal', 'No Normal')))
+
+nor_ls2b <- nor_ls1 %>%
+  group_by(residuals) %>% 
+  nest() %>% 
+  mutate(AF = map(data, ~approxfun(x = .x$lambda, .x$pval))) %>% 
+  mutate(YM = map(AF, ~aprox_pval(.x, yvar = 'pval') ) ) %>% 
+  unnest(YM) %>% 
+  mutate(color = factor(ifelse(pval >= 0.05, 'Normal', 'No Normal')))
+
+nor_ls2 %>% 
+  group_by(residuals, .drop = TRUE) %>% 
+  filter(color == 'Normal') %>% 
+  slice(which.max(lambda))
 
 # Lista de gráficos de RES vs lambda
 p_ls <- list()
 
-p_ls[[1]] <- graf.res(nor_ls1, PWRES_y_1, statistics, ylim = c(0,1))
-p_ls[[2]] <- graf.res(nor_ls1, IWRES_y_1, statistics, 'red2', ylim = c(0,1))
-p_ls[[3]] <- graf.res(nor_ls1, NPDE_y_1, statistics, 'green3', ylim = c(0,1)) 
-
-p_ls[[4]] <- graf.res(nor_ls1, PWRES_y_1, "p-value", ylim = c(0,1)) +
-  geom_hline(yintercept = 0.05, lty = 'dotted')
-p_ls[[5]] <- graf.res(nor_ls1, IWRES_y_1, "p-value", 'red2', ylim = c(0,1)) +
-  geom_hline(yintercept = 0.05, lty = 'dotted')
-p_ls[[6]] <- graf.res(nor_ls1, NPDE_y_1, "p-value", 'green3',ylim = c(0,1)) +
-  geom_hline(yintercept = 0.05, lty = 'dotted')
+p_ls[[1]] <- graf.res(nor_ls1, PWRES_y_1, statistics, ylim = c(0,1)) +
+  geom_line(data = filter(nor_ls2a, residuals == 'PWRES_y_1'), aes(group = 1)) +
+  geom_hline(yintercept = .972, lty = 'dotted')
+# 
+p_ls[[2]] <- graf.res(nor_ls1, IWRES_y_1, statistics, ylim = c(0,1)) +
+  geom_line(data = filter(nor_ls2a, residuals == 'IWRES_y_1'), aes(group = 1)) +
+  geom_hline(yintercept = .972, lty = 'dotted')
+# 
+p_ls[[3]] <- graf.res(nor_ls1, NPDE_y_1, statistics,  ylim = c(0,1))  +
+  geom_line(data = filter(nor_ls2a, residuals == 'NPDE_y_1'), aes(group = 1))+
+  geom_hline(yintercept = .972, lty = 'dotted')
+# 
+p_ls[[4]] <-
+  graf.res(nor_ls1, PWRES_y_1, "pval", ylim = c(0,1)) +
+  geom_line(data = filter(nor_ls2b, residuals == 'PWRES_y_1'), aes(group = 1),
+            size = 0.1) +
+  geom_hline(yintercept = 0.05, lty = 'dotted') + 
+  geom_rect(xmax = -0.6, xmin = 0.05, ymin = 0, ymax = 1.2, 
+            fill = alpha('#1E90FF', 0.01), inherit.aes = FALSE)
+#
+p_ls[[5]] <- graf.res(nor_ls1, IWRES_y_1, "pval", ylim = c(0,1)) +
+  geom_line(data = filter(nor_ls2b, residuals == 'IWRES_y_1'), aes(group = 1),
+            size = 0.1) +
+  geom_hline(yintercept = 0.05, lty = 'dotted')  + 
+  geom_rect(xmax = +3.00, xmin = -0.190, ymin = 0, ymax = 1.2, 
+            fill = alpha('#1E90FF', 0.01), inherit.aes = FALSE)
+#
+p_ls[[6]] <- graf.res(nor_ls1, NPDE_y_1, "pval", ylim = c(0,1)) +
+  geom_line(data = filter(nor_ls2b, residuals == 'NPDE_y_1'), aes(group = 1),
+            size = 0.1) +
+  geom_hline(yintercept = 0.05, lty = 'dotted')  + 
+  geom_rect(xmax = -0.110, xmin = -1.06, ymin = 0, ymax = 1.2, 
+            fill = alpha('#1E90FF', 0.01), inherit.aes = FALSE)
 
 # Creación de gráfico conjugado
 p_ls_conj <- 
-(p_ls[[1]] + p_ls[[4]]) /
-(p_ls[[2]] + p_ls[[5]]) /
-(p_ls[[3]] + p_ls[[6]])
+p_ls[[1]] + p_ls[[4]] + p_ls[[2]] + p_ls[[5]] + p_ls[[3]] + p_ls[[6]] +
+  plot_layout(ncol = 2)
 
 ggsave('figures/2_seguimiento_normalidad.pdf', p_ls_conj, 'pdf', 
        width = 6, height = 6, units = 'in')
