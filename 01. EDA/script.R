@@ -1,9 +1,10 @@
-require('tidyverse')
-require('lubridate')
-require('rlang')
-require('grid')
-require('PerformanceAnalytics')
+require(tidyverse)
+require(lubridate)
+require(rlang)
+require(grid)
+require(PerformanceAnalytics)
 require(patchwork)
+require(gt)
 
 setwd(dir = file.path('F:','Documentos','(Proyecto)_Estudio_PKPD','CEFEPIME','01. EDA'))
 theme_set(theme_bw())
@@ -201,28 +202,137 @@ Confint_Boot <- function(data, x, y) {
 #  ##########################################################################################-   
 #  ##########################################################################################-    
 # Se crea una funci?n que realiza el test de Kendall entre un par de variables al set de datos  
-  kendall = function(xcol, ycol){
-    xcol_qu = rlang::enquo(xcol); ycol_qu = rlang::enquo(ycol)
-      A= data %>% 
-        filter(TAD == 0) %>% 
-        select(.,!!xcol_qu,!!ycol_qu) %>% 
-        mutate(!!xcol_qu := as.numeric(!!xcol_qu)) %>%
-        mutate(!!ycol_qu := as.numeric(!!ycol_qu)) %>% 
-        as.data.frame(.)
-      B = cor.test(x=A[,1], y=A[,2], method = 'kendall', 
-                   alternative = 'greater')
-      return(list(B$p.value, B$estimate[[1]]))
-  }
+#-------------------------------------------------------------------------------#
+#' Función de **correlación biserial**, modificada con índices
+#' 
+#' 1 Seleccionar los datos por medio de índices
+#' 2 Se calcula la correlación entre dos vectores seleccionados desde el
+#' data.frame, por sus nombres _x_ y _y_.
+#' 3 Retorna esta correlación
+#' 
+#' @param data data frame con variables continuas; se asume que la primera columna 
+#' contiene a la variable categórica como valor numérico y la segunda columnna 
+#' contiene a la variable continua. 
+#' @param indices indices de filas
+#'
+#' @return resultados de correlación biserial por punto
+#' @export
+#'
+#' @examples
+#' corr_biserial(df1, 1:14)
+#' 
+corr_biserial <- function(data, indices) {
+  df <- data[indices,]
   
+  Z <- ltm::biserial.cor(x = pull(df, 2), y = pull(df, 1), 
+                         use = "complete.obs", level = 1)
+  return(Z)
+}
+#-------------------------------------------------------------------------------#
+#' Función de **Bootstrap** con la función de correlación de Kendall 
+#'
+#' @param data data frame con los datos
+#' @param x variable 1 (número)
+#' @param y variable 2 (número)
+#' 
+#' 
+Confint_Boot_biserial <- function(data) {
+  B <- boot::boot(data = data, statistic = corr_biserial, R = 1000)
+  C <- boot::boot.ci(B, type = "perc")
+  return(C)
+}
+
+#-------------------------------------------------------------------------------#
+#' Función de **Test de Correlación Biserial por Puntos**
+#'
+#' @param r_pb es el valor de correlación biserial por punto obtenido con 
+#' *corr_biserial*
+#' @param n es el número de observaciones presentes
+#'
+#' @return retorna un data.frame con valor de estadístico t, valor crítico de t, 
+#' y valor p
+#' @export
+#'
+#' @examples
+#' test_biserial(0.202, 14)
+#' 
+test_biserial <- function(r_pb, n) {
+  t    = r_pb * sqrt((n - 2) / (1 - r_pb ^ 2))
+  tc   = qt(0.05 / 2, n - 2) %>% abs()
+  pval = 2 * pt(-abs(t), df = n - 2)
   
-  kendall(SEXF, AGEA)[[1]]; kendall(SEXF, WTKG)[[1]]
-  kendall(SEXF, HCM)[[1]];   kendall(SEXF, IMCKGM2)[[1]]
-  kendall(SEXF, SCRMGDL)[[1]];   kendall(SEXF, ALBGDL)[[1]]
-  kendall(SEXF, SCM2)[[1]];   kendall(LMP, AGEA)[[1]]
-  kendall(LMP, WTKG)[[1]];   kendall(LMP, HCM)[[1]]
-  kendall(LMP, IMCKGM2)[[1]];   kendall(LMP, SCM2)[[1]]
-  kendall(LLP, SCM2)[[1]]
-  
+  return(list(t = t,
+              tc = tc,
+              pval = pval))
+}
+
+df2 <- tibble::tribble(
+  ~Var1,     ~Var2,
+  "SEXF",    "AGEA",
+  "SEXF",    "WTKG",
+  "SEXF",     "HCM",
+  "SEXF", "SCRMGDL",
+  "SEXF",  "ALBGDL",
+  "SEXF",    "SCM2",
+  "ANTU",     "AGEA",
+  "ANTU",    "WTKG",
+  "ANTU",     "HCM",
+  "ANTU", "SCRMGDL",
+  "ANTU",    "ALBGDL",
+  "ANTU",    "SCM2")
+
+df1 <- data %>% 
+  filter(TAD == 0)
+
+
+df2b <- df2 %>%
+  mutate(
+    dat1  = map2(Var1, Var2, ~ tibble(select(df1, .x, .y))),
+    biser = map_dbl(dat1, ~ corr_biserial(.x, 1:15)),
+    boot  = map(dat1, ~ Confint_Boot_biserial(.x)),
+    test  = map(biser, ~ test_biserial(.x, n = 15))
+  ) 
+
+df2b1 <- df2b %>%
+  mutate(
+    li   = map_dbl(boot, ~ .x$percent[, 4]),
+    ls   = map_dbl(boot, ~ .x$percent[, 5]),
+    t    = map_dbl(test, pluck("t")),
+    tc   = map_dbl(test, pluck("tc")),
+    pval = map_dbl(test, pluck("pval"))
+  )
+
+# Presentación de tabla
+gt_correl_biser <- 
+  select(df2b1, -dat1, -boot, -test) %>% 
+  arrange(pval) %>% 
+  gt() %>% 
+  tab_header(
+    title = html('<b>&#x2605; Test de Correlación Biserial por Puntos &#x2605;</b>'),
+    subtitle = glue::glue("Se muestra un resumen de valores obtenidos")) %>%
+  cols_label(Var1  = "Variable 1",
+             Var2  = "Variable 2",
+             biser = "Corr Biserial [IC95%]",
+             t     = "Valor t",
+             tc    = "Valor t Crítico",
+             pval  = 'Valor p') %>%
+  fmt_number(columns = 3:8, decimals = 3) %>% 
+  cols_merge(columns = vars(li, ls), pattern = "{1}, {2}") %>% 
+  cols_merge(columns = vars(biser, li), pattern = "{1} [{2}]") %>% 
+  tab_style(style = list(cell_fill(color = alpha('#00ff00', 0.5))),
+            locations = cells_body(columns = vars(biser, pval),
+                                   rows = (sign(li) == sign(ls)))) %>% 
+  tab_options(
+    column_labels.font.size = "smaller",
+    table.font.size = "smaller",
+    data_row.padding = px(3)
+  )
+# Almacenamiento de tabla
+gt_correl_biser %>% 
+  gtsave(filename = 'gt_corr_biserial.html', path = file.path(getwd(), 'RESULTADOS/'))
+
+
+
   plot1 <- function(df, xcol, ycol){
     xcol_qu = rlang::enquo(xcol); ycol_qu = rlang::enquo(ycol)
     dplyr::filter(df, EVID==1 & TAD==0) %>% 
@@ -245,8 +355,7 @@ Confint_Boot <- function(data, x, y) {
     dplyr::filter(df, EVID==1&TAD==0) %>% 
       ggplot(aes(x = !!xcol_qu, y = !!ycol_qu, col = !!xcol_qu)) +
       theme_bw() +
-      theme(legend.position = "none",
-            panel.grid = element_blank()) +
+      theme(legend.position = "none") +
       geom_boxplot(shape=1, size=0.4) +
       geom_point() +
       scale_color_hue(h.start = h)
