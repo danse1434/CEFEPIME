@@ -15,6 +15,7 @@ require(tidyverse)
 require(grid)
 require(gridExtra)
 require(readxl)
+require(ggrepel)
 ##########################################################################-
 # Selecci?n de directorio de trabajo
 setwd(file.path('F:', 'Documentos', '(Proyecto)_Estudio_PKPD', 'CEFEPIME', 
@@ -53,19 +54,35 @@ Modelo <-
 
 ##########################################################################-
 # Crear un gr?fico con los sesgos en la estimaci?n de modelos
-G1 <-
-  Modelo %>% 
-  ggplot(mapping = aes(x = Metodo, y = Sesgo, fill = Metodo)) + 
-  theme_bw() +
-  coord_cartesian(ylim = c(-0.2, 0.2))+
-  geom_bar(stat = 'identity', colour = 'black') +
+G1 <- Modelo %>% 
+  ggplot(mapping = aes(x = Metodo, y = Sesgo)) + 
+  theme_classic() +
+  geom_bar(stat = 'identity', colour = 'black', 
+           aes(fill = ifelse(abs(Sesgo) > 0.15, 'out', 'in'))) +
   facet_wrap(.~Parametro, ncol = 4) +
   geom_hline(yintercept = 0) +
   geom_hline(yintercept = c(-0.15, +0.15), lty = 'dashed') +
   geom_hline(yintercept = c(-0.20, +0.20), lty = 'dashed') +
-  scale_fill_viridis_d() +
+  geom_label_repel(
+    data = filter(Modelo, Sesgo <= 0),
+    mapping = aes(y = Sesgo * 1.5, label = round(Sesgo, 2),
+      col = ifelse(abs(Sesgo) > 0.15, 'O', 'I')),
+    fill = 'white', direction = 'y', ylim = c(NA, 0)) +
+  
+  geom_label_repel(
+    data = filter(Modelo, Sesgo > 0),
+    mapping = aes(y = Sesgo * 1.5, label = round(Sesgo, 2),
+                  col = ifelse(abs(Sesgo) > 0.15, 'O', 'I')),
+    fill = 'white', direction = 'y', ylim = c(0, NA)) +
+  
+  scale_fill_manual(values = c('blue', 'red')) +
+  scale_color_manual(values = c('black', 'red')) +
   xlab('Método') +
-  theme(legend.position = 'none')
+  coord_cartesian(ylim = c(-0.30, 0.30))+
+  theme(legend.position = 'none',
+        panel.border = element_rect(fill = NA, colour = 'black'))
+
+G1
 
 ##########################################################################-
 # Almacenar gr?fico en pdf
