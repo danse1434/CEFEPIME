@@ -1,7 +1,7 @@
 ##------------------------------------------------------------------------#
-## Nombre del Script: An?lisis de distribuci?n de errores residuales ---
+## Nombre del Script: Anólisis de distribución de errores residuales ---
 ##  
-## Proposito del Script: An?lisis de sesgo con m?todos de censura de datos
+## Proposito del Script: Anólisis de sesgo con mótodos de censura de datos
 ##  
 ## Autor: Daniel S. Parra Gonzalez 
 ## Fecha de creacion:  06-feb-2020
@@ -17,30 +17,30 @@ require(grid)
 require(gridExtra)
 require(readxl)
 ##########################################################################-
-# Selecci?n de directorio de trabajo
+# Selección de directorio de trabajo
 setwd(file.path('F:', 'Documentos', '(Proyecto)_Estudio_PKPD', 'CEFEPIME', 
                 '04. Residual'))
 
-# Selecci?n de tema
+# Selección de tema
 theme_set(theme_classic() +
             theme(panel.border = element_rect(fill = NA, colour = 'black')))
 
 ##########################################################################-
-# Gr?fico de residuales vs TAD --------------------------------------------
+# Grófico de residuales vs TAD --------------------------------------------
 ##########################################################################-
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1 Apertura de archivo de datos con los datos originales, y que tiene 
-##  delimitador ";", este fue usado para realizar el modelamiento en s? mismo
-##  2 Crear un archivo *last_dose* que contiene la ?ltima hora de adminis-
-##  traci?n del antibi?tico en el archivo *data* para cada individuo. 
+##  delimitador ";", este fue usado para realizar el modelamiento en só mismo
+##  2 Crear un archivo *last_dose* que contiene la óltima hora de adminis-
+##  tración del antibiótico en el archivo *data* para cada individuo. 
 ##    2a Agrupar por ID
-##    2b Filtrar los datos con EVID igual a 1 (s?lo los eventos de 
-##    administraci?n)
-##    2c Seleccionar los ?ltimos en cada grupo (los datos ya est?n ordenados 
+##    2b Filtrar los datos con EVID igual a 1 (sólo los eventos de 
+##    administración)
+##    2c Seleccionar los óltimos en cada grupo (los datos ya estón ordenados 
 ##    de menor a mayor)
-##    2d Seleccionar s?lo las columnas ID y TIME
+##    2d Seleccionar sólo las columnas ID y TIME
 ##  3 Modificar el archivo de residuales *y_1_residuals* al unir los datos 
-##  de ?ltimnas observaciones calculadas.
+##  de óltimnas observaciones calculadas.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 data <- read_delim("Modelo_1/interv_censored.csv",
@@ -100,7 +100,7 @@ res_7 <- TAD_add(res_7)
 
 RES_C <- function(data, x, y, xlab, ylab) {
   ##########################################################################-
-  # Volver las variables x y y en expresiones para evaluaci?n tard?a
+  # Volver las variables x y y en expresiones para evaluación tardóa
   x <- rlang::ensym(x)
   y <- rlang::ensym(y)
   
@@ -108,8 +108,8 @@ RES_C <- function(data, x, y, xlab, ylab) {
   ##  Calculo de percentiles empiricos
   ##  1 Tomar la variable de datos a explorar.
   ##  2 Crear una variable que tome 6 grupos a partir de los datos ordenados 
-  ##  con la funci?n dplyr::ntile().
-  ##  3 Agrupar por la variable reci?n creado.
+  ##  con la función dplyr::ntile().
+  ##  3 Agrupar por la variable reción creado.
   ##  4 Resumir por la media de TAD, y los percentiles P5%, P50%, y P95% de 
   ##  los datos de residuales.
   ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -121,7 +121,7 @@ RES_C <- function(data, x, y, xlab, ylab) {
               LI = quantile(x = !!y, probs = 0.05), 
               LS = quantile(x = !!y, probs = 0.95))
   ##########################################################################-
-  # Crear el gr?fico de residuales con las especificaciones mostradas
+  # Crear el grófico de residuales con las especificaciones mostradas
   data %>% 
     ggplot(mapping = aes(x = !!x, y = !!y)) +
     geom_hline(yintercept = 0) +
@@ -194,7 +194,7 @@ gridExtra::grid.arrange(G_RES_C_NPDE[[1]], G_RES_C_NPDE[[2]], G_RES_C_NPDE[[3]],
 
 RES_PRE <- function(data, x, y, xlab, ylab) {
   ##########################################################################-
-  # Volver las variables x y y en expresiones para evaluaci?n tard?a
+  # Volver las variables x y y en expresiones para evaluación tardóa
   x <- rlang::ensym(x)
   y <- rlang::ensym(y)
   
@@ -202,8 +202,8 @@ RES_PRE <- function(data, x, y, xlab, ylab) {
   ##  Calculo de percentiles empiricos
   ##  1 Tomar la variable de datos a explorar.
   ##  2 Crear una variable que tome 6 grupos a partir de los datos ordenados 
-  ##  con la funci?n dplyr::ntile().
-  ##  3 Agrupar por la variable reci?n creado.
+  ##  con la función dplyr::ntile().
+  ##  3 Agrupar por la variable reción creado.
   ##  4 Resumir por la media de TAD, y los percentiles P5%, P50%, y P95% de 
   ##  los datos de residuales.
   ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -215,7 +215,7 @@ RES_PRE <- function(data, x, y, xlab, ylab) {
               LI = quantile(x = !!y, probs = 0.05), 
               LS = quantile(x = !!y, probs = 0.95))
   ##########################################################################-
-  # Crear el gr?fico de residuales con las especificaciones mostradas
+  # Crear el grófico de residuales con las especificaciones mostradas
   data %>% 
     ggplot(mapping = aes(x = !!x, y = !!y)) +
     geom_hline(yintercept = 0) +
@@ -288,21 +288,21 @@ pdf(file = './SCRIPT/NPDE_C.pdf', width = 6, height = 7);{
 ##########################################################################-
 # Pruebas de normalidad en los residuales ---------------------------------
 ##########################################################################-
-# A continuaci?n, se realizan pruebas de normalidad univariadas para los 
+# A continuación, se realizan pruebas de normalidad univariadas para los 
 # residuales en cada uno de los modelos.
 
 ##########################################################################-
-# Funci?n que aplica una bater?a de pruebas de normalidad a los datos
+# Función que aplica una bateróa de pruebas de normalidad a los datos
 ## *data* ingrese el objeto de datos a analizar.
-## *vector* ingrese la posici?n de las columnas donde se encuentran los 
-## residuales de inter?s.
+## *vector* ingrese la posición de las columnas donde se encuentran los 
+## residuales de interós.
 ## *alpha* ingrese el valor de probabilidad para los tests. 
 normtest_batery = function(data, vector, alpha){
   
   df = matrix(nrow = length(unique(vector)), ncol = 7)
   for (j in vector) {
-    X = dplyr::pull(data,j) # Selecciona como un vector at?mico a una columna 
-    i = match(j,vector) # Encuentra la posici?n en el vectror
+    X = dplyr::pull(data,j) # Selecciona como un vector atómico a una columna 
+    i = match(j,vector) # Encuentra la posición en el vectror
     df[i,1] = colnames(data[,j])
     df[i,2] = ifelse(shapiro.test(X)$p.value < alpha, '+', '-') # Shapiro-Wilks
     df[i,3] = ifelse(nortest::ad.test(X)$p.value < alpha, '+', '-') #Anderson-Darling
@@ -317,12 +317,12 @@ normtest_batery = function(data, vector, alpha){
 }
 
 ##########################################################################-
-# Aplicaci?n de bater?a de pruebas de normalidad a la tabla
+# Aplicación de bateróa de pruebas de normalidad a la tabla
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ##  1 Crear un objeto de tipo lista para almacenar los resultados de pruebas 
 ##  de normalidad..
 ##  2 Para todos los elementos de la lista se asigna uno de los data frames 
-##  y se aplica la bater?a de pruebas de normalidad a los residuales que se 
+##  y se aplica la bateróa de pruebas de normalidad a los residuales que se 
 ##  encuentran en las posiciones 4 (pwRes), 7 (iwRes), y 13 (Npde) del 
 ##  dataframe.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -349,11 +349,11 @@ norm_resid_list[[6]]
 norm_resid_list[[7]]
 
 ##########################################################################-
-# Funci?n para obtener gr?fico de tipo QQ con l?nea y bandas, dado el modelo 
-# el par?metro deseado y color opcional.
+# Función para obtener grófico de tipo QQ con lónea y bandas, dado el modelo 
+# el parómetro deseado y color opcional.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-##  1 Convertir param en expresi?n
-##  2 Crear gr?fico
+##  1 Convertir param en expresión
+##  2 Crear grófico
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 normal_dist_plot <- function(model, param, colour) {
@@ -432,7 +432,7 @@ nortest::pearson.test(res_7$iwRes_mean)$p.value
 # nortest::lillie.test(res_3$iwRes_mean)$p.value
 
 ##########################################################################-
-# Apertura de archivos con forma de la distribuci?n -----------------------
+# Apertura de archivos con forma de la distribución -----------------------
 ##########################################################################-
 resid_guides = list()
 
@@ -507,19 +507,15 @@ resid_cdf %>%
 
 
 ##########################################################################-
-# Adici?n de datos de residuales
+# Adición de datos de residuales
 resid_ls = list()
 
-for (i in 1:6) {
+for (i in 1:7) {
   resid_ls[[i]] <-
     read_csv(file.path(paste0('Modelo_', i), 'RES_M1', 
                        'ChartsData', 'ScatterPlotOfTheResiduals',
                        'y_1_residuals.txt'))
 }
-
-resid_ls[[7]] <- read_csv(file.path('Modelo_7', 'RES_M7', 'ChartsData', 
-                        'ScatterPlotOfTheResiduals','y_1_residuals.txt'))
-
 
 xtolet <- function(x) letters[x]
 xtolet <- Vectorize(xtolet, vectorize.args = c('x'))
@@ -530,22 +526,29 @@ resid_df <- resid_ls %>%
   mutate(Model = fct_relabel(Model, ~ paste0('(',  .x, ')'))) %>% 
   as_tibble()
 
-
+resid_df_SW <- resid_df %>% 
+  select(Model, pwRes, iwRes_mean, npde) %>% 
+  pivot_longer(cols = pwRes:npde, names_to = 'Residual', 
+               values_to = 'Val') %>% 
+  group_by(Model, Residual) %>% 
+  nest() %>% 
+  mutate(SW = map(data, ~shapiro.test(.x$Val)),
+         pval = map_dbl(SW, 'p.value'))
 
 ##########################################################################-
-# Funci?n para generar gr?fico de distribuci?n de residuales --------------
+# Función para generar grófico de distribución de residuales --------------
 ##########################################################################-
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-##  1 Conversi?n de param en una expresi?n no condicionada
-##  2 Creaci?n de tabla con resid_df, que permita obtener media y desvest 
+##  1 Conversión de param en una expresión no condicionada
+##  2 Creación de tabla con resid_df, que permita obtener media y desvest 
 ##  para cada modelo en el data.frame.
-##  3 Creaci?n de lista Y con data.frames que tienen una abcisa con valores 
+##  3 Creación de lista Y con data.frames que tienen una abcisa con valores 
 ##  de -5 a 5, identificador de modelo, medias y desvest diferentes para 
 ##  cada elemento de la lista.
-##  4 Creaci?n de data frame Z que tiene todos los elementos de la lista Y, 
+##  4 Creación de data frame Z que tiene todos los elementos de la lista Y, 
 ##  con valores de densidad de acuerdo a media y desvest.M.
-##  5 Creaci?n de gr?fico con facet, y colores para cada subgrupo, integra 
-##  la informaci?n creada por Z.
+##  5 Creación de grófico con facet, y colores para cada subgrupo, integra 
+##  la información creada por Z.
 ##:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 resid_dist_plot <- function(data, param) {
@@ -587,27 +590,58 @@ resid_dist_plot <- function(data, param) {
   return(g1)
 }
 
-##########################################################################-
-# Almacenamiento de los gr?ficos en formato pdf
 
-resid_dist_plot(resid_df, param = pwRes) + 
+
+
+
+
+##########################################################################-
+# Almacenamiento de los gróficos en formato pdf
+filter(resid_df, Model != '(g)') %>%
+  resid_dist_plot(param = pwRes) + 
+  geom_label(
+    data = filter(resid_df_SW, Residual == 'pwRes' && Model != '(g)'),
+    mapping = aes(
+      label = paste('Shapiro-Wilk:', '\n', 
+                    'p = ', formatC(pval, 2, format = 'e'))),
+    x = 2.0, y = 0.7, size = 4) +
   xlab('WRES') + ylab('Densidad')
-ggsave('SCRIPT/Res_PWRES_Dist.pdf', device = 'pdf', width = 5, height = 4)
 
-resid_dist_plot(resid_df, param = iwRes_mean) +
+ggsave('SCRIPT/Res_PWRES_Dist.pdf', device = 'pdf', width = 5*1.5, height = 4*1.5)
+
+
+# IWRES_mean
+filter(resid_df, Model != '(g)') %>%
+  resid_dist_plot(param = iwRes_mean) + 
+  geom_label(
+    filter(resid_df_SW, Residual == 'iwRes_mean' && Model != '(g)'),
+    mapping = aes(
+      label = paste('Shapiro-Wilk:', '\n', 
+                    'p = ', formatC(pval, 2, format = 'e'))),
+    x = 2.0, y = 0.7, size = 4) +
   xlab('IWRES') + ylab('Densidad')
-ggsave('SCRIPT/Res_IWRES_Dist.pdf', device = 'pdf', width = 5, height = 4)
 
-resid_dist_plot(resid_df, param = npde) +
+ggsave('SCRIPT/Res_IWRES_Dist.pdf', device = 'pdf', width = 5*1.5, height = 4*1.5)
+
+# NPDE
+filter(resid_df, Model != '(g)') %>%
+  resid_dist_plot(param = npde) + 
+  geom_label(
+    filter(resid_df_SW, Residual == 'npde' && Model != '(g)'),
+    mapping = aes(
+      label = paste('Shapiro-Wilk:', '\n', 
+                    'p = ', formatC(pval, 2, format = 'e'))),
+    x = 2.0, y = 0.7, size = 4) +
   xlab('NPDE') + ylab('Densidad')
-ggsave('SCRIPT/Res_NPDE_Dist.pdf', device = 'pdf', width = 5, height = 4)
+
+ggsave('SCRIPT/Res_NPDE_Dist.pdf', device = 'pdf', width = 5*1.5, height = 4*1.5)
 
 
 
 
 
 ##########################################################################-
-# Gr?fico de residuales ---------------------------------------------------
+# Grófico de residuales ---------------------------------------------------
 ##########################################################################-
 
 acp <- function(n, resid) {
