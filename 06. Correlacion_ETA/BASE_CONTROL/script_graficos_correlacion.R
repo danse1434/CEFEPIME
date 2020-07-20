@@ -22,6 +22,7 @@
 require(rlang)
 require(tidyverse)
 require(grid)
+require(patchwork)
 ##########################################################################-
 # Selección de directorio principal
 setwd(file.path('F:', 'Documentos', '(Proyecto)_Estudio_PKPD', 'CEFEPIME', 
@@ -96,14 +97,14 @@ hist_plot <- function(x, parameter) {
       fun = dnorm,
       args = list(mean = X[['mean']],
                   sd = X[['sd']]),
-      size = 0.7
+      size = 0.7, col = alpha('black', 0.8)
     )
   }
   
   H = G + Y + annotate(geom = "text",
     label = parameter,
-    x = 0.8 * mean(pull(data_corr_1, !!x)),
-    y = Inf, hjust = 0, vjust = 1)
+    x = 0.9 * max(pull(data_corr_1, !!x)),
+    y = Inf, hjust = 1, vjust = 1)
   
   return(H)
 }
@@ -121,40 +122,61 @@ hist_plot <- function(x, parameter) {
 # Se utilizan las funciones creadas con anterioridad para generar histogramas 
 # y diagramas de dispersión con regresión lineal incorporada.
 
-pdf(file = 'FIGURAS/Correlation_Plot.pdf', width = 6, height = 5);{
-grid::pushViewport(grid::viewport(layout = grid.layout(4, 4)))
-vplayout <- function(x, y) grid::viewport(layout.pos.row = x, layout.pos.col = y)
+# pdf(file = 'FIGURAS/Correlation_Plot.pdf', width = 6, height = 5);{
+# grid::pushViewport(grid::viewport(layout = grid.layout(4, 4)))
+# vplayout <- function(x, y) grid::viewport(layout.pos.row = x, layout.pos.col = y)
 
 # Función para especificar gráfico y posición en la malla cartesiana. 
-pr_f <- function(plot, x, y) {
-  print(plot, vp = vplayout(x, y))
-}
+# pr_f <- function(plot, x, y) {
+#   print(plot, vp = vplayout(x, y))
+# }
+# 
+# # Especificación de gráficos y posiciones. 
+# pr_f(hist_plot(eta_Cl_simulated,
+#                   expression(eta ~ (Cl))) , 1, 1)
+# pr_f(hist_plot(eta_V1_simulated,
+#                   expression(eta ~ (V[1]))) , 2, 2)
+# pr_f(hist_plot(eta_Q_simulated,
+#                   expression(eta ~ (Q))) , 3, 3)
+# pr_f(hist_plot(eta_V2_simulated,
+#                   expression(eta ~ (V[2]))) , 4, 4)
+# pr_f(corr_plot(eta_Cl_simulated, eta_V1_simulated), 2, 1)
+# pr_f(corr_plot(eta_Cl_simulated, eta_Q_simulated), 3, 1)
+# pr_f(corr_plot(eta_Cl_simulated, eta_V2_simulated), 4, 1)
+# pr_f(corr_plot(eta_V1_simulated, eta_Q_simulated), 3, 2)
+# pr_f(corr_plot(eta_V1_simulated, eta_V2_simulated), 4, 2)
+# pr_f(corr_plot(eta_Q_simulated, eta_V2_simulated), 4, 3)
+# pr_f(corr_plot(eta_V1_simulated, eta_Cl_simulated), 1, 2)
+# pr_f(corr_plot(eta_Q_simulated, eta_Cl_simulated), 1, 3)
+# pr_f(corr_plot(eta_V2_simulated, eta_Cl_simulated), 1, 4)
+# pr_f(corr_plot(eta_Q_simulated, eta_V1_simulated), 2, 3)
+# pr_f(corr_plot(eta_V2_simulated, eta_V1_simulated), 2, 4)
+# pr_f(corr_plot(eta_V2_simulated, eta_Q_simulated), 3, 4)
+# }; dev.off()
 
-# Especificación de gráficos y posiciones. 
-pr_f(hist_plot(eta_Cl_simulated,
-                  expression(eta ~ (Cl))) , 1, 1)
-pr_f(hist_plot(eta_V1_simulated,
-                  expression(eta ~ (V[1]))) , 2, 2)
-pr_f(hist_plot(eta_Q_simulated,
-                  expression(eta ~ (Q))) , 3, 3)
-pr_f(hist_plot(eta_V2_simulated,
-                  expression(eta ~ (V[2]))) , 4, 4)
-pr_f(corr_plot(eta_Cl_simulated, eta_V1_simulated), 2, 1)
-pr_f(corr_plot(eta_Cl_simulated, eta_Q_simulated), 3, 1)
-pr_f(corr_plot(eta_Cl_simulated, eta_V2_simulated), 4, 1)
-pr_f(corr_plot(eta_V1_simulated, eta_Q_simulated), 3, 2)
-pr_f(corr_plot(eta_V1_simulated, eta_V2_simulated), 4, 2)
-pr_f(corr_plot(eta_Q_simulated, eta_V2_simulated), 4, 3)
-pr_f(corr_plot(eta_V1_simulated, eta_Cl_simulated), 1, 2)
-pr_f(corr_plot(eta_Q_simulated, eta_Cl_simulated), 1, 3)
-pr_f(corr_plot(eta_V2_simulated, eta_Cl_simulated), 1, 4)
-pr_f(corr_plot(eta_Q_simulated, eta_V1_simulated), 2, 3)
-pr_f(corr_plot(eta_V2_simulated, eta_V1_simulated), 2, 4)
-pr_f(corr_plot(eta_V2_simulated, eta_Q_simulated), 3, 4)
-}; dev.off()
+correl_mat_com <- 
+(hist_plot(eta_Cl_simulated, expression(eta ~ (Cl))) + 
+corr_plot(eta_V1_simulated, eta_Cl_simulated) +
+corr_plot(eta_Q_simulated, eta_Cl_simulated) +
+corr_plot(eta_V2_simulated, eta_Cl_simulated) + 
+corr_plot(eta_Cl_simulated, eta_V1_simulated) + 
+hist_plot(eta_V1_simulated, expression(eta ~ (V[1]))) +
+corr_plot(eta_Q_simulated, eta_V1_simulated) +
+corr_plot(eta_V2_simulated, eta_V1_simulated) +
+corr_plot(eta_Cl_simulated, eta_Q_simulated) +
+corr_plot(eta_V1_simulated, eta_Q_simulated) +
+hist_plot(eta_Q_simulated, expression(eta ~ (Q))) +
+corr_plot(eta_V2_simulated, eta_Q_simulated) +
+corr_plot(eta_Cl_simulated, eta_V2_simulated) +
+corr_plot(eta_V1_simulated, eta_V2_simulated) +
+corr_plot(eta_Q_simulated, eta_V2_simulated) +
+hist_plot(eta_V2_simulated, expression(eta ~ (V[2])))) +
+  plot_layout(ncol = 4)
 
 # ggsave('FIGURAS/Correlation_Plot.pdf', device = 'pdf', width = 6,height =4)
 
+ggsave('FIGURAS/Correlation_Plot_2.pdf', correl_mat_com, device = 'pdf', 
+       width = 6 * 1.5, height = 4 * 1.7)
 
 ##########################################################################-
 # Distribución de Eta -----------------------------------------------------
