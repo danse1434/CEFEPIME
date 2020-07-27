@@ -304,7 +304,9 @@ gm3 <- pcout(pca2, PC2, PC3)$graph +
     mapping = aes(label = ID),
     nudge_x = 0.5
   )
-
+# 
+write_csv(as_tibble(pca2), 'Figura/pca2.csv') # Escribir PCA
+# 
 ggsave('Figura/ComponentePC1vsPC2.pdf', gm1, device = 'pdf', 
        width = 5, height = 4)
 
