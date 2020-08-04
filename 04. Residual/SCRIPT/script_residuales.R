@@ -590,12 +590,7 @@ resid_dist_plot <- function(data, param) {
   return(g1)
 }
 
-
-
-
-
-
-##########################################################################-
+#-------------------------------------------------------------------------------#
 # Almacenamiento de los gróficos en formato pdf
 filter(resid_df, Model != '(g)') %>%
   resid_dist_plot(param = pwRes) + 

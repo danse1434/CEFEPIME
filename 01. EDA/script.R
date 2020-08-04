@@ -110,7 +110,7 @@ normtest_batery = function(data, vector, alpha){
     filter(TAD == 0) %>% # Se seleccionan 15 datos correspondientes a los pacientes
     descriptiva(data=., vector = c(16:27,31,34)) %>% 
     # select(-c('SD','Q1','Mediana','Q3','IQR')) %>% 
-    as.data.frame() %>% View()
+    as.data.frame() %>% gt::gt()
 # Se realizaron an?lisis descriptivos de los datos.
 #  ##########################################################################################-  
 
