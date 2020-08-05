@@ -23,8 +23,8 @@ require(tidyverse)
 require(rlang)
 
 ##########################################################################-
-# Selecci?n de directorio principal
-setwd(file.path('C:','Users','Daniel','OneDrive','Documents','(Proyecto)_Estudio_PKPD','CEFEPIME',
+# Selección de directorio principal
+setwd(file.path('F:','Documentos','(Proyecto)_Estudio_PKPD','CEFEPIME',
                 '04. Residual', 'Modelo_8', 'RES_M1'))
 
 ##########################################################################-
@@ -34,9 +34,10 @@ setwd(file.path('C:','Users','Daniel','OneDrive','Documents','(Proyecto)_Estudio
 # gr?fico de bondad de ajuste
 gof_dir <- file.path('ChartsData','ObservationsVsPredictions')
 
-# Selecci?n de tema
-theme_set(theme_classic() +
-          theme(panel.border = element_rect(fill = NA, colour = 'black')))
+# Selección de tema
+theme_set(theme_bw() +
+            theme(panel.grid.major = element_line(colour = 'gray80'),
+                  panel.grid.minor = element_line(colour = 'gray95')))
 
 # Apertura de archivo de datos
 y_1_obsVsPred <- # Observaciones vs predicciones
@@ -128,18 +129,19 @@ G_PRED_OBS_PPRED <-
     coord_cartesian(xlim = c(0, 90), ylim = c(0, 90))
     
 ##########################################################################-
-# Transformaci?n de logar?tmos
-abreaks <- c(1, seq(2,10,2), seq(20,100,20))
+# Transformación de logarítmos
+breaks     <- 10^(0:2)
+min_breaks <- rep(1:9, 3)*(10^rep(0:2, each=9))
 
 G_PRED_OBS_IPREDLOG <-
   G_PRED_OBS_IPRED + 
-  scale_y_continuous(trans = 'pseudo_log', breaks = abreaks) +
-  scale_x_continuous(trans = 'pseudo_log', breaks = abreaks)
+  scale_y_continuous(trans = 'pseudo_log', breaks = breaks, minor_breaks = min_breaks) +
+  scale_x_continuous(trans = 'pseudo_log', breaks = breaks, minor_breaks = min_breaks)
 
 G_PRED_OBS_PREDLOG <-
   G_PRED_OBS_PRED + 
-  scale_y_continuous(trans = 'pseudo_log', breaks = abreaks) +
-  scale_x_continuous(trans = 'pseudo_log', breaks = abreaks)
+  scale_y_continuous(trans = 'pseudo_log', breaks = breaks, minor_breaks = min_breaks) +
+  scale_x_continuous(trans = 'pseudo_log', breaks = breaks, minor_breaks = min_breaks)
 
 # Almacenamiento en pdf de los gr?ficos
 ggsave('FIGURAS/G_PRED_OBS_PRED.pdf', G_PRED_OBS_PRED, 

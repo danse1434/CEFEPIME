@@ -151,25 +151,29 @@ linedots <- function(data, x, y) {
   x = rlang::ensym(x)
   y = rlang::ensym(y)
   return(
-  list(geom_line(data = data, aes(x = !!x, y = !!y)),
-       geom_point(data = data, aes(x = !!x, y = !!y)))
+    list(geom_line(data = data, aes(x = !!x, y = !!y), col='red'),
+         geom_point(data = data, aes(x = !!x, y = !!y),col='red',shape=15))
   )
 }
 
 # VPC con percentiles predichos
+# VPC con percentiles predichos
 g_percs <- dfr_percs1 %>%
   ggplot(aes(x = TIME)) +
-  geom_ribbon(aes(ymin = ME_li, ymax = ME_ls), alpha = 0.5, fill = 'pink') +
-  geom_ribbon(aes(ymin = LI_li, ymax = LI_ls), alpha = 0.5, fill = 'blue') +
-  geom_ribbon(aes(ymin = LS_li, ymax = LS_ls), alpha = 0.5, fill = 'blue') +
+  geom_ribbon(aes(ymin = ME_li, ymax = ME_ls), alpha = 0.5, fill = 'gray70') +
+  geom_ribbon(aes(ymin = LI_li, ymax = LI_ls), alpha = 0.5, fill = 'gray30') +
+  geom_ribbon(aes(ymin = LS_li, ymax = LS_ls), alpha = 0.5, fill = 'gray30') +
+  geom_line(aes(y=ME_me), lty='dashed') +
+  geom_line(aes(y=LI_me), lty='dashed') +
+  geom_line(aes(y=LS_me), lty='dashed') +
   linedots(data_OBS1, TIME, ME) +
   linedots(data_OBS1, TIME, LI) +
   linedots(data_OBS1, TIME, LS) +
   theme_bw() +
-  coord_cartesian(ylim = c(0, 80)) +
-  theme(panel.border = element_rect(fill = NULL, colour = 'black'),
-        panel.grid = element_line(colour = 'NA')) +
-  xlab('TAD') + ylab(expression(C[P]~(mg/L)))
+  coord_cartesian(ylim = c(0, 100)) +
+  theme(panel.border = element_rect(fill = NULL, colour = 'black')) +
+  xlab('TAD, tiempo tras dosis (h)') + 
+  ylab('Concentración plasmática FEP (mg/L)')
 
 # Almacenamiento en formato PDF
 ggsave(filename = 'VPC_percentil.pdf', g_percs, device = 'pdf', width = 6, height = 4)
@@ -366,23 +370,24 @@ data_OBS_PRED_sum <- data_OBS %>%
     n = n()
   )
 
-
-
 # VPC con percentiles predichos corregidos por PRED
-g_percs1 <- 
+g_percs1 <-
   dfr_percs1_pcVPC %>%
   ggplot(aes(x = TIME)) +
-  geom_ribbon(aes(ymin = ME_li, ymax = ME_ls), alpha = 0.5, fill = 'pink') +
-  geom_ribbon(aes(ymin = LI_li, ymax = LI_ls), alpha = 0.5, fill = 'blue') +
-  geom_ribbon(aes(ymin = LS_li, ymax = LS_ls), alpha = 0.5, fill = 'blue') +
+  geom_ribbon(aes(ymin = ME_li, ymax = ME_ls), alpha = 0.5, fill = 'gray70') +
+  geom_ribbon(aes(ymin = LI_li, ymax = LI_ls), alpha = 0.5, fill = 'gray30') +
+  geom_ribbon(aes(ymin = LS_li, ymax = LS_ls), alpha = 0.5, fill = 'gray30') +
+  geom_line(aes(y=ME_me), lty='dashed') +
+  geom_line(aes(y=LI_me), lty='dashed') +
+  geom_line(aes(y=LS_me), lty='dashed') +
   linedots(data_OBS_PRED_sum, TIME, ME) +
   linedots(data_OBS_PRED_sum, TIME, LI) +
   linedots(data_OBS_PRED_sum, TIME, LS) +
   theme_bw() +
-  theme(panel.border = element_rect(fill = NULL, colour = 'black'),
-        panel.grid = element_line(colour = 'NA')) +
-  coord_cartesian(ylim = c(0, 80)) +
-  xlab('TAD') + ylab('Concentraciones corregidas por PRED')
+  theme(panel.border = element_rect(fill = NULL, colour = 'black')) +
+  coord_cartesian(ylim = c(0, 100)) +
+  xlab('TAD, tiempo tras dosis (h)') + 
+  ylab('Concentración plasmática FEP \n Corregida por concentración (mg/L)')
 
 # Almacenamiento del archivo PDF
 ggsave(filename = 'pcVPC_percentil.pdf', g_percs1, device = 'pdf', width = 6, height = 4)
