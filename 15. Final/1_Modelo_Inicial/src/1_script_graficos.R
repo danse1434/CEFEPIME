@@ -29,6 +29,7 @@ require(tidyverse)
 
 # Apertura de fuente
 source("src/2_funciones.R", encoding = 'UTF-8')
+source(file.path('src', '10_performance_fun.R'), encoding = 'UTF-8')
 
 #-------------------------------------------------------------------------------#
 # Bondad de ajuste -------------------------------------------------

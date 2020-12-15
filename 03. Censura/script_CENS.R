@@ -87,7 +87,7 @@ G1
 ##########################################################################-
 # Almacenar gr?fico en pdf
 ggsave('./FIGURAS/efecto_censura_sesgo.pdf', G1, device = 'pdf', 
-       width = 6, height = 5)
+       width = 6*1.2, height = 5*1.2)
 
 
 

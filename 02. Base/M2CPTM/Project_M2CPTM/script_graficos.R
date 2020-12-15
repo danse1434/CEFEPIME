@@ -26,6 +26,10 @@ require(rlang)
 # Selecci?n de directorio principal
 setwd(file.path('F:','Documentos','(Proyecto)_Estudio_PKPD','CEFEPIME',
                 '02. Base','M2CPTM','Project_M2CPTM'))
+
+source(file.path('..', '..', 'src', '10_performance_fun.R'),
+       encoding = 'UTF-8')
+
 ##########################################################################-
 # Carga de ajustes individuales
 y_1_fits <- read_csv("ChartsData/IndividualFits/y_1_fits.txt")
@@ -203,6 +207,17 @@ G_PRED_OBS_PREDLOG <-
   G_PRED_OBS_PRED + 
   scale_y_continuous(trans = 'pseudo_log', breaks = breaks, minor_breaks = min_breaks) +
   scale_x_continuous(trans = 'pseudo_log', breaks = breaks, minor_breaks = min_breaks)
+
+
+G_PRED_OBS_PRED <- G_PRED_OBS_PRED + predictivePerformaceLabel(
+  y_1_obsVsPred, 'popPred', 'y_1', x = 0.55, round = 3, size=2.0, y=0.1,
+  boot = TRUE, R = 1e3, xlim = c(0,90), ylim = c(0,90)
+)
+G_PRED_OBS_IPRED <- G_PRED_OBS_IPRED + predictivePerformaceLabel(
+  y_1_obsVsPred, 'indivPredMean', 'y_1', x = 0.55, round = 3, size=2.0, y=0.1,
+  boot = TRUE, R = 1e3, xlim = c(0,90), ylim = c(0,90)
+)
+
 
 # Almacenamiento en pdf de los gr?ficos
 ggsave('FIGURAS/G_PRED_OBS_PRED.pdf', G_PRED_OBS_PRED, 

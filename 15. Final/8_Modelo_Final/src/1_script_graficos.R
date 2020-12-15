@@ -29,6 +29,7 @@ require(tidyverse)
 
 # Apertura de fuente
 source("src/2_funciones.R", encoding = 'UTF-8')
+source(file.path('src', '10_performance_fun.R'), encoding = 'UTF-8')
 
 #-------------------------------------------------------------------------------#
 # Bondad de ajuste -------------------------------------------------
@@ -124,6 +125,15 @@ G_PRED_OBS_PREDLOG <-
                      breaks = breaks, minor_breaks = min_breaks) 
 
 # Almacenamiento en pdf de los gráficos
+G_PRED_OBS_PRED <- G_PRED_OBS_PRED + predictivePerformaceLabel(
+  y_1_obsVsPred, 'popPred', 'y_1', x = 0.50, round = 3, size=2.3, y=0.1,
+  boot = TRUE, R = 1e3, xlim = c(0,90), ylim = c(0,90)
+)
+G_PRED_OBS_IPRED <- G_PRED_OBS_IPRED + predictivePerformaceLabel(
+  y_1_obsVsPred, 'indivPredMean', 'y_1', x = 0.50, round = 3, size=2.3, y=0.1,
+  boot = TRUE, R = 1e3, xlim = c(0,90), ylim = c(0,90)
+)
+
 G1 <- ((G_PRED_OBS_PRED + G_PRED_OBS_IPRED) /
       (G_PRED_OBS_PREDLOG + G_PRED_OBS_IPREDLOG)) &
       theme(panel.grid.major = element_line(colour = "gray80"), 
