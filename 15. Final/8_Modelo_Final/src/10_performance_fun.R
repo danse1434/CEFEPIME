@@ -237,7 +237,7 @@ predictivePerformaceLabel <- function(data, predictions, true_values,
   }
   # Objeto de tipo
   object = list(
-    ggplot2::geom_label(mapping=aes(x=xpos, y=ypos, label=m), hjust=0, vjust=0, size=size)
+    ggplot2::geom_label(mapping=aes(x=xpos, y=ypos, label=m), hjust=0, vjust=0.5, size=size)
   )
   
   return(object)

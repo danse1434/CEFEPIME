@@ -126,11 +126,11 @@ G_PRED_OBS_PREDLOG <-
 
 # Almacenamiento en pdf de los gráficos
 G_PRED_OBS_PRED <- G_PRED_OBS_PRED + predictivePerformaceLabel(
-  y_1_obsVsPred, 'popPred', 'y_1', x = 0.50, round = 3, size=2.3, y=0.1,
+  y_1_obsVsPred, 'popPred', 'y_1', x = 0.55, round = 3, size=2.3, y=0.1,
   boot = TRUE, R = 1e3, xlim = c(0,90), ylim = c(0,90)
 )
 G_PRED_OBS_IPRED <- G_PRED_OBS_IPRED + predictivePerformaceLabel(
-  y_1_obsVsPred, 'indivPredMean', 'y_1', x = 0.50, round = 3, size=2.3, y=0.1,
+  y_1_obsVsPred, 'indivPredMean', 'y_1', x = 0.55, round = 3, size=2.3, y=0.1,
   boot = TRUE, R = 1e3, xlim = c(0,90), ylim = c(0,90)
 )
 
