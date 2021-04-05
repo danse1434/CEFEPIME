@@ -59,6 +59,10 @@ G2 <- PRCT_T %>%
   theme(legend.position = 'bottom', 
         legend.title = element_blank())
 
+if (!file.exists('./figures/51_analisis_regimenes_1.pdf')) {
+  ggsave('51_analisis_regimenes_1.pdf', G1, 'pdf', 'figures', 1, 6, 8)
+  ggsave('51_análisis_regimenes_2.pdf', G2, 'pdf', 'figures', 1, 6, 8)
+}
 
-ggsave('51_análisis_regimenes_1.pdf', G1, 'pdf', 'figures', 1, 6, 8)
-ggsave('51_análisis_regimenes_2.pdf', G2, 'pdf', 'figures', 1, 6, 8)
+
+# require(plotly)
