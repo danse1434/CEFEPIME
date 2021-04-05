@@ -67,10 +67,34 @@ normtest_batery = function(data, vector, alpha){
 
 #colnames(data) %>% View(.) #Para ver todos los nombres de las columnas
 
-  data %>% 
-    filter(TAD == 0) %>% # Se seleccionan 15 datos correspondientes a los pacientes
-    normtest_batery(data=., vector = c(16:27,31,34), alpha = 0.05) %>% 
-    as.data.frame() %>% View()
+dataNorm <- data %>% 
+  filter(TAD == 0) %>% # Se seleccionan 15 datos correspondientes a los pacientes
+  normtest_batery(data=., vector = c(16:27,31,34), alpha = 0.05)
+
+estiloGTCual <- function(gt, var, crit, color) {
+  gt <- gt %>% 
+  tab_style(style = list(cell_fill(color = alpha(color, 0.5))),
+            locations = cells_body(columns = eval(var),
+                                   rows = eval(var) == crit))
+  return(gt)
+}
+
+gtDataNorm <- gt(as.data.frame(dataNorm)) %>% 
+  tab_header(
+    title = html('<b>&#x2605; Batería de pruebas de normalidad &#x2605;</b>'),
+    subtitle = glue::glue("Covariables continuas")) %>%
+  tab_options(
+    column_labels.font.size = "smaller",
+    table.font.size = "smaller",
+    data_row.padding = px(3)
+  ) %>% 
+  tab_footnote(
+    footnote = "+: indica que se debe rechazar la H0 de normalidad, mientras que -: indica lo contrario y se puede considerar normal.",
+    locations = cells_column_labels(columns = vars('Variable'))
+  )
+
+gtDataNorm %>%
+  gtsave(filename = 'gt_pruebasNormalidad.html', path = file.path(getwd(), 'RESULTADOS/'))
 
 #  ##########################################################################################-
 # Estad?stica descriptiva -------------------------------------------------
@@ -105,12 +129,29 @@ normtest_batery = function(data, vector, alpha){
     return(df)
     }
   
-#  ##########################################################################################-
-  data %>% 
+###########################################################################################-
+resCov <- data %>% 
     filter(TAD == 0) %>% # Se seleccionan 15 datos correspondientes a los pacientes
     descriptiva(data=., vector = c(16:27,31,34)) %>% 
     # select(-c('SD','Q1','Mediana','Q3','IQR')) %>% 
-    as.data.frame() %>% gt::gt()
+    as.data.frame() %>% 
+  rownames_to_column(var = 'Variable')
+  
+  
+gt_resCov <- gt(resCov) %>% 
+  tab_header(
+    title = html('<b>&#x2605; Descripción de Covariables &#x2605;</b>'),
+    subtitle = glue::glue("Estudio de referencia - Cefepime")) %>%
+  fmt_number(columns = vars(Media, SD, LI, LS), decimals = 2) %>% 
+  fmt_number(columns = vars(MIN, Q1, Mediana, Q3, MAX), decimals = 1) %>%
+  tab_options(
+    column_labels.font.size = "smaller",
+    table.font.size = "smaller",
+    data_row.padding = px(3)
+  )
+
+gt_resCov %>%
+  gtsave(filename = 'gt_descripCovariables.html', path = file.path(getwd(), 'RESULTADOS/'))
 # Se realizaron an?lisis descriptivos de los datos.
 #  ##########################################################################################-  
 
