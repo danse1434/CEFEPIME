@@ -55,6 +55,7 @@ Modelo <-
 ##########################################################################-
 # Crear un gr?fico con los sesgos en la estimaci?n de modelos
 G1 <- Modelo %>% 
+  filter(Parametro != 'Cl_pop') %>% 
   ggplot(mapping = aes(x = Metodo, y = Sesgo)) + 
   theme_classic() +
   geom_bar(stat = 'identity', colour = 'black', 
@@ -64,13 +65,13 @@ G1 <- Modelo %>%
   geom_hline(yintercept = c(-0.15, +0.15), lty = 'dashed') +
   geom_hline(yintercept = c(-0.20, +0.20), lty = 'dashed') +
   geom_label_repel(
-    data = filter(Modelo, Sesgo <= 0),
+    data = filter(Modelo, Sesgo <= 0, Parametro != 'Cl_pop'),
     mapping = aes(y = Sesgo * 1.5, label = round(Sesgo, 2),
       col = ifelse(abs(Sesgo) > 0.15, 'O', 'I')),
     fill = 'white', direction = 'y', ylim = c(NA, 0)) +
   
   geom_label_repel(
-    data = filter(Modelo, Sesgo > 0),
+    data = filter(Modelo, Sesgo > 0, Parametro != 'Cl_pop'),
     mapping = aes(y = Sesgo * 1.5, label = round(Sesgo, 2),
                   col = ifelse(abs(Sesgo) > 0.15, 'O', 'I')),
     fill = 'white', direction = 'y', ylim = c(0, NA)) +
@@ -87,7 +88,7 @@ G1
 ##########################################################################-
 # Almacenar gr?fico en pdf
 ggsave('./FIGURAS/efecto_censura_sesgo.pdf', G1, device = 'pdf', 
-       width = 6*1.2, height = 5*1.2)
+       width = 6, height = 4)
 
 
 
