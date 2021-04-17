@@ -21,6 +21,7 @@
 # Carga de paquetes
 require(tidyverse)
 require(rlang)
+require(patchwork)
 
 ##########################################################################-
 # Selección de directorio principal
@@ -106,7 +107,7 @@ G_PRED_OBS_PRED <-
          yconfint_lo = popPred_piLower, 
          yconfint_up = popPred_piUpper, 
          colourp = 'blue1', 
-         xlab = 'PRED', ylab = 'OBS')
+         xlab = 'PRED (mg/L)', ylab = 'OBS (mg/L)')
 
 G_PRED_OBS_IPRED <- 
   GOF_PRED(x = indivPredMean, y = y_1, 
@@ -116,7 +117,7 @@ G_PRED_OBS_IPRED <-
            yconfint_lo = indivPred_piLower, 
            yconfint_up = indivPred_piUpper, 
            colourp = 'red1', 
-           xlab = 'IPRED', ylab = 'OBS')
+           xlab = 'IPRED (mg/L)', ylab = 'OBS (mg/L)')
 
 
 ##########################################################################-
@@ -125,7 +126,7 @@ G_PRED_OBS_PPRED <-
   y_1_obsVsSimulatedPred    %>%  
     ggplot(mapping = aes(x = indivPredSimulated, y = y_1)) +
     geom_point(shape = 1) + 
-    xlab('PPRED') + ylab('OBS') +
+    xlab('PPRED (mg/L)') + ylab('OBS (mg/L)') +
     stat_smooth(method = 'loess') +
     geom_abline(slope = 1, intercept = 0, lty = 'dotted') +
     coord_cartesian(xlim = c(0, 90), ylim = c(0, 90))
@@ -169,6 +170,12 @@ ggsave('FIGURAS/G_PRED_OBS_IPREDLOG.pdf', G_PRED_OBS_IPREDLOG,
 
 ggsave('FIGURAS/G_PRED_OBS_PPRED.pdf', G_PRED_OBS_PPRED, 
        device = 'pdf', width = 5/1.5, height = 4/1.5, units = 'in')  
+
+GPRED_total <-
+  G_PRED_OBS_PRED + G_PRED_OBS_IPRED + G_PRED_OBS_PREDLOG + G_PRED_OBS_IPREDLOG + plot_annotation(tag_levels = 'A')
+
+ggsave('FIGURAS/G_PRED_TOTAL.pdf', GPRED_total, 
+       device = 'pdf', width = 6*1.15, height = 5*1.15, units = 'in') 
 
 ##########################################################################-
 # Residuales --------------------------------------------------------------
@@ -243,7 +250,7 @@ G_RES_T_PWRES <- RES_TSFD(
   xspline = time_pwRes,
   yspline = time_pwRes_spline,
   perc_data = y_1_time_percentiles_pwRes,
-  xlab = 'TSFD',
+  xlab = 'TSFD (h)',
   ylab = 'PWRES'
 )
 
@@ -253,7 +260,7 @@ G_RES_T_IWRES <- RES_TSFD(
   xspline = time_iwRes,
   yspline = time_iwRes_spline,
   perc_data = y_1_time_percentiles_iwRes,
-  xlab = 'TSFD',
+  xlab = 'TSFD (h)',
   ylab = 'IWRES'
 )
 
@@ -263,7 +270,7 @@ G_RES_T_NPDE <- RES_TSFD(
   xspline = time_npde,
   yspline = time_npde_spline,
   perc_data = y_1_time_percentiles_npde,
-  xlab = 'TSFD',
+  xlab = 'TSFD (h)',
   ylab = 'NPDE'
 )
 
@@ -334,31 +341,32 @@ RES_TAD <- function(x, y, xlab, ylab) {
               LS = quantile(x = !!y, probs = 0.95))
   ##########################################################################-
   # Crear el gr?fico de residuales con las especificaciones mostradas
+  
   y_1_residuals %>% 
-  ggplot(mapping = aes(x = !!x, y = !!y)) +
-    geom_hline(yintercept = 0) +
-    geom_point(col = '#4682B4') +
+    ggplot(mapping = aes(x = !!x, y = !!y)) +
+    geom_hline(yintercept = 0, lty='dashed') +
+    geom_point(col = '#4682B4', shape=1) +
     coord_cartesian(ylim = c(-2.5, 2.5)) +
     xlab(xlab) + ylab(ylab) +
     stat_smooth(method = 'loess', formula = y ~ x, se = FALSE, 
-                col = '#EBA213', lty = 'solid', size = 1) +
+                col = 'blue', lty = 'solid', size = 0.5) +
     geom_line(data = A, aes(TIME, ME), 
-              col = '#EBA213', lty = 'dashed', size = 1.2) +
+              col = '#EBA213', lty = 'solid', size = .6) +
     geom_line(data = A, aes(TIME, LI), 
-              col = '#EBA213', lty = 'dashed', size = 1.2) +
+              col = '#EBA213', lty = 'solid', size = .6) +
     geom_line(data = A, aes(TIME, LS), 
-              col = '#EBA213', lty = 'dashed', size = 1.2) %>% 
+              col = '#EBA213', lty = 'solid', size = .6) %>% 
     return(.)
   }
  
 G_RES_TAD_PWRES <- 
-  RES_TAD(x = TAD, y = pwRes, xlab = 'TAD', ylab = 'PWRES')
+  RES_TAD(x = TAD, y = pwRes, xlab = 'TAD (h)', ylab = 'PWRES')
 
 G_RES_TAD_IWRES <- 
-  RES_TAD(x = TAD, y = iwRes_mean, xlab = 'TAD', ylab = 'IWRES')
+  RES_TAD(x = TAD, y = iwRes_mean, xlab = 'TAD (h)', ylab = 'IWRES')
 
 G_RES_TAD_NPDE <- 
-  RES_TAD(x = TAD, y = npde, xlab = 'TAD', ylab = 'NPDE')
+  RES_TAD(x = TAD, y = npde, xlab = 'TAD (h)', ylab = 'NPDE')
 
 ##########################################################################-
 # Almacenamiento de los datos en formato PDF
@@ -399,20 +407,20 @@ RES_PRE <- function(x, y, xspline, yspline, perc_data, xlab, ylab) {
   
   y_1_residuals %>% 
     ggplot(mapping = aes(x = !!x, y = !!y)) +
-    geom_hline(yintercept = 0) +
-    geom_point(col = '#8721B8') +
+    geom_hline(yintercept = 0, lty = 'dashed') +
+    geom_point(col = '#8721B8', shape=1) +
     geom_line(y_1_spline, 
               mapping = aes(x = !!xspline, y = !!yspline), 
-              col = '#EBA213', lty = 'solid', size = 1) +
+              col = 'blue', lty = 'solid', size = 0.5) +
     geom_line(data = perc_data,
               mapping = aes(x = prediction, y = empirical_median),
-              col = '#EBA213', lty = 'dashed', size = 1.2) +
+              col = '#EBA213', lty = 'solid', size = 0.6) +
     geom_line(data = perc_data,
               mapping = aes(x = prediction, y = empirical_lower),
-              col = '#EBA213', lty = 'dashed', size = 1.2) +
+              col = '#EBA213', lty = 'solid', size = 0.6) +
     geom_line(data = perc_data,
               mapping = aes(x = prediction, y = empirical_upper),
-              col = '#EBA213', lty = 'dashed', size = 1.2) +
+              col = '#EBA213', lty = 'solid', size = 0.6) +
     coord_cartesian(ylim = c(-2.5, 2.5)) +
     xlab(xlab) + ylab(ylab) %>% return(.)
 }
@@ -421,19 +429,19 @@ G_RES_C_PWRES <-
   RES_PRE(x = prediction_pwRes, y = pwRes, 
           xspline = prediction_pwRes, yspline = prediction_pwRes_spline,
           perc_data = y_1_prediction_percentiles_pwRes,
-          xlab = 'PRED', ylab = 'WRES')
+          xlab = 'PRED (mg/L)', ylab = 'WRES')
 
 G_RES_C_IWRES <- 
   RES_PRE(x = prediction_iwRes_mean, y = iwRes_mean, 
           xspline = prediction_iwRes, yspline = prediction_iwRes_spline,
           perc_data = y_1_prediction_percentiles_iwRes,
-          xlab = 'IPRED', ylab = 'IWRES')
+          xlab = 'IPRED (mg/L)', ylab = 'IWRES')
 
 G_RES_C_NPDE <- 
   RES_PRE(x = prediction_npde, y = npde, 
           xspline = prediction_npde, yspline = prediction_npde_spline,
           perc_data = y_1_prediction_percentiles_npde,
-          xlab = 'PRED', ylab = 'NPDE')
+          xlab = 'PRED (mg/L)', ylab = 'NPDE')
   
 
 # Almacenamiento en pdf de los gr?ficos
@@ -445,6 +453,13 @@ ggsave('./FIGURAS/G_RES_C_IWRES.pdf', G_RES_C_IWRES,
 
 ggsave('./FIGURAS/G_RES_C_NPDE.pdf', G_RES_C_NPDE, 
        device = 'pdf', width = 5/1.5, height = 4/1.5, units = 'in')  
+
+G_RES_TOTAL <- G_RES_C_PWRES + G_RES_C_NPDE + G_RES_C_IWRES + 
+  G_RES_TAD_PWRES + G_RES_TAD_NPDE + G_RES_TAD_IWRES +
+  plot_annotation(tag_levels = 'A')
+
+ggsave('./FIGURAS/G_RES_TOTAL.pdf', G_RES_TOTAL & theme_bw(), 
+       device = 'pdf', width = 6*1.2, height = 4*1.2, units = 'in') 
 
 ##########################################################################-
 # Gr?ficos individuales-----------------------------------------------------
