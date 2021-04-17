@@ -16,6 +16,7 @@ require(rlang)
 require(grid)
 require(gridExtra)
 require(readxl)
+require(patchwork)
 ##########################################################################-
 # Selección de directorio de trabajo
 setwd(file.path('F:', 'Documentos', '(Proyecto)_Estudio_PKPD', 'CEFEPIME', 
@@ -634,7 +635,77 @@ ggsave('SCRIPT/Res_NPDE_Dist.pdf', device = 'pdf', width = 5*1.5, height = 4*1.5
 
 
 
+dfResidualesTot <- filter(resid_df, Model != '(g)') %>%
+  mutate(
+    Modelo = case_when(
+      Model == '(a)' ~ 'Aditiv',
+      Model == '(b)' ~ 'Prop_1',
+      Model == '(c)' ~ 'Prop_1a',
+      Model == '(d)' ~ 'Comb_1',
+      Model == '(e)' ~ 'Comb_1a',
+      Model == '(f)' ~ 'Comb_2',
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  select(Modelo, 'pwRes', 'iwRes_mean', 'npde') %>%
+  pivot_longer(
+    cols = c('pwRes', 'iwRes_mean', 'npde'),
+    names_to = 'Type',
+    values_to = 'Residual'
+  ) %>%
+  mutate(
+    Tipo = case_when(
+      Type == 'iwRes_mean' ~ 'IWRES',
+      Type == 'pwRes' ~ 'PWRES',
+      Type == 'npde' ~ 'NPDE',
+      TRUE ~ NA_character_
+    )
+  ) 
 
+Z <- dfResidualesTot %>%
+  group_by(Modelo, Tipo) %>%
+  summarise(mn = mean(Residual), sd = sd(Residual)) %>%
+  mutate(Z = map2(mn, sd, ~data.frame(
+    valor = seq(-4, 4, length.out = 1e3), 
+    densidad = dnorm(seq(-4, 4, length.out = 1e3), .x, .y)
+  ))) %>%
+  select(Modelo, Tipo, Z) %>%
+  unnest(Z)
+
+SW <- dfResidualesTot %>%
+  group_by(Modelo, Tipo) %>%
+  nest() %>%
+  mutate(pval = map_dbl(data, ~ `$`(shapiro.test(.x$Residual), p.value))) %>%
+  select(-data) %>% 
+  ungroup()
+
+
+gResidualesTot <- dfResidualesTot %>%
+  ggplot(aes(x = Residual)) +
+  geom_vline(xintercept = 0, lty='dashed') +
+  geom_histogram(aes(y = ..density.., fill = Tipo),
+                 bins = 25, col = 'black', alpha = 0.3) +
+  geom_line(Z, mapping = aes(x = valor, y = densidad)) +
+  geom_label(data = SW, 
+             aes(
+               label = paste('p=', formatC(pval, 2, format = 'e')), 
+               color = ifelse(pval < 0.05, '1','2')),
+             x = 4.0, y = 0.7, size = 3, hjust=1, inherit.aes = F) +
+  ylab('Densidad') +
+  facet_grid(Tipo ~ Modelo) +
+  scale_color_manual(values = c('1'='blue', '2'='black')) +
+  scale_fill_viridis_d(option = 'D') +
+  coord_cartesian(xlim = c(-4, 4), ylim = c(0, 0.8)) +
+  theme_bw() +
+  theme(legend.position = 'none')
+
+ggsave(
+  'SCRIPT/DistResdTot.pdf',
+  device = 'pdf',
+  width = 6 * 1.5,
+  height = 4 * 1.5
+)
+  
 ##########################################################################-
 # Grófico de residuales ---------------------------------------------------
 ##########################################################################-
