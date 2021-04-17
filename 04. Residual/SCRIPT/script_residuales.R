@@ -361,7 +361,7 @@ normal_dist_plot <- function(model, param, colour) {
   param = rlang::ensym(param)
   if(is_missing(colour)){colour = 'blue4'}
   
-  g1 <- paste0('res_', i) %>%
+  g1 <- paste0('res_', model) %>%
     get(.) %>%
     ggplot(mapping = aes(sample = !!param)) +
     stat_qq() +
@@ -373,14 +373,12 @@ normal_dist_plot <- function(model, param, colour) {
     geom_abline(slope = 1, intercept = 0, lty = 'dashed') +
     theme_bw() + 
     coord_cartesian(xlim = c(-3, 3), ylim = c(-3, 3)) + 
-    annotate(geom = 'label', x = -1.5, y = 2, 
-             label = paste0('Modelo: (',letters[model], ')')) +
+    # annotate(geom = 'label', x = -1.5, y = 2, 
+    #          label = paste0('Modelo: (',letters[model], ')')) +
     xlab('Cuantiles teóricos') + ylab('Cuantiles de muestreo')
   
   return(g1)
 }
-
-require(patchwork)
 
 plot_resid_comp <- 
 (normal_dist_plot(1, 'iwRes_mean', colour = 'red3') + 
@@ -389,12 +387,12 @@ normal_dist_plot(3, 'iwRes_mean', colour = 'red3') ) /
 (normal_dist_plot(4, 'iwRes_mean', colour = 'red3') + 
 normal_dist_plot(5, 'iwRes_mean', colour = 'red3') + 
 normal_dist_plot(6, 'iwRes_mean', colour = 'red3') ) / 
-(normal_dist_plot(7, 'iwRes_mean', colour = 'red3')  +
-plot_spacer() + plot_spacer()) +
+# (normal_dist_plot(7, 'iwRes_mean', colour = 'red3')  +
+# plot_spacer() + plot_spacer()) +
 plot_annotation(tag_levels = 'A')
 
 ggsave('IWRES_comp.pdf', plot_resid_comp, 'pdf', 
-       './SCRIPT/qqplot', 1, 8, 8, 'in')
+       './SCRIPT/qqplot', 1, 8, 5, 'in')
 
 
 for (i in 1:7) {
