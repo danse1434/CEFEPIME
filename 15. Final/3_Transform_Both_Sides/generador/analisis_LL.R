@@ -202,22 +202,22 @@ p_ls[[4]] <-
   geom_line(data = filter(nor_ls2b, residuals == 'PWRES_y_1'), aes(group = 1),
             size = 0.1) +
   geom_hline(yintercept = 0.05, lty = 'dotted') + 
-  geom_rect(xmax = -0.6, xmin = 0.05, ymin = 0, ymax = 1.2, 
-            fill = alpha('#1E90FF', 0.01), inherit.aes = FALSE)
+  annotate(geom = 'rect', xmax = -0.6, xmin = 0.05, ymin = -Inf, ymax = Inf, 
+            fill = alpha('#1E90FF', 0.3))
 #
 p_ls[[5]] <- graf.res(nor_ls1, IWRES_y_1, "pval", ylim = c(0,1)) +
   geom_line(data = filter(nor_ls2b, residuals == 'IWRES_y_1'), aes(group = 1),
             size = 0.1) +
-  geom_hline(yintercept = 0.05, lty = 'dotted')  + 
-  geom_rect(xmax = +3.00, xmin = -0.190, ymin = 0, ymax = 1.2, 
-            fill = alpha('#1E90FF', 0.01), inherit.aes = FALSE)
+  geom_hline(yintercept = 0.05, lty = 'dotted')  +
+  annotate(geom = 'rect', xmax = +3.00, xmin = -0.190, ymin = -Inf, ymax = Inf, 
+           fill = alpha('#1E90FF', 0.3))
 #
 p_ls[[6]] <- graf.res(nor_ls1, NPDE_y_1, "pval", ylim = c(0,1)) +
   geom_line(data = filter(nor_ls2b, residuals == 'NPDE_y_1'), aes(group = 1),
             size = 0.1) +
-  geom_hline(yintercept = 0.05, lty = 'dotted')  + 
-  geom_rect(xmax = -0.110, xmin = -1.06, ymin = 0, ymax = 1.2, 
-            fill = alpha('#1E90FF', 0.01), inherit.aes = FALSE)
+  geom_hline(yintercept = 0.05, lty = 'dotted')   +
+  annotate(geom = 'rect', xmax = -0.110, xmin = -1.06, ymin = -Inf, ymax = Inf, 
+           fill = alpha('#1E90FF', 0.3))
 
 # Creación de gráfico conjugado
 p_ls_conj <- 
