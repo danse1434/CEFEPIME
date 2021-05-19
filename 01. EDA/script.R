@@ -445,6 +445,20 @@ gcompuestoB <-
 
 ggsave('RESULTADOS/Compuesto_Kendall_2.pdf', gcompuestoB, 'pdf', 
        width = 7.0, height = 6.0, units = 'in')
+
+
+gcompuestoC <- 
+(plot2(data, SEXF, WTKG, 100) + plot2(data, SEXF, HCM, 100) +
+  plot2(data, SEXF, SCRMGDL, 100) + plot2(data, SEXF, ALBGDL, 100) +
+  plot2(data, LLP, ALBGDL, 20) + plot2(data, LLP, CLCRMLMIN, 20) +
+  plot2(data, LLP, SCM2, 20) + plot2(data, LMP, HCM, 20)) + 
+  plot_layout(ncol = 4) + 
+  plot_annotation(tag_levels = 'A') & 
+  scale_color_manual(values = c('blue', 'red'))
+
+ggsave('RESULTADOS/Compuesto_Kendall_3.pdf', gcompuestoC, 'pdf', 
+       width = 10, height = 5, units = 'in')
+
 ###################################################################################################-
 ###################################################################################################-
 # REVISI?N DE DIFERENCIAS ENTRE GRUPOS POR VARIABLE DICOT?MICA  
