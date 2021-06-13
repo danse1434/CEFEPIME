@@ -72,12 +72,14 @@ popparamDF <- popparam %>%
 # Gráfico de distribución de convergencia con barras de error SE
 G1 <- popparam %>% 
   ggplot(aes(x = Iteration, col = factor(Iteration))) + 
-  geom_errorbar(aes(ymin = value - se_sa, ymax = value + se_sa)) +
-  geom_point(aes(y = value)) + 
+  geom_errorbar(aes(ymin = value - se_sa, ymax = value + se_sa), colour = "#1c86ee") +
+  geom_point(aes(y = value), colour = "#1c86ee") + 
   geom_hline(data = popparamDF, mapping = aes(yintercept = mn)) +
   facet_wrap(~parameter, ncol = 4, scales = "free_y") + 
   theme(legend.position = "none") +
   xlab('Iteración') + ylab('')
+
+G1
 
 # Almacenamiento de Gráfico
 ggsave('eval_parametros.pdf', plot = G1, device = 'pdf', 
@@ -127,10 +129,8 @@ G2 <- convassesDF %>%
   geom_hline(yintercept = 513.0 - 3.84, col = 'gray80', lty = 'dashed') +
   xlab('Iteración') + ylab('-2LL')
 
+G2
+
 # Almacenamiento de Gráfico
 ggsave('eval_OFV.pdf', plot = G2, device = 'pdf', 
        width = 6, height = 4)
-
-
-
-

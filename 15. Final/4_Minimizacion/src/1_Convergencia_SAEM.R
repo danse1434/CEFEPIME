@@ -46,13 +46,15 @@ theme_set(theme_bw())
 
 # Gráfico de resumen de parámetros por corrida
 G1 <- d_fct_ls1 %>% 
-  ggplot(aes(x = A, y = value, col = A)) +
-  geom_point() + 
-  geom_errorbar(aes(ymin = value-se_sa, ymax = value+se_sa)) +
+  ggplot(aes(x = A, y = value, group = A)) +
+  geom_point(colour = "#1c86ee") + 
+  geom_errorbar(aes(ymin = value-se_sa, ymax = value+se_sa),colour = "#1c86ee") +
   facet_wrap(~parameter, scales = 'free_y') +
-  scale_color_gradientn(colours = rainbow(7) ) +
+  # scale_color_gradientn(colours = rainbow(7) ) +
   theme(legend.position = 'none', 
         axis.title = element_blank())
+
+G1
 
 # Almacenamiento de gráficos
 ggsave('1_parm_indic.pdf', G1, 'pdf', 'figures', 1, 7, 5)
@@ -82,19 +84,30 @@ s_fct_ls1 <- s_fct_ls %>%
          parameter = factor(parameter, levels = c(level_par, 'LL')))
 
 # Gráfico de convergencia SAEM por corrida
-G2 <- s_fct_ls1 %>% 
-  ggplot(aes(x = iteration, y = value, col = I)) +
-  geom_line() + 
-  facet_wrap(~parameter, scales = 'free_y') +
-  scale_color_gradientn(colours = rainbow(7) ) +
-  scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
-  theme(legend.position = 'none', 
-        axis.title = element_blank(), axis.text.x = element_text(angle = -45))
+
+
+G2 <- s_fct_ls1 %>%
+  filter((iteration + 9) %% 10 == 0) %>%
+  ggplot(aes(x = iteration, y = value, group = I)) +
+  geom_line(colour = 'gray50', alpha = 0.4) +
+  facet_wrap( ~ parameter, scales = 'free_y') +
+  # scale_color_gradientn(colours = rainbow(7) ) +
+  scale_x_continuous(
+    labels = function(x)
+      format(x, scientific = TRUE)
+  ) + theme(
+    legend.position = 'none',
+    axis.title = element_blank(),
+    axis.text.x = element_text(angle = -45),
+    panel.grid = element_blank()
+  )
+
+G2
 
 # Almacenamiento de gráficos
 ggsave('2_conv_indic.pdf', G2, 'pdf', 'figures', 1, 7, 5)
-ggsave('2_conv_indic.png', G2, 'png', 'figures', 1.2, dpi = 'print')
-
+ggsave('2_conv_indic.png', G2, 'png', 'figures', 
+       dpi = 'print', width = 7, height = 5)
 
 #-------------------------------------------------------------------------------#
 # 3 Resumen parámetros herramienta Monolix --------------------------------------
@@ -117,8 +130,8 @@ d_mon_ls1 <- d_mon_ls %>%
 # Gráfico de resumen por cada corrida
 G3 <- d_mon_ls1 %>% 
   ggplot(aes(x = I, y = value, col = I)) +
-  geom_point() + 
-  geom_errorbar(aes(ymin = value-se_lin, ymax = value+se_lin)) +
+  geom_point(colour = "#1c86ee") + 
+  geom_errorbar(aes(ymin = value-se_lin, ymax = value+se_lin), colour = "#1c86ee") +
   facet_wrap(~parameter, scales = 'free_y') +
   scale_color_gradientn(colours = rainbow(7) ) +
   theme(legend.position = 'none', 
