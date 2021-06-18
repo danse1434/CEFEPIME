@@ -259,8 +259,8 @@ G1 <- Param_df %>%
   mutate(Iteration = as.double(Iteration)) %>%
   ggplot(aes(x = Iteration, col = factor(Iteration))) +
   geom_hline(data = Param_DF, mapping = aes(yintercept = mn), col = 'gray') +
-  geom_point(aes(y = value), shape = 20, colour = "#1c86ee") +
-  geom_errorbar(aes(ymin = value - se_sa, ymax = value + se_sa), colour = "#1c86ee") +
+  geom_point(aes(y = value), shape = 20, colour = alpha("#1c86ee", 0.5)) +
+  geom_errorbar(aes(ymin = value - se_sa, ymax = value + se_sa), colour = alpha("#1c86ee", 0.5)) +
   facet_wrap( ~ parameter, ncol =  4, scales = "free") +
   theme(legend.position = "none") +
   xlab('Corrida') + ylab('Valor')
@@ -320,7 +320,7 @@ pop_par = pop_par %>%
 
 G2 <- Conver_df %>% 
   filter((iteration + 10 + 1) %% 10 == 0) %>%
-  mutate(parameter = Parameter) %>% 
+  # mutate(parameter = Parameter) %>% 
   ggplot(aes(x = iteration, y = Value, group = Run, col = Run)) +
   geom_line(alpha = 0.5, col = '#1c86ee') +
   geom_hline(data = pop_par, mapping = aes(yintercept = value), lty = 'dashed') +
@@ -328,7 +328,7 @@ G2 <- Conver_df %>%
              lty = 'dashed', size = 0.5) +
   geom_hline(data = pop_par, mapping = aes(yintercept = value + se_sa), 
              lty = 'dashed', size = 0.5) +
-  facet_wrap( ~ parameter, ncol = 4, scales = "free") +
+  facet_wrap( ~ Parameter, ncol = 4, scales = "free") +
   theme(legend.position = "none") +
   xlab('Iteración')  + ylab('Valor')
 

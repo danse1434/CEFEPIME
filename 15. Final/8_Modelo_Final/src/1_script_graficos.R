@@ -291,6 +291,14 @@ G2 <-
 ggsave('figures/G_RES.pdf', G2, 'pdf', 
        width = 8, height = 8, units = 'in')
 
+G2a <- 
+  G_RES_TAD_PWRES + G_RES_TAD_IWRES + G_RES_TAD_NPDE  +
+  G_RES_C_PWRES + G_RES_C_IWRES + G_RES_C_NPDE  +
+  plot_annotation(tag_levels = 'A') + plot_layout(ncol = 3)
+
+ggsave('figures/G_RES_1.pdf', G2a & theme_bw(),  
+       device = 'pdf', width = 6*1.2, height = 4*1.2, units = 'in')
+
 #-------------------------------------------------------------------------------#
 # Gráficos observaciones y predicciones individuales ----------------------------
 #-------------------------------------------------------------------------------#
