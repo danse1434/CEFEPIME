@@ -1,0 +1,36 @@
+<MODEL>
+
+; Modelo de Covariables =============================================================
+[COVARIATE]
+input = {SCR_mn, omega_SCR}
+
+DEFINITION:
+SCRMGDL = {distribution = normal, typical = SCR_mn, sd = omega_SCR}
+
+; Modelo Poblacional =============================================================
+[INDIVIDUAL]
+input = {Cl_pop, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2, omega_Cl, SCRMGDL, beta_Cl_tSCRMGDL}
+
+EQUATION:
+tSCRMGDL = SCRMGDL/0.54
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, covariate=tSCRMGDL, coefficient=beta_Cl_tSCRMGDL, sd=omega_Cl}
+Q = {distribution=logNormal, typical=Q_pop, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+
+; Modelo Longitudina =============================================================
+[LONGITUDINAL]
+input = {a, f}
+
+file = 'lib:infusion_2cpt_ClV1QV2.txt'
+
+EQUATION:
+ufCc = (1-f)*Cc
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=constant(a)}
+
+OUTPUT:
+output = {Cc, ufCc}

@@ -1,0 +1,68 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '1_DATA/Monolix_data.txt'
+delimiter = tab
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {Km_pop, omega_Km, V_pop, omega_V, Vm_pop, omega_Vm}
+
+DEFINITION:
+Km = {distribution=logNormal, typical=Km_pop, sd=omega_Km}
+V = {distribution=logNormal, typical=V_pop, sd=omega_V}
+Vm = {distribution=logNormal, typical=Vm_pop, sd=omega_Vm}
+
+[LONGITUDINAL]
+input = {a}
+
+file = 'lib:infusion_1cpt_VVmKm.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=constant(a)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Km_pop = {value=2.06, method=FIXED}
+V_pop = {value=0.389, method=FIXED}
+Vm_pop = {value=32.2, method=FIXED}
+a = {value=35.08629945609985, method=MLE}
+omega_Km = {value=85.12162153979953, method=MLE}
+omega_V = {value=1624.588543705605, method=MLE}
+omega_Vm = {value=150.3143520334959, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(method = StochasticApproximation)
+logLikelihood(method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, residualsscatter, residualsdistribution, parameterdistribution, covariatemodeldiagnosis, randomeffects, covariancemodeldiagnosis, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'Project_M2CPTM2'
+
+[COMMENTS]
+; Modelo de dos compartimentos - dominio original
+

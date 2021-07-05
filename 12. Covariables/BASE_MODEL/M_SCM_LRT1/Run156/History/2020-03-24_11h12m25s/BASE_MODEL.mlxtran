@@ -1,0 +1,115 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '../../../../../interv_censored.csv'
+delimiter = semicolon
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM, LIMIT, CENS}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+LIMIT = {use=limit}
+CENS = {use=censored}
+SEXF = {use=covariate, type=categorical}
+AGEA = {use=covariate, type=continuous}
+WTKG = {use=covariate, type=continuous}
+HCM = {use=covariate, type=continuous}
+SCM2 = {use=covariate, type=continuous}
+IMCKGM2 = {use=covariate, type=continuous}
+SCRMGDL = {use=covariate, type=continuous}
+CLCRMLMIN = {use=covariate, type=continuous}
+PROGDL = {use=covariate, type=continuous}
+ALBGDL = {use=covariate, type=continuous}
+RAL = {use=covariate, type=continuous}
+RAN = {use=covariate, type=continuous}
+ANTU = {use=covariate, type=categorical}
+LLP = {use=covariate, type=categorical}
+LMP = {use=covariate, type=categorical}
+
+<MODEL>
+
+[COVARIATE]
+input = {AGEA, WTKG, HCM, SCM2, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, RAL, RAN, SEXF}
+
+SEXF = {type=categorical, categories={0, 1}}
+
+EQUATION:
+logtAGEA = log(AGEA/40.0667)
+logtWTKG = log(WTKG/67.7333)
+logtHCM = log(HCM/167.333)
+logtSCM2 = log(SCM2/1.7627)
+logtIMCKGM2 = log(IMCKGM2/24.1951)
+logtSCRMGDL = log(SCRMGDL/0.552)
+logtCLCRMLMIN = log(CLCRMLMIN/127.16)
+logtPROGDL = log(PROGDL/5.6013)
+logtALBGDL = log(ALBGDL/3.3537)
+logtRAL = log(RAL/513.333)
+logtRAN = log(RAN/145.333)
+
+[INDIVIDUAL]
+input = {Cl_pop, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2, omega_Cl, logtAGEA, beta_Q_logtAGEA, SEXF, beta_V2_SEXF_1, logtCLCRMLMIN, beta_Q_logtCLCRMLMIN}
+
+SEXF = {type=categorical, categories={0, 1}}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, sd=omega_Cl}
+Q = {distribution=logNormal, typical=Q_pop, covariate={logtAGEA, logtCLCRMLMIN}, coefficient={beta_Q_logtAGEA, beta_Q_logtCLCRMLMIN}, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, covariate=SEXF, coefficient={0, beta_V2_SEXF_1}, sd=omega_V2}
+
+[LONGITUDINAL]
+input = {a, b}
+
+file = 'lib:infusion_2cpt_ClV1QV2.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=combined2(a, b)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Cl_pop = {value=13.50877331502133, method=MLE}
+Q_pop = {value=23.4, method=FIXED}
+V1_pop = {value=24.14224648601317, method=MLE}
+V2_pop = {value=13.10528334359096, method=MLE}
+a = {value=1.549934911945413, method=MLE}
+b = {value=0.0415847373044826, method=MLE}
+beta_Q_logtAGEA = {value=0, method=MLE}
+beta_Q_logtCLCRMLMIN = {value=0, method=MLE}
+beta_V2_SEXF_1 = {value=0, method=MLE}
+omega_Cl = {value=0.259512783327901, method=MLE}
+omega_Q = {value=1.011709893089555, method=MLE}
+omega_V1 = {value=0.2632946425245737, method=MLE}
+omega_V2 = {value=0.8883783075703722, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(method = StochasticApproximation)
+logLikelihood(method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, vpc, npc, residualsscatter, residualsdistribution, parameterdistribution, covariatemodeldiagnosis, randomeffects, covariancemodeldiagnosis, blq, predictiondistribution, likelihoodcontribution, categorizedoutput, saemresults, condmeanresults, fisher, likelihoodresults })
+
+[SETTINGS]
+GLOBAL:
+POPULATION:
+burniniterations = 100
+smoothingiterations = 1000
+exploratoryiterations = 1000
+simulatedannealingiterations = 200
+exploratoryinterval = 500
+smoothinginterval = 500
+

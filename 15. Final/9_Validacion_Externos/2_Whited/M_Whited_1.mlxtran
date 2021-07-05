@@ -1,0 +1,74 @@
+<DATAFILE>
+
+[FILEINFO]
+file = 'data/1_data_TSFD.csv'
+delimiter = semicolon
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM, LIMIT, CENS}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+LIMIT = {use=limit}
+CENS = {use=censored}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {V_pop, omega_V, k_pop, omega_k}
+
+DEFINITION:
+V = {distribution=logNormal, typical=V_pop, sd=omega_V}
+k = {distribution=logNormal, typical=k_pop, sd=omega_k}
+
+[LONGITUDINAL]
+input = {a, b}
+
+file = 'lib:infusion_1cpt_Vk.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=combined1(a, b)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+V_pop = {value=20.9, method=MLE}
+a = {value=1.72, method=MLE}
+b = {value=0.21, method=MLE}
+k_pop = {value=0.39, method=MLE}
+omega_V = {value=0.1156, method=MLE}
+omega_k = {value=0.1836, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(run = false,method = StochasticApproximation)
+logLikelihood(run = false,method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, vpc, npc, residualsscatter, residualsdistribution, covariatemodeldiagnosis, predictiondistribution, categorizedoutput })
+
+[SETTINGS]
+GLOBAL:
+exportpath = '1_Whited_TSFD'
+
+POPULATION:
+burniniterations = 0
+smoothingiterations = 0
+exploratoryiterations = 0
+simulatedannealingiterations = 0
+
+[COMMENTS]
+; Modelo de Referencia No. 2 Whited L, Grove M, Rose D, et al. Pharmacokinetics of Cefepime in Patients with Cancer and Febrile Neutropenia in the Setting of Hematologic Malignancies or Hematopoeitic Cell Transplantation. Pharmacother J Hum Pharmacol Drug Ther 2016; 36: 1003–1010.
+

@@ -1,0 +1,87 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '../../data_126.csv'
+delimiter = semicolon
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM, LIMIT, CENS, new_ID}
+
+[CONTENT]
+new_ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+LIMIT = {use=limit}
+CENS = {use=censored}
+SCRMGDL = {use=covariate, type=continuous}
+
+<MODEL>
+
+[COVARIATE]
+input = SCRMGDL
+
+EQUATION:
+tSCRMGDL = SCRMGDL/0.54
+
+[INDIVIDUAL]
+input = {Cl_pop, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2, omega_Cl, tSCRMGDL, beta_Cl_tSCRMGDL}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, covariate=tSCRMGDL, coefficient=beta_Cl_tSCRMGDL, sd=omega_Cl}
+Q = {distribution=logNormal, typical=Q_pop, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+
+[LONGITUDINAL]
+input = {a, b}
+
+file = 'lib:infusion_2cpt_ClV1QV2.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=combined2(a, b)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Cl_pop = {value=20.5600468463036, method=MLE}
+Q_pop = {value=23.4, method=FIXED}
+V1_pop = {value=24.4309629919577, method=MLE}
+V2_pop = {value=12.7157261217017, method=MLE}
+a = {value=1, method=MLE}
+b = {value=0.3, method=MLE}
+beta_Cl_tSCRMGDL = {value=-0.410671178794612, method=MLE}
+omega_Cl = {value=1, method=MLE}
+omega_Q = {value=1, method=MLE}
+omega_V1 = {value=1, method=MLE}
+omega_V2 = {value=1, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(run = false,method = none )
+fim(run = false,method = none )
+logLikelihood(run = false,method = none )
+plotResult(run = false,method = none )
+
+[SETTINGS]
+GLOBAL:
+exportpath = '../'
+
+POPULATION:
+burniniterations = 100
+smoothingiterations = 1000
+exploratoryiterations = 1000
+simulatedannealingiterations = 100
+exploratoryinterval = 500
+smoothinginterval = 500
+

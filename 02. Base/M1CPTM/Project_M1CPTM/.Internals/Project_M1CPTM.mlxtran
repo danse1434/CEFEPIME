@@ -1,0 +1,69 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '../../1_DATA/Monolix_data.txt'
+delimiter = tab
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {Cl_pop, omega_Cl, V_pop, omega_V}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, sd=omega_Cl}
+V = {distribution=logNormal, typical=V_pop, sd=omega_V}
+
+[LONGITUDINAL]
+input = {a}
+
+file = 'lib:infusion_1cpt_VCl.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=constant(a)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Cl_pop = {value=14.42074516384905, method=MLE}
+V_pop = {value=31.61313073863703, method=MLE}
+a = {value=3.669476138417952, method=MLE}
+omega_Cl = {value=0.2984075846167453, method=MLE}
+omega_V = {value=0.2842527519597979, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(method = StochasticApproximation)
+logLikelihood(method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, vpc, npc, residualsscatter, residualsdistribution, parameterdistribution, covariatemodeldiagnosis, randomeffects, covariancemodeldiagnosis, blq, predictiondistribution, likelihoodcontribution, categorizedoutput, saemresults, condmeanresults, fisher, likelihoodresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = '../'
+nbsimulations = 10000
+grid = 1000
+
+POPULATION:
+burniniterations = 100
+exploratoryiterations = 1000
+simulatedannealingiterations = 1000
+

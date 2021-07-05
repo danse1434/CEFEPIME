@@ -1,0 +1,71 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '1_DATA/Monolix_data.csv'
+delimiter = semicolon
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {Km_pop, omega_Km, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2, Vm_pop, omega_Vm}
+
+DEFINITION:
+Km = {distribution=logNormal, typical=Km_pop, sd=omega_Km}
+Q = {distribution=logNormal, typical=Q_pop, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+Vm = {distribution=logNormal, typical=Vm_pop, sd=omega_Vm}
+
+[LONGITUDINAL]
+input = {a}
+
+file = 'lib:infusion_2cpt_V1QV2VmKm.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=constant(a)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Km_pop = {value=18924494326161612, method=MLE}
+Q_pop = {value=17.61907500713932, method=MLE}
+V1_pop = {value=31.27000134624988, method=MLE}
+V2_pop = {value=6391.887273997446, method=MLE}
+Vm_pop = {value=0, method=MLE}
+a = {value=2.91658786226071, method=MLE}
+omega_Km = {value=14.63899301325794, method=MLE}
+omega_Q = {value=0.4043772553336891, method=MLE}
+omega_V1 = {value=0.2978378836361116, method=MLE}
+omega_V2 = {value=0.5844784175162036, method=MLE}
+omega_Vm = {value=23.62995145086902, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = none )
+fim(run = false,method = StochasticApproximation)
+logLikelihood(run = false,method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, residualsscatter, residualsdistribution, parameterdistribution, covariatemodeldiagnosis, randomeffects, covariancemodeldiagnosis, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'Project_M2CPTM2'
+

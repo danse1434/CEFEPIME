@@ -1,0 +1,77 @@
+<DATAFILE>
+
+[FILEINFO]
+file = 'Normal.csv'
+delimiter = semicolon
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {Cl_pop, omega_Cl, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, sd=omega_Cl}
+Q = {distribution=logNormal, typical=Q_pop, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+
+[LONGITUDINAL]
+input = {a}
+
+file = 'lib:infusion_2cpt_ClV1QV2.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=constant(a)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Cl_pop = {value=13.5151, method=MLE}
+Q_pop = {value=28.1128, method=MLE}
+V1_pop = {value=23.4891, method=MLE}
+V2_pop = {value=12.4303, method=MLE}
+a = {value=1.900956495246512, method=MLE}
+omega_Cl = {value=0.2606424186936916, method=MLE}
+omega_Q = {value=0.7743540131009133, method=MLE}
+omega_V1 = {value=0.31062028356319, method=MLE}
+omega_V2 = {value=0.7764727427381465, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(method = StochasticApproximation)
+logLikelihood(method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, residualsscatter, residualsdistribution, parameterdistribution, covariatemodeldiagnosis, randomeffects, covariancemodeldiagnosis, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'M1_CENS'
+
+POPULATION:
+burniniterations = 100
+smoothingiterations = 1000
+exploratoryiterations = 1000
+simulatedannealing = no
+simulatedannealingiterations = 1000
+exploratoryinterval = 750
+smoothinginterval = 750
+

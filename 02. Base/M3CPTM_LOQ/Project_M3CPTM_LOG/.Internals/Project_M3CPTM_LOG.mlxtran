@@ -1,0 +1,86 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '../../1_DATA/Monolix_data_LOG.csv'
+delimiter = semicolon
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {Cl_pop, omega_Cl, Q2_pop, omega_Q2, Q3_pop, omega_Q3, V1_pop, omega_V1, V2_pop, omega_V2, V3_pop, omega_V3}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, sd=omega_Cl}
+Q2 = {distribution=logNormal, typical=Q2_pop, sd=omega_Q2}
+Q3 = {distribution=logNormal, typical=Q3_pop, sd=omega_Q3}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+V3 = {distribution=logNormal, typical=V3_pop, sd=omega_V3}
+
+[LONGITUDINAL]
+input = {a}
+
+file = '../../1_DATA/infusion_3cpt_ClV1Q2V2Q3V3_LOQ.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Y, errorModel=constant(a)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Cl_pop = {value=13.6904, method=MLE}
+Q2_pop = {value=0.00000005418253, method=MLE}
+Q3_pop = {value=2.7143, method=MLE}
+V1_pop = {value=28.9831, method=MLE}
+V2_pop = {value=207.178, method=MLE}
+V3_pop = {value=36.3114, method=MLE}
+a = {value=0.1764662038817974, method=MLE}
+omega_Cl = {value=0.2269197963333919, method=MLE}
+omega_Q2 = {value=0.0000000323429212, method=MLE}
+omega_Q3 = {value=2.329804237025304, method=MLE}
+omega_V1 = {value=0.0000000304910959, method=MLE}
+omega_V2 = {value=0.0000000481848943, method=MLE}
+omega_V3 = {value=0.0000000301914402, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(method = StochasticApproximation)
+logLikelihood(method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, residualsscatter, residualsdistribution, parameterdistribution, covariatemodeldiagnosis, randomeffects, covariancemodeldiagnosis, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = '../'
+
+POPULATION:
+burniniterations = 1000
+smoothingiterations = 1500
+exploratoryiterations = 2000
+simulatedannealing = no
+simulatedannealingiterations = 2000
+exploratoryinterval = 1500
+smoothinginterval = 1000
+
+[COMMENTS]
+; Modelo con transformaci?n logar?tmica en variable dependiente e independiente. 
+

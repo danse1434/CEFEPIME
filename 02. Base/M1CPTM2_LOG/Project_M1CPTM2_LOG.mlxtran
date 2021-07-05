@@ -1,0 +1,68 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '1_DATA/Monolix_data_LOG.csv'
+delimiter = semicolon
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {V_logit_pop, omega_V_logit, Km_logit_pop, omega_Km_logit, Vm_logit_pop, omega_Vm_logit}
+
+DEFINITION:
+V_logit = {distribution=logitNormal, max=100, typical=V_logit_pop, sd=omega_V_logit}
+Km_logit = {distribution=logitNormal, min=0.0001, max=100, typical=Km_logit_pop, sd=omega_Km_logit}
+Vm_logit = {distribution=logitNormal, min=1e-8, max=100, typical=Vm_logit_pop, sd=omega_Vm_logit}
+
+[LONGITUDINAL]
+input = {a_}
+
+file = '1_DATA/infusion_1cpt_VVmKm_log.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Y, errorModel=constant(a_)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Km_logit_pop = {value=1, method=MLE}
+V_logit_pop = {value=10, method=MLE}
+Vm_logit_pop = {value=1, method=MLE}
+a_ = {value=3, method=MLE}
+omega_Km_logit = {value=1, method=MLE}
+omega_V_logit = {value=1, method=MLE}
+omega_Vm_logit = {value=1, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = none )
+fim(run = false,method = StochasticApproximation)
+logLikelihood(run = false,method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, residualsscatter, residualsdistribution, parameterdistribution, covariatemodeldiagnosis, randomeffects, covariancemodeldiagnosis, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'Project_M1CPTM2_LOG'
+
+POPULATION:
+smoothinginterval = 100
+

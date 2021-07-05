@@ -1,0 +1,93 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '../../data/2_data_TAD.csv'
+delimiter = comma
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM, LIMIT, CENS}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+WTKG = {use=covariate, type=continuous}
+CLCRMLMIN = {use=covariate, type=continuous}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+LIMIT = {use=limit}
+CENS = {use=censored}
+
+<MODEL>
+
+[COVARIATE]
+input = {CLCRMLMIN, WTKG}
+
+EQUATION:
+log_tWT = log(WTKG/70)
+log_tCLCR = log(CLCRMLMIN/100)
+
+[INDIVIDUAL]
+input = {Cl_pop, omega_Cl, V1_pop, omega_V1, V2_pop, omega_V2, Q_pop, log_tWT, beta_Cl_log_tWT, beta_V1_log_tWT, beta_Q_log_tWT, beta_V2_log_tWT, log_tCLCR, beta_Cl_log_tCLCR}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, covariate={log_tWT, log_tCLCR}, coefficient={beta_Cl_log_tWT, beta_Cl_log_tCLCR}, sd=omega_Cl}
+V1 = {distribution=logNormal, typical=V1_pop, covariate=log_tWT, coefficient=beta_V1_log_tWT, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, covariate=log_tWT, coefficient=beta_V2_log_tWT, sd=omega_V2}
+Q = {distribution=logNormal, typical=Q_pop, covariate=log_tWT, coefficient=beta_Q_log_tWT, no-variability}
+
+[LONGITUDINAL]
+input = {a, b}
+
+file = 'lib:infusion_2cpt_ClV1QV2.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=combined1(a, b)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Cl_pop = {value=6.77, method=MLE}
+Q_pop = {value=11.4, method=MLE}
+V1_pop = {value=17.8, method=MLE}
+V2_pop = {value=12.2, method=MLE}
+a = {value=1.9, method=MLE}
+b = {value=0.307, method=MLE}
+beta_Cl_log_tCLCR = {value=0.41, method=MLE}
+beta_Cl_log_tWT = {value=1, method=MLE}
+beta_Q_log_tWT = {value=1, method=MLE}
+beta_V1_log_tWT = {value=1, method=MLE}
+beta_V2_log_tWT = {value=1, method=MLE}
+omega_Cl = {value=0.44761449676, method=MLE}
+omega_V1 = {value=0.37807798734, method=MLE}
+omega_V2 = {value=0.45105533803, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(run = false,method = StochasticApproximation)
+logLikelihood(run = false,method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, vpc, npc, residualsscatter, residualsdistribution, covariatemodeldiagnosis, predictiondistribution, categorizedoutput })
+
+[SETTINGS]
+GLOBAL:
+exportpath = '../'
+
+POPULATION:
+burniniterations = 0
+smoothingiterations = 0
+exploratoryiterations = 0
+simulatedannealingiterations = 0
+
+[COMMENTS]
+; Modelo de Referencia No. 6 Delattre IK, Musuamba FT, Jacqmin P, et al. Population pharmacokinetics of four ß-lactams in critically ill septic patients comedicated with amikacin. Clin Biochem 2012; 45: 780–786.
+

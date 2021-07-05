@@ -1,0 +1,80 @@
+<DATAFILE>
+
+[FILEINFO]
+file = '../../data/2_data_TAD.csv'
+delimiter = comma
+header = {ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM, LIMIT, CENS}
+
+[CONTENT]
+ID = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+WTKG = {use=covariate, type=continuous}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+LIMIT = {use=limit}
+CENS = {use=censored}
+
+<MODEL>
+
+[COVARIATE]
+input = WTKG
+
+EQUATION:
+log_WTKG = log(WTKG)
+
+[INDIVIDUAL]
+input = {V_pop, omega_V, Cl_pop, omega_Cl}
+
+DEFINITION:
+V = {distribution=logNormal, typical=V_pop, sd=omega_V}
+Cl = {distribution=logNormal, typical=Cl_pop, sd=omega_Cl}
+
+[LONGITUDINAL]
+input = {a}
+
+file = 'lib:infusion_1cpt_VCl.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=constant(a)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Cl_pop = {value=8.6, method=MLE}
+V_pop = {value=33.4, method=MLE}
+a = {value=0.034, method=MLE}
+omega_Cl = {value=0.259, method=MLE}
+omega_V = {value=0.249, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(run = false,method = StochasticApproximation)
+logLikelihood(run = false,method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, obspred, vpc, npc, residualsscatter, residualsdistribution, covariatemodeldiagnosis, predictiondistribution, categorizedoutput })
+
+[SETTINGS]
+GLOBAL:
+exportpath = '../'
+
+POPULATION:
+burniniterations = 0
+smoothingiterations = 0
+exploratoryiterations = 0
+simulatedannealingiterations = 0
+
+[COMMENTS]
+; Modelo de Referencia No. 4 Sime FB, Roberts MS, Tiong IS, et al. Adequacy of High-Dose Cefepime Regimen in Febrile Neutropenic Patients with Hematological Malignancies. Antimicrob Agents Chemother 2015; 59: 5463–5469.
+

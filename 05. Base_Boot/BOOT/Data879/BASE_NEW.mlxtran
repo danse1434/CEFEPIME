@@ -1,0 +1,78 @@
+<DATAFILE>
+
+[FILEINFO]
+file = 'data_879.csv'
+delimiter = semicolon
+header = {new_id , ID, DV, MDV, EVID, AMT, RATE, ADDL, II, SS, TIME, SEXF, AGEA, WTKG, HCM, IMCKGM2, SCRMGDL, CLCRMLMIN, PROGDL, ALBGDL, DIND, DNFD, RAL, RAN, ANTU, LLP, LMP, SCM2, Dx, YTYPE, ADM, LIMIT, CENS}
+
+[CONTENT]
+new_id = {use=identifier}
+DV = {use=observation, name=y_1, yname='1', type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+ADDL = {use=additionaldose}
+II = {use=interdoseinterval}
+SS = {use=steadystate, nbdoses=5}
+TIME = {use=time}
+YTYPE = {use=observationtype}
+ADM = {use=administration}
+LIMIT = {use=limit}
+CENS = {use=censored}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {Cl_pop, omega_Cl, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, sd=omega_Cl}
+Q = {distribution=logNormal, typical=Q_pop, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+
+[LONGITUDINAL]
+input = {a, b}
+
+file = 'lib:infusion_2cpt_ClV1QV2.txt'
+
+DEFINITION:
+y_1 = {distribution=normal, prediction=Cc, errorModel=combined2(a, b)}
+
+<FIT>
+data = y_1
+model = y_1
+
+<PARAMETER>
+Cl_pop = {value=13.5016, method=MLE}
+Q_pop = {value=36.5315, method=MLE}
+V1_pop = {value=21.7629, method=MLE}
+V2_pop = {value=16.3975, method=MLE}
+a = {value=1.54597606393337, method=MLE}
+b = {value=0.05723654365985, method=MLE}
+omega_Cl = {value=0.257881104434036, method=MLE}
+omega_Q = {value=1.66500475941682, method=MLE}
+omega_V1 = {value=6.78911971736989e-8, method=MLE}
+omega_V2 = {value=0.720939694265231, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+plotResult(method = {saemresults})
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'BASE'
+
+POPULATION:
+burniniterations = 100
+smoothingiterations = 500
+exploratoryiterations = 500
+simulatedannealing = no
+simulatedannealingiterations = 1500
+exploratoryinterval = 1000
+smoothinginterval = 1000
+
+
