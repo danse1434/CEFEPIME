@@ -2,10 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-*.dat
 *.eps
-*.mlxtran
-*.tex
 *.xml
 *.svg
 **/98. Escrito detallado/*
@@ -13,7 +10,6 @@
 
 *.pkx
 *.xlsx
-*.png
 *.aci
 *.for
 *.obj

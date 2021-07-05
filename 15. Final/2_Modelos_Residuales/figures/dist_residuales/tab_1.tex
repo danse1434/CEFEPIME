@@ -1,0 +1,39 @@
+\captionsetup[table]{labelformat=empty,skip=1pt}
+\begin{longtable}{crrrrrr}
+\caption*{
+\large \textbf{Verificación de batería de pruebas
+de normalidad}\\ 
+\small \\ 
+} \\ 
+\toprule
+& \multicolumn{6}{c}{Prueba de Normalidad\textsuperscript{1}} \\ 
+ \cmidrule(lr){2-7}
+Tipo de Residual & \emph{Shapiro} & \emph{Anderson Darling} & \emph{Cramer von Mises} & \emph{Liliefors} & \emph{Pearson} & \emph{Shapiro Francia} \\ 
+\midrule
+\multicolumn{1}{l}{Modelo 1} \\ 
+\midrule
+PWRES & $7.68 \times 10^{-5}$ & $2.87 \times 10^{-5}$ & $1.30 \times 10^{-4}$ & $1.17 \times 10^{-4}$ & $2.11 \times 10^{-3}$ & $2.68 \times 10^{-4}$ \\ 
+IWRES & $1.59 \times 10^{-2}$ & $1.24 \times 10^{-2}$ & $6.34 \times 10^{-3}$ & $3.33 \times 10^{-3}$ & <b><span style="color:#0003D1;"opacity: 0.95>$6.47 \times 10^{-2}$</span></b> & $7.73 \times 10^{-3}$ \\ 
+NPDE & $7.05 \times 10^{-3}$ & $3.00 \times 10^{-3}$ & $3.09 \times 10^{-3}$ & $2.81 \times 10^{-3}$ & $2.37 \times 10^{-2}$ & $1.53 \times 10^{-2}$ \\ 
+\midrule
+\multicolumn{1}{l}{Modelo 2} \\ 
+\midrule
+PWRES & $5.31 \times 10^{-5}$ & $2.20 \times 10^{-5}$ & $1.42 \times 10^{-4}$ & $1.81 \times 10^{-3}$ & $4.82 \times 10^{-5}$ & $1.87 \times 10^{-4}$ \\ 
+IWRES & $8.99 \times 10^{-6}$ & $3.34 \times 10^{-5}$ & $1.32 \times 10^{-4}$ & $1.21 \times 10^{-2}$ & <b><span style="color:#0003D1;"opacity: 0.95>$2.01 \times 10^{-1}$</span></b> & $1.00 \times 10^{-5}$ \\ 
+NPDE & $1.07 \times 10^{-2}$ & $4.01 \times 10^{-3}$ & $4.41 \times 10^{-3}$ & $8.41 \times 10^{-3}$ & $3.56 \times 10^{-3}$ & $2.14 \times 10^{-2}$ \\ 
+\midrule
+\multicolumn{1}{l}{Modelo 3} \\ 
+\midrule
+PWRES & $6.57 \times 10^{-5}$ & $2.47 \times 10^{-5}$ & $1.18 \times 10^{-4}$ & $5.07 \times 10^{-5}$ & $8.93 \times 10^{-4}$ & $2.29 \times 10^{-4}$ \\ 
+IWRES & <b><span style="color:#0003D1;"opacity: 0.95>$4.91 \times 10^{-1}$</span></b> & <b><span style="color:#0003D1;"opacity: 0.95>$3.38 \times 10^{-1}$</span></b> & <b><span style="color:#0003D1;"opacity: 0.95>$2.92 \times 10^{-1}$</span></b> & <b><span style="color:#0003D1;"opacity: 0.95>$2.12 \times 10^{-1}$</span></b> & <b><span style="color:#0003D1;"opacity: 0.95>$9.90 \times 10^{-2}$</span></b> & <b><span style="color:#0003D1;"opacity: 0.95>$4.16 \times 10^{-1}$</span></b> \\ 
+NPDE & $6.17 \times 10^{-3}$ & $3.11 \times 10^{-3}$ & $3.29 \times 10^{-3}$ & $4.55 \times 10^{-3}$ & $1.20 \times 10^{-2}$ & $1.47 \times 10^{-2}$ \\ 
+\bottomrule
+\end{longtable}
+\vspace{-5mm}
+\begin{minipage}{\linewidth}
+\textsuperscript{1}Se reportan los valores p para cada
+prueba de normalidad. Se marcan en azul los valores
+en los que no se puede rechazar la H0 de
+normalidad. \\ 
+\end{minipage}
+

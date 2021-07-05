@@ -25,8 +25,7 @@ require(patchwork)
 
 ##########################################################################-
 # Selección de directorio principal
-setwd(file.path('F:','Documentos','(Proyecto)_Estudio_PKPD','CEFEPIME',
-                '04. Residual', 'Modelo_8', 'RES_M1'))
+setwd(file.path('04. Residual', 'Modelo_8', 'RES_M1'))
 
 source(file.path('src', '10_performance_fun.R'), encoding = 'UTF-8')
 
@@ -478,15 +477,19 @@ G_CP_TAD <-
   ggplot(mapping = aes(x = TAD)) +
   geom_line(aes(y = pop), lty = 'dashed') +
   geom_line(aes(y = indivPredMean), lty = 'solid', col = 'green3') +
-  facet_wrap( ~ ID, ncol = 4, labeller = labeller(.cols = label_both)) +
+  facet_wrap( ~ ID, ncol = 5, labeller = labeller(.cols = label_both)) +
   geom_point(data = y_1_observations,
              mapping = aes(x = TAD, y = y_1),
              col = 'green4') +
   xlim(0, NA) +
-  xlab('TAD') + ylab(expression(C[P]))
+  xlab('TAD (h)') + ylab(expression(C[P]~'(mg/L)')) + 
+  theme(panel.grid.major = element_line(colour = 'gray95'), 
+        panel.grid.minor = element_blank())
+
+G_CP_TAD
   
 ggsave(filename = 'FIGURAS/G_CP_TAD.pdf', plot = G_CP_TAD,
-       device = 'pdf', width = 5, height = 6)
+       device = 'pdf', width = 7, height = 5.5)
 
 ##########################################################################-
 # C?lculo manual de encogimiento eta y epsilon ----------------------------
