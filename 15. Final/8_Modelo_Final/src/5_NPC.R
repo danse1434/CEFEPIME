@@ -11,7 +11,11 @@
 ##  
 ## Email: dsparrag@unal.edu.co 
 ##------------------------------------------------------------------------------#
+monolix2019R2.path <-  "C:/ProgramData/Lixoft/MonolixSuite2019R2"
+require(lixoftConnectors, lib.loc = monolix2019R2.path )
 require(mlxR)
+initMlxR(path = monolix2019R2.path)
+
 require(tidyverse)
 require(patchwork)
 
@@ -19,7 +23,7 @@ require(patchwork)
 # Introducción  -----------------------------------------------------------------
 #-------------------------------------------------------------------------------#
 # 
-project.file <- 'M_Error.mlxtran'
+project.file <- '1_M_Error_1.mlxtran'
 
 # Remuestreo de pacientes iniciales
 
@@ -149,7 +153,7 @@ NPC_plot <- df %>%
   geom_point(col = 'black') + 
   facet_grid(Tipo ~ .) + 
   geom_hline(yintercept = 1, lty = 'dotted') +
-  ylab('Ratio O/E') + xlab('IP') + 
+  ylab('Ratio O/E') + xlab('Intervalos de predicción (IP)') + 
   theme_bw() +
   theme(panel.border = element_rect(fill = NULL, colour = 'black'),
         legend.position = "none") +
@@ -159,18 +163,21 @@ NPC_plot <- df %>%
 NPC_plot
 
 # Apertura de gráfico de VPC almacenado 
-VPC_plot <- readRDS('figures/RDS/pcVPC_percentil.rds')
+VPC_plot <- readRDS('figures/RDS/pcVPC_percentil.rds') + theme_bw()
 
 # Formación de gráfico compuesto
-NPC_conplot <- (VPC_plot + theme_bw()) + 
-                NPC_plot + plot_annotation(tag_levels = 'A')
+NPC_conplot <- wrap_plots(VPC_plot, NPC_plot) + 
+  plot_layout(widths = c(0.65, 0.35)) + 
+  plot_annotation(tag_levels = 'A')
 
+
+NPC_conplot
 # Almacenamiento del archivo PDF
 ggsave(filename = 'figures/NPC_plot.pdf', NPC_plot, device = 'pdf', 
        width = 4/1.2, height = 6/1.2)
 
 ggsave(filename = 'figures/VPC_NPC_plot.pdf', NPC_conplot, device = 'pdf', 
-       width = 8, height = 5)
+       width = 8, height = 4.5)
 
 # Almacenamiento como RDS
 saveRDS(NPC_plot, 'figures/RDS/NPC_percentil.RDS')

@@ -17,8 +17,13 @@
 #-------------------------------------------------------------------------------#
 # Carga de paquetes
 require(tidyverse)
+require(progress)
 require(rlang)
+monolix2019R2.path <-  "C:/ProgramData/Lixoft/MonolixSuite2019R2"
+require(lixoftConnectors, lib.loc = monolix2019R2.path )
 require(mlxR)
+initMlxR(path = monolix2019R2.path)
+
 
 #-------------------------------------------------------------------------------#
 auxdir <- file.path('BASE_MODEL')
@@ -74,7 +79,7 @@ data_TAD <-
 #  *simulx*. Elaborar una lista con 1000 tablas que contienen las simulaciones. 
 # Se demora 6 minutos aproxim.
 #................................................................................
-project.file <- 'M_Error.mlxtran'
+project.file <- '1_M_Error_1.mlxtran'
 
 # Parámetros poblacionales
 param <-
@@ -83,20 +88,33 @@ param <-
   select(-se_sa, -rse_sa) %>%
   column_to_rownames(var = "parameter")
 
+N = 1e3
+
 param <- setNames(pull(param), as.character(rownames(param)))
-out1  <- list(name = 'y_1', time = seq(0, 8, length.out = 1e3))
-data_list <- vector(mode = "list", length = 1000)
+out1  <- list(name = 'y_1', time = seq(0, 8, length.out = N))
+data_list <- vector(mode = "list", length = N)
+
+# simulx(project = project.file)
+
+covLev <- data_TAD$covariate %>%
+  mutate(across(c('id', 'SCRMGDL'), ~ as.numeric(as.character(.x))))
 
 # ptm <- proc.time()
-for (i in 1:1000) {
+pb <- progress_bar$new(format = "[:bar] :current/:total (:percent) eta: (:eta)",
+                       total = N)
+
+for (i in 1:N) {
+  pb$tick()
+  suppressMessages(
   data_list[i] <- simulx(
     project = project.file,
-    parameter = param,
+    parameter = list(param, covLev),
     treatment = data_TAD$treatment,
     output = list(out1), 
-    settings = list(load.design=FALSE)
+    settings = list(load.design=TRUE)
   )['y_1']
-  print(paste('Lista la interacción N.º: ', i))
+  )
+  # print(paste('Lista la interacción N.º: ', i))
 }
 # print(proc.time() - ptm)
 # Demora 6 minutos
@@ -442,11 +460,12 @@ g_percs1
 ggsave(filename = 'figures/pcVPC_percentil.pdf', g_percs1, 
        device = 'pdf', width = 6, height = 5)
 
-# Eliminación del objeto data_list que es muy grande como para ser almacenado 
-# y transferido
-rm(data_list)
 
 #-------------------------------------------------------------------------------#
 # Almacenar RDS
 saveRDS(g_percs, 'figures/RDS/VPC_percentil.rds')
 saveRDS(g_percs1, 'figures/RDS/pcVPC_percentil.rds')
+
+# Eliminación del objeto data_list que es muy grande como para ser almacenado 
+# y transferido
+# rm(data_list)
