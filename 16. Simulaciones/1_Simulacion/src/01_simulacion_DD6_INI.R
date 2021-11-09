@@ -17,7 +17,8 @@ require(rlang)
 require(tidyverse)
 require(Rcpp)
 require(RcppArmadillo)
-require(mlxR)
+
+source(file.path('src', '690_paquetesSimulacion.R'), encoding = 'UTF-8')
 
 # Carga de archivo Rcpp
 Rcpp::sourceCpp('src/90_verificacion_PTA.cpp')
@@ -61,19 +62,21 @@ adm4 <- list(time   = c(0.0, seq(0 + 0.5, 24 * 4, by = 24)),
              amount = c(2000, rep(6000, 4)), 
              tinf   = c(0.5, rep(24, 4)))
 
+N_indiv = 1e3
+
 # Grupo de simulación
-grp1 <- list(size = 2500, level = 'individual', treatment = adm1, 
+grp1 <- list(size = N_indiv, level = 'individual', treatment = adm1, 
              parameter = list(p1, p2, p3, p4))
-grp2 <- list(size = 2500, level = 'individual', treatment = adm2, 
+grp2 <- list(size = N_indiv, level = 'individual', treatment = adm2, 
              parameter = list(p1, p2, p3, p4))
-grp3 <- list(size = 2500, level = 'individual', treatment = adm3, 
+grp3 <- list(size = N_indiv, level = 'individual', treatment = adm3, 
              parameter = list(p1, p2, p3, p4))
-grp4 <- list(size = 2500, level = 'individual', treatment = adm4, 
+grp4 <- list(size = N_indiv, level = 'individual', treatment = adm4, 
              parameter = list(p1, p2, p3, p4))
 
 # Definición de outputs
 # out0 <- list(name = 'Cc', time = seq(0, 8,  length.out = 250))
-out1 <- list(name = 'ufCc', time = seq(0, 24, length.out = 250))
+out1 <- list(name = 'ufCc', time = seq(0, 24, length.out = 30))
 
 # Simulación
 ptm <- proc.time()

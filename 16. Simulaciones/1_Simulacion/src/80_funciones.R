@@ -10,17 +10,17 @@
 #' @export
 #' 
 conv_matriz <- function(df, id_col = time, names = id, values = ufCc) {
-  id_col_q <- rlang::enquo(id_col)
-  names_q  <- rlang::enquo(names)
-  values_q <- rlang::enquo(values)
+  # id_col_q <- rlang::enquo(id_col)
+  # names_q  <- rlang::enquo(names)
+  # values_q <- rlang::enquo(values)
   
   df %>% 
     pivot_wider(data = ., 
-                id_cols = !!id_col_q, 
-                names_from = !!names_q, 
+                id_cols = {{id_col}}, 
+                names_from = {{names}}, 
                 names_prefix = 'ID',
-                values_from = !!values_q) %>% 
-    select(-!!id_col_q) %>% 
+                values_from = {{values}}) %>% 
+    select(-{{id_col}}) %>% 
     as.matrix()
 }
 
@@ -37,14 +37,14 @@ conv_matriz <- function(df, id_col = time, names = id, values = ufCc) {
 #' @export
 #' 
 conv_tibble <- function(df, id_col = time, names = id, values = ufCc) {
-  id_col_q <- rlang::enquo(id_col)
-  names_q  <- rlang::enquo(names)
-  values_q <- rlang::enquo(values)
+  # id_col_q <- rlang::enquo(id_col)
+  # names_q  <- rlang::enquo(names)
+  # values_q <- rlang::enquo(values)
   
   df %>% 
     pivot_wider(data = ., 
-                id_cols = !!id_col_q, 
-                names_from = !!names_q, 
+                id_cols = {{id_col}}, 
+                names_from = {{names}}, 
                 names_prefix = 'ID',
-                values_from = !!values_q)
+                values_from = {{values}})
 }

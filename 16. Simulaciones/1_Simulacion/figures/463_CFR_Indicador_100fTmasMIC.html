@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+
+</head>
+<body>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#dgknbpobqr .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: smaller;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#dgknbpobqr .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#dgknbpobqr .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: smaller;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#dgknbpobqr .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: smaller;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#dgknbpobqr .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#dgknbpobqr .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#dgknbpobqr .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#dgknbpobqr .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dgknbpobqr .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dgknbpobqr .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#dgknbpobqr .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#dgknbpobqr .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#dgknbpobqr .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#dgknbpobqr .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dgknbpobqr .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dgknbpobqr .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#dgknbpobqr .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#dgknbpobqr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dgknbpobqr .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#dgknbpobqr .gt_left {
+  text-align: left;
+}
+
+#dgknbpobqr .gt_center {
+  text-align: center;
+}
+
+#dgknbpobqr .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#dgknbpobqr .gt_font_normal {
+  font-weight: normal;
+}
+
+#dgknbpobqr .gt_font_bold {
+  font-weight: bold;
+}
+
+#dgknbpobqr .gt_font_italic {
+  font-style: italic;
+}
+
+#dgknbpobqr .gt_super {
+  font-size: 65%;
+}
+
+#dgknbpobqr .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="dgknbpobqr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="13" class="gt_heading gt_title gt_font_normal" style><strong>Fracción Acumulada de Respuesta (CFR)</strong></th>
+    </tr>
+    <tr>
+      <th colspan="13" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style><strong>Objetivo</strong>: 100% <i>f</i>T <sub>&gt;MIC</sub>; <strong>Creatinina Sérica</strong>: 0.54 mg/dL</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_center gt_columns_bottom_border" rowspan="2" colspan="1"><strong>Microorganismo</strong></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="4">
+        <span class="gt_column_spanner"><strong>DD = 2g</strong></span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="4">
+        <span class="gt_column_spanner"><strong>DD = 4g</strong></span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="4">
+        <span class="gt_column_spanner"><strong>DD = 6g</strong></span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">1g q12h inf. 30min</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">1g q12h inf. 4h</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">1g q6h inf. 30min</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">2g q12h inf. 30min</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">2g q12h inf. 4h</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">2g q24h inf. 24h</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">2g q8h inf. 2h</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">2g q8h inf. 30min</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">2g q8h inf. 4h</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">4g q24h inf. 24h</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">500mg q6h inf. 30min</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">6g q24h inf. 24h</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left"><em>Escherichia coli</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.779</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.838</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.906</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.819</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.874</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.920</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.910</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.902</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.919</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.935</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.891</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.942</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Klebsiella pneumoniae</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.467</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.514</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.614</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.510</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.562</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.654</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.628</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.611</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.655</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.707</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.570</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.746</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Klebsiella aerogenes</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.666</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.758</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.919</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.745</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.841</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.951</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.926</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.907</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.947</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.972</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.877</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.978</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Enterobacter cloacae</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.624</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.702</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.862</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.694</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.781</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.912</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.876</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.854</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.906</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.950</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.806</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.962</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Moraxella catarrhalis</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.484</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.613</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.937</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.622</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.781</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.996</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.942</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.908</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.981</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">1.000</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.829</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">1.000</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Pseudomonas aeruginosa</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.055</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.092</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.395</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.135</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.225</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.572</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.455</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.393</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.559</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.744</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.199</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.817</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Acinetobacter spp</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.040</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.058</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.177</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.073</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.110</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.239</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.210</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.181</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.263</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.408</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.103</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.544</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Acinetobacter baumannii</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.047</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.071</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.244</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.094</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.147</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.346</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.281</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.243</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.342</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.460</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.134</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.532</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Stenotrophomonas maltophilia</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.012</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.018</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.072</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.025</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.040</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.108</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.096</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.078</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.130</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.238</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.034</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.364</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Staphylococcus aureus</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.099</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.160</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.640</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.229</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.375</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.897</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.703</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.622</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.833</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.962</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.338</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.970</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Staphylococcus epidermidis</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.110</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.157</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.422</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.187</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.274</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.584</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.481</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.422</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.576</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.759</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.261</td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.823</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Streptococcus agalactiae</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(255,255,102,0.5);">0.819</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.906</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.996</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.878</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.955</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.999</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.995</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.988</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.998</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.999</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.995</td>
+      <td class="gt_row gt_right" style="background-color: rgba(0,255,0,0.5);">0.999</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Enterococcus faecalis</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.002</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.002</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.005</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.002</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.003</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.007</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.007</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.006</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.010</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.018</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.003</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.054</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><em>Enterococcus faecium</em></td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.004</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.005</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.012</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.006</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.008</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.016</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.013</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.012</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.016</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.021</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.008</td>
+      <td class="gt_row gt_right" style="background-color: rgba(230,184,183,0.5);">0.023</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</body>
+</html>
