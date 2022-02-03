@@ -1,8 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,logtHCM,0.0414298,0.967583,Pearson
-Q,LMP,1.0046,0.334493,Fisher
-Q,logtAGEA,0.0251634,0.980307,Pearson
-Q,logtALBGDL,1.4915,0.159693,Pearson
-Q,logtPROGDL,-0.0886404,0.930719,Pearson
-V2,SEXF,6.30142,0.026079,Fisher
-V2,logtHCM,-0.553229,0.589495,Pearson

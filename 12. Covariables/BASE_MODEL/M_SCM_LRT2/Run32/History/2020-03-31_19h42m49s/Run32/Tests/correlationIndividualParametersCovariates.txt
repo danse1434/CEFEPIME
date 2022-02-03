@@ -1,3 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,LMP,1.75151,0.208491,Fisher
-Q,logtAGEA,11.9335,2.23377e-8,Pearson

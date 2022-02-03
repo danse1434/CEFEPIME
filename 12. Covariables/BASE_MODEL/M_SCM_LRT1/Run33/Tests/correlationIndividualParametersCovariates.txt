@@ -1,2 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Q,LLP,1.28822e+13,<2.2e-16,Fisher

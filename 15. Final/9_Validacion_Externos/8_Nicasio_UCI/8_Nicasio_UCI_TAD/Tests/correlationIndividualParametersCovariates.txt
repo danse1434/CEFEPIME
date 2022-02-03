@@ -1,3 +1,0 @@
-parameter,covariate,statistics,p-value,test
-V,log_tWT,-0.221385,0.828232,Pearson
-k,CLCRMLMIN,1.08859,0.296104,Pearson

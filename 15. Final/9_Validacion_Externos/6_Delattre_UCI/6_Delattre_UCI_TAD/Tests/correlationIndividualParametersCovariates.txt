@@ -1,5 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,log_tCLCR,1.67056,0.118694,Pearson
-Cl,log_tWT,2.10357,0.0554517,Pearson
-V1,log_tWT,1.13294,0.277702,Pearson
-V2,log_tWT,1.53277,0.149301,Pearson

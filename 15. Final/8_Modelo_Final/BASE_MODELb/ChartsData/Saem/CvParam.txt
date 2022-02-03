@@ -1,2 +1,0 @@
-iteration,convergenceIndicator,phase,Cl_pop,V1_pop,V2_pop,a,beta_Cl_tSCRMGDL,omega_Cl,omega_Q,omega_V1,omega_V2
-1,2441.99,2,20.6281,23.8174,13.3024,1.85845,-0.415119,0.223651,0.945785,0.299408,0.794505

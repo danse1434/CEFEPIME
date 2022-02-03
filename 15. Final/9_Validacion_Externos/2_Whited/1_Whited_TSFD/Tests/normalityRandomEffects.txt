@@ -1,3 +1,0 @@
-eta,statistics,p-value
-eta_V,0.943447,0.741522
-eta_k,0.93177,0.327716

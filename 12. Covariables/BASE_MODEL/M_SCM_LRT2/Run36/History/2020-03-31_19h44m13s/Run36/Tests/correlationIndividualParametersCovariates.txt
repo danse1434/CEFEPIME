@@ -1,3 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,logtRAN,-0.714165,0.487751,Pearson
-Q,logtAGEA,13.0223,7.79172e-9,Pearson

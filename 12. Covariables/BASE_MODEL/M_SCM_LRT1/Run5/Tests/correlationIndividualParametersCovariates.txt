@@ -1,2 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,SEXF,0.277171,0.607427,Fisher

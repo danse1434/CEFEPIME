@@ -1,6 +1,0 @@
-parameter,value
-V_pop,33.4
-Cl_pop,8.6
-omega_V,0.249
-omega_Cl,0.259
-a,0.034

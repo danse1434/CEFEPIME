@@ -1,9 +1,0 @@
-eta,covariate,statistics,p-value,test
-eta_Cl,SCRMGDL,-0.0121297,0.990506,Pearson
-eta_Cl,tSCRMGDL,-0.0121297,0.990506,Pearson
-eta_V1,SCRMGDL,1.15882,0.267372,Pearson
-eta_V1,tSCRMGDL,1.15882,0.267372,Pearson
-eta_Q,SCRMGDL,0.167529,0.869532,Pearson
-eta_Q,tSCRMGDL,0.167529,0.869532,Pearson
-eta_V2,SCRMGDL,-0.753896,0.464349,Pearson
-eta_V2,tSCRMGDL,-0.753896,0.464349,Pearson

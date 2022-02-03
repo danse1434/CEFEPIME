@@ -1,3 +1,0 @@
-parameter,covariate,statistics,p-value,test
-V1,logtSCM2,0.669969,0.514603,Pearson
-Q,logtAGEA,13.435,5.3318e-9,Pearson

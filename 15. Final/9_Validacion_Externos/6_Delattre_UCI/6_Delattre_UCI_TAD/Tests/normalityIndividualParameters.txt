@@ -1,4 +1,0 @@
-parameter,statistics,p-value,test
-Cl,0.604421,4.44089e-16,Kolmogorov-Smirnov
-V1,0.228531,1.01673e-7,Kolmogorov-Smirnov
-V2,0.180183,7.72932e-6,Kolmogorov-Smirnov

@@ -1,2 +1,0 @@
-parameter,statistics(lin),p-value(lin)
-beta_Cl_tSCRMGDL,2.27507,0.0229

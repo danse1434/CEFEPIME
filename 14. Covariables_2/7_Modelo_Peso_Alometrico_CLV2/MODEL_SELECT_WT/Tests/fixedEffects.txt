@@ -1,4 +1,0 @@
-parameter,statistics(sa),p-value(sa)
-beta_Cl_logtWTKG,2.46049,0.0139
-beta_Cl_tSCRMGDL,3.08477,0.00204
-beta_V2_logtWTKG,1.36044,0.174

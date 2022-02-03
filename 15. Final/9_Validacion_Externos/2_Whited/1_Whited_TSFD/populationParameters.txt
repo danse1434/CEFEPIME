@@ -1,7 +1,0 @@
-parameter,value
-V_pop,20.9
-k_pop,0.39
-omega_V,0.1156
-omega_k,0.1836
-a,1.72
-b,0.21

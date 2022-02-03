@@ -1,8 +1,0 @@
-parameter,value
-V_pop,23.9
-Cl_pop,1.4
-beta_Cl_log_tCLCRMLMIN,1
-omega_V,0.249
-omega_Cl,0.259
-corr_V_Cl,0
-a,0.034

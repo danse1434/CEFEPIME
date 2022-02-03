@@ -1,4 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,LLP,0.271414,0.611145,Fisher
-Cl,tSCRMGDL,-2.17256,0.0488969,Pearson
-Q,LLP,3.05251e+7,<2.2e-16,Fisher

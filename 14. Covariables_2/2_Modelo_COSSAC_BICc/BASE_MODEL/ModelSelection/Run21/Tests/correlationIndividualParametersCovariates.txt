@@ -1,8 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,logtIMCKGM2,1.66549,0.119715,Pearson
-Cl,logtWTKG,1.47573,0.163822,Pearson
-Cl,tSCRMGDL,-2.08502,0.0573489,Pearson
-V1,logtPROGDL,-2.8892,0.0126678,Pearson
-V1,tSCRMGDL,0.651991,0.525768,Pearson
-Q,logtIMCKGM2,3.0097,0.0100496,Pearson
-V2,SEXF,23.8247,0.000300055,Fisher

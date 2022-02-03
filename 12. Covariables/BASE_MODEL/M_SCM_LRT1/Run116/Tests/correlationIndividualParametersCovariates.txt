@@ -1,3 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Q,logtAGEA,12.1459,1.80746e-8,Pearson
-V2,logtRAL,1.12201,0.282154,Pearson

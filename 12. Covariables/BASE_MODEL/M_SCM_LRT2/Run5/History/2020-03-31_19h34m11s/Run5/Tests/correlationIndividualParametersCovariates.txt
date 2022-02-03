@@ -1,2 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,logtHCM,0.0521581,0.959196,Pearson

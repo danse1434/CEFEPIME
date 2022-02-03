@@ -1,2 +1,0 @@
-parameter,statistics(sa),p-value(sa)
-beta_Cl_tCLCRMLMIN,1.26447,0.206

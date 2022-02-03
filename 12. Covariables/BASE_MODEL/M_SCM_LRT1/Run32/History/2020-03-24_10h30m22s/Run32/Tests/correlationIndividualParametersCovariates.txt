@@ -1,2 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Q,ANTU,2.53893,0.135083,Fisher

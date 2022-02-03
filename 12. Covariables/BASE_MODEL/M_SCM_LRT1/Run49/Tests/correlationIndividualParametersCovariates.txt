@@ -1,2 +1,0 @@
-parameter,covariate,statistics,p-value,test
-V2,LMP,2.73005,0.122411,Fisher

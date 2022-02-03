@@ -1,4 +1,0 @@
-residuals,statistics,p-value,test
-IWRES_y_1,-0.284384,0.776116,Symmetry
-PWRES_y_1,3.12272,0.00179191,Symmetry
-NPDE_y_1,2.10711,0.0351077,Symmetry
