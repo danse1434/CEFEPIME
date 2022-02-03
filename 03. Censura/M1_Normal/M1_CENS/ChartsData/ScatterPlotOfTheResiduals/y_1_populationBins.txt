@@ -1,7 +1,0 @@
-bins_values,split
--0.521312,All
-12.482,All
-22.605,All
-37.4893,All
-51.863,All
-72.5759,All

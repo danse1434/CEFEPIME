@@ -1,6 +1,0 @@
-parameter,res_sa
-Cl_pop,8.10719
-V_pop,7.52269
-a,9.22625
-omega_Cl,20.0747
-omega_V,19.5608

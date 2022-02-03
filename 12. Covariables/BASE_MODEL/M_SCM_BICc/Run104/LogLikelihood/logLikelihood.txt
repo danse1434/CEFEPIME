@@ -1,6 +1,0 @@
-criteria,linearization
--2LL,522.753
-AIC,548.753
-BICc,566.916
-BIC,557.958
-stdError,

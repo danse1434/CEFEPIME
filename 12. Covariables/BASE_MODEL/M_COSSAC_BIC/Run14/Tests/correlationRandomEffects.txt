@@ -1,7 +1,0 @@
-eta1,eta2,coeff,statistics,p-value
-eta_Cl,eta_V1,0,0.642331,0.531037
-eta_Cl,eta_Q,0,-1.09763,0.290887
-eta_Cl,eta_V2,0,1.24396,0.233939
-eta_V1,eta_Q,0,0.403058,0.692993
-eta_V1,eta_V2,0,0.571351,0.57682
-eta_Q,eta_V2,0,1.42036,0.177388

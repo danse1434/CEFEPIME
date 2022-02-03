@@ -1,2 +1,0 @@
-parameter,covariate,statistics,p-value,test
-Cl,logtIMCKGM2,1.79656,0.0956669,Pearson

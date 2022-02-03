@@ -1,2 +1,0 @@
-parameter,covariate,statistics,p-value,test
-V2,logtALBGDL,-5.37382,0.000126702,Pearson

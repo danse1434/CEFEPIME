@@ -1,5 +1,0 @@
-standEta_V_logit_abscissa,standEta_V_logit_pdf,standEta_Vm_logit_abscissa,standEta_Vm_logit_pdf,standEta_Km_logit_abscissa,standEta_Km_logit_pdf,split
--0.989149,0.243478,-1.25657,0.115148,-0.495928,1.03444,All
--0.304623,0.730433,-0.53286,0.575739,-0.0931347,0.413777,All
-0.379902,0.486955,0.190847,0.460591,0.309659,1.24133,All
-1.06443,0.365216,0.914555,0.575739,0.712453,0.413777,All

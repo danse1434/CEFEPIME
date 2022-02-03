@@ -1,2 +1,0 @@
-parameter,covariate,statistics,p-value,test
-V1,logtSCRMGDL,-2.41964e+8,<2.2e-16,Pearson
